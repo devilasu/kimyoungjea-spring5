@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>게시판 글쓰기</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Tempusdominus Bootstrap 4 부트스트랩4-->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- Theme style AdminLTE 테마스타일 -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+  <div class="wrapper">
+
+    <!-- Preloader 로딩중 a로고 표시-->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="home.html" class="nav-link">Home</a>
+        </li>
+      </ul>
+
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+            <i class="fas fa-th-large"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container 왼쪽 메인 사이드메뉴 -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="home.html" class="brand-link">
+        <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+          style="opacity: .8">
+        <span class="brand-text font-weight-light">스프링5프로젝트</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) 로그인 정보-->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="#" class="d-block">로그인한 ID</a>
+          </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+          <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+            <div class="input-group-append">
+              <button class="btn btn-sidebar">
+                <i class="fas fa-search fa-fw"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+            <li class="nav-item">
+              <a href="/" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  사용자 홈
+                  <span class="right badge badge-danger">New</span>
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/charts/chartjs.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>관리자 관리</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="pages/charts/flot.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>게시판생성관리</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="far fa-circle nav-icon "></i>
+                <p>게시물관리
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <!-- 위 게시판 생성관리에서 만든 게시판 개수에따라 증감. -->
+                <li class="nav-item">
+                  <a href="/resources/admin/board_list.html" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>공지사항</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/resources/admin/board_list.html" class="nav-link">
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>갤러리</p>
+                  </a>
+                </li>
+                </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">{게시판변수명} 상세보기</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">{게시판변수명}</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <!-- 컨텐츠 내용 -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">보기</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <!-- <form name="" method="" action="" anctype="" -->
+                <form name="form_view" action="board_view.html" enctype="multipart/form-data">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">제목</label>
+                      <br>
+                      {변수출력}
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">내용</label>
+                      <br>
+                      {변수출력}
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">작성자</label>
+                      <br>
+                      {변수출력}
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">조회수</label>
+                      <br>
+                      {변수출력}
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">작성일</label>
+                      <br>
+                      {변수출력}
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputFile">첨부파일</label>
+                      <div class="input-group">
+                        <div class="custom-file">
+                          {첨부파일다운로드}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+  
+                  <div class="card-footer text-right">
+                    <button type="revise" class="btn btn-primary">수정</button>
+                    <button type="delete" class="btn btn-danger">삭제</button>
+                    <a href="board_list.html" class="btn btn-default">목록</a>
+                  </div>
+                </form>
+              </div>
+              <!-- 댓글 타임라인 -->
+              <div class="col-md-12">
+                <div class="card-default">
+                  <div class="card-header">
+                  <h3 class="card-title">댓글 작성</h3>
+                  </div>
+                  <div class="card-body p-0">
+                  <div class="bs-stepper linear">
+                    <div class="bs-stepper-header" role="tablist">
+                    <div class="bs-stepper-content">
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
+                      <div class="form-group">
+                      <label for="replyer">작성자</label>
+                      <input type="text" class="form-control" id="replyer" placeholder="작성자를 입력해 주세요.">
+                      </div>
+                      <div class="form-group">
+                      <label for="reply_text">댓글내용</label>
+                      <input type="text" class="form-control" id="reply_text" placeholder="내용을 입력해 주세요.">
+                      </div>
+                    </div>
+                    <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger"></div>
+                      <button type="button" class="btn btn-warning" id="btn_reply_write">댓글등록</button>
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  아래 댓글리스트 버튼을 클릭하시면 댓글 목록이 나옵니다.
+                </div>
+                </div>
+              <!-- //댓글 입력 폼 -->
+            <div class="col-md-12">
+            <!-- The time line -->
+            <div class="timeline">
+              <!-- timeline time label -->
+              <div class="time-label">
+              <span id="btn_reply_list" class="bg-red" data-toggle="collapse" href="#collapseReply" role="button">
+                댓글 리스트
+                [<span>2</span>]
+              </span>
+              </div>
+              <!-- /.timeline-label -->
+              <!-- timeline item -->
+              <!-- 댓글리스트를 자바스크립트의 빵틀(templete)을 만듭니다. -->
+              <!-- 기존 퍼블리셔가 만든 태그를 그대로 사용 가능 -->
+              <div class="collapse timeline" id="collapseReply">
+                <!-- END timeline item -->
+                <ul class="pagination">
+                </ul>
+              </div>
+            <!-- /.col -->
+          </div>
+        
+              <!-- /댓글 타임라인 -->
+            </div>
+          </div><!-- /컨텐츠 내용 -->
+        </div><!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+      All rights reserved.
+      <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b> 3.1.0
+      </div>
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+      <div class="text-center">
+        <h5>로그아웃</h5>
+        <hr class="mb-2" />
+        <button class="btn btn-primary">로그아웃</button>
+      </div>
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- jQuery -->
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+  <!-- Bootstrap 4 -->
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Summernote -->
+  <script src="plugins/summernote/summernote-bs4.min.js"></script>
+  <!-- overlayScrollbars -->
+  <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="dist/js/adminlte.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <!-- <script src="dist/js/demo.js"></script> -->
+  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+  <!-- <script src="dist/js/pages/dashboard.js"></script> -->
+
+  <script>
+	  //댓글 데이터 통신 후 출력
+	  var replyList = function(){
+		$.ajax({
+				  method:"get",
+				  url:"board_view.html",//RestAPI
+				  dataType:"text",
+				  success:function(result){
+					//   alert("RestAPI성공");
+					result = [
+						{rno:1, bno:2, reply_text:"첫번째 댓글입니다.",replyer:"관리자", regdate:1601234512345},
+						{rno:2, bno:2, reply_text:"두번째 댓글입니다.",replyer:"관리자", regdate:1601234512345},
+						{rno:3, bno:2, reply_text:"세번째 댓글입니다.",replyer:"관리자", regdate:1601234512345}
+					];
+					//자바스크립트는 함수기반 구조화된 언어.
+					printReplyList(result, $("#collapseReply"),$("#template"));
+					printPagingList(5, $(".pagination"));
+				  },
+				  error:function(){
+					  alert("RestApi서버가 작동하지 않습니다.");
+				  }
+			  });
+	  }
+
+	  //화면을 재구현하는 함수
+	  var printReplyList = function(data, target, templateObject){
+		  var template = Handlebars.compile(templateObject.html()); //html태그로 변환
+		  var html = template(data); //빅데이터를 리스트템플릿에 바인딩 결합시켜주는 역할
+		  $(".div_template").remove();//화면에 보이는 댓글리스트만 지우기
+		  target.prepend(html);
+	  };
+	  //페이징을 재구현하는 함수
+	  var printPagingList = function(pageVO, target){
+		  var paging = "";
+			paging +='<li class="paginate_button page-item previous disabled" id="example1_previous">';
+			paging += '<a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>'
+			paging += '</li>';
+			var active = "";
+			for(var i = 0; i<pageVO; i++)
+			{
+				if(i==0) {active = "active";} else {active = '';}
+					paging += '<li class="paginate_button page-item '+ active+'">';
+					paging += '<a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">'+(i+1)+'</a>';
+					paging += '</li>';
+			}
+			//next출력
+			paging += '<li class="paginate_button page-item next" id="example1_next">';
+			paging += '<a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0" class="page-link">Next</a>';
+			paging += '</li>';
+			target.html(paging);
+	  }
+
+	  $(document).ready(function(){
+		  $("#btn_reply_list").click(function(){
+			replyList();
+		  });
+		  $("#btn_reply_write").click(function(){
+			$("#collapseReply").addClass("show");
+			replyList();
+		  });
+	  });
+  </script>
+
+  <!-- 댓글내용 출력 원본 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script id="template" type="text/x-handlebars-template">
+		{{#each .}}
+	<div class="div_template" data-rno="{{rno}}">
+		<i class="fas fa-envelope bg-blue"></i>
+		<div class="timeline-item">
+		<h3 class="timeline-header">{{replyer}}</h3>
+		<div class="timeline-body">{{reply_text}}</div>
+		<div class="timeline-footer">
+			<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-reply">수정</a>
+		</div>
+		</div>
+		</div>
+	</div>
+	{{/each}}
+	</script>
+
+  <!-- 모달창(초기에 안보임) -->
+<div class="modal fade" id="modal-reply">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h4 class="modal-title">작성자이름</h4>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  <input type="text" class="form-control" id="modal_reply_text" placeholder="댓글내용수정">
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+		  <button type="button" class="btn btn-primary">수정</button>
+		  <button type="button" class="btn btn-danger">삭제</button>
+		  <input type="hidden" id="rno" name="rno">
+		</div>
+	  </div>
+	  <!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+  </div>
+
+
+  <!-- 팝업창 내용 동적으로 변경 -->
+  <script>
+	  $(document).ready(function(){
+		  $(".timeline").on("click", ".div_template",function(){
+			  $("#rno").val($(this).attr("data-rno"));
+			  $(".modal-title").html($(this).find(".timeline-header").text());
+			  $("#modal_reply_text").val($(this).find(".timeline-body").text());
+		  })
+	  });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E4FB1398-709A-A8E5-264C-016D60FCA309" name="TBL_REPLY">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:23:47 UTC</createdTime>
+<commentInRDBMS><![CDATA[댓글관리테이블]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="RNO" id="8589B044-E566-5D81-B091-662A5E37E0B6">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:26:04 UTC</createdTime>
+<commentInRDBMS><![CDATA[댓글고유번호(자동증가AI)]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>11</dataTypePrecision>
+<ownDataTypeParameters>,11,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="REPLY_TEXT" id="12CBDEC9-4298-4A3A-7BD9-A644E36E44B8">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:37:00 UTC</createdTime>
+<commentInRDBMS><![CDATA[댓글내용]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="REPLYER" id="5A7DD229-C607-3A61-4D02-9FEED5C8D3A9">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:37:46 UTC</createdTime>
+<commentInRDBMS><![CDATA[댓글작성자ID]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="REG_DATE" id="D3C39F01-251E-02A4-30ED-B9C37DAE67FD">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:38:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[생성일]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UPDATE_DATE" id="9A76317D-A37D-238B-35B7-B0B1D4FBACAE">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:39:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[수정일]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="BNO" id="E4291B6B-F001-BA41-6DAE-A07CCEE3CF47">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:39:57 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>11</dataTypePrecision>
+<ownDataTypeParameters>,11,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="8E70DA7F-5CFD-A001-B8AD-0E849A07BD0D" referredColumn="DF1C3C5E-37E7-C623-0514-3A6C40420262"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="E2A8629D-EC31-DBFB-1FE3-D5DC87FBCC3D" name="TABLE_5_PK">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:26:04 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8589B044-E566-5D81-B091-662A5E37E0B6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8AEAFC86-AD06-123E-D296-94C126C90503" name="TBL_REPLY_TBL_BOARD_FK">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:39:57 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E4291B6B-F001-BA41-6DAE-A07CCEE3CF47"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,89 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="397FE496-B115-5CA1-7CF9-459361035619" name="TBL_ATTACH">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 04:57:54 UTC</createdTime>
+<commentInRDBMS><![CDATA[첨부파일관리테이블]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<ordsAlias>table_6</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="SAVE_FILE_NAME" id="902716F5-3C62-AC5D-81A1-2D3AFA596C7A">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 04:59:28 UTC</createdTime>
+<commentInRDBMS><![CDATA[물리적으로저장되는 첨부파일명(해시데이터)]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="REAL_FILE_NAME" id="EDFB3ECF-C3AC-D153-C339-CDCFC93E93D2">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:01:18 UTC</createdTime>
+<commentInRDBMS><![CDATA[한글파일명으로 UI에서 보이게]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="REG_DATE" id="4BA25044-BC07-3EC3-5205-234BA33F304F">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:05:07 UTC</createdTime>
+<commentInRDBMS><![CDATA[등록일자]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="BNO" id="E6BB1E10-9025-A9B4-FE07-3AA47441E1A9">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:05:41 UTC</createdTime>
+<commentInRDBMS><![CDATA[부모테이블의고유키]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>11</dataTypePrecision>
+<ownDataTypeParameters>,11,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="92711C60-2D62-840A-7BE0-C8E8B2D571F1" referredColumn="DF1C3C5E-37E7-C623-0514-3A6C40420262"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="AB5FEDE1-C0AB-615F-7481-FA2E8DC6F6FF" name="TBL_ATTACH_PK">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 04:59:58 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="902716F5-3C62-AC5D-81A1-2D3AFA596C7A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="0F2E3075-EF02-249B-404B-E7A02357ED5F" name="TBL_ATTACH_TBL_BOARD_FK">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:06:54 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E6BB1E10-9025-A9B4-FE07-3AA47441E1A9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

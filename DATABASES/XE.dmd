@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="XE" id="CFF08512-9A36-4F2B-F7A7-EE96C739B4C1" version="3.5">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 01:25:00 UTC</createdTime>
+<ownerDesignName>SPRING5</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>CFF08512-9A36-4F2B-F7A7-EE96C739B4C1</designId>
+</OSDM_Design>

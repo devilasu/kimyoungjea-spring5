@@ -1,0 +1,75 @@
+@charset "UTF-8";
+@media all and (min-width:1066px){
+    		 /* 상단 로고, 메뉴영역 */
+		 .header_area h1{
+            padding-left:0px;
+        }
+        .header_cont{
+            width:769;
+            padding-right:10px;
+        }
+        .gnb li a{
+            padding:26px 40px;
+            padding-right:0;
+        }
+        .gnb_depth{
+            position: absolute;
+            left: 0;
+            top: 113px;
+            width: 100%;
+            background: rgba(250, 100, 0, 0.85);
+            z-index: 100;
+        }
+        .gnb_depth .submenu_list{
+            float:right;
+        }
+        .gnb_depth .submenu_list li{
+            float:right;
+        }
+    
+        .gnb_depth2_1 .submenu_list li{
+            padding-right:120px;
+        }
+        .gnb_depth2_2 .submenu_list li{
+            padding-right:10px;
+        }
+    
+        .submenu_list{
+            box-sizing: border-box;
+            width: 1050px;
+            margin: 0 auto;
+            text-align: left;
+        }
+    
+        /* 갤러리, 공지사항 최근게시물 영역 */
+            .place_list{
+                padding: 0px;
+            }
+            .appbbs_box{
+                padding: 0px;
+            }
+            .app_line a, .app_line a+a{
+                text-align: center;
+                background-position: 10% 50%;
+            }
+            .app_line{
+                width:66%;
+            }
+            .bbs_line{
+                width:32%;
+            }
+            /* //갤러리, 공지사항 최근게시물 영역 */
+            /* 푸터영역 */
+            .foot_area{
+                padding-left: 0px;
+                padding-right: 0px;
+            }
+            .foot_aea .snslink{
+                top: 50px;
+            }
+            .foot_area .snslink li{
+                margin-left: 60px;
+            }
+            
+            /* //푸터영역 */
+}

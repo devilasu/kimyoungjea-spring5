@@ -1,0 +1,152 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="84D26F30-3B6D-4EA1-FDAA-765A8332857F" name="TBL_BOARD">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 02:43:22 UTC</createdTime>
+<commentInRDBMS><![CDATA[게시물관리테이블]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<ordsAlias>table_2</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="BNO" id="DF1C3C5E-37E7-C623-0514-3A6C40420262">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 02:48:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[게시판고유번호(자동증가처리)]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>11</dataTypePrecision>
+<ownDataTypeParameters>,11,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="TITLE" id="29DAFCA2-4380-417C-FFA8-B2DD90844CB1">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 02:48:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[게시물제목]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CONTENT" id="3EB2C3F3-3DE0-DC0F-B152-C36C6FC442D8">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 02:48:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[글내용]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT028</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="WRITER" id="2F682B39-9FC1-6485-140B-16BCE2B7DDD0">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 02:48:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[글작성자ID]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="VIEW_COUNT" id="F195D89D-3906-4F37-C501-4D6597CF9873">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:01:40 UTC</createdTime>
+<commentInRDBMS><![CDATA[글조회수카운터]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>11</dataTypePrecision>
+<ownDataTypeParameters>,11,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="REPLY_COUNT" id="A5F52546-BBFE-B810-C7CA-893FF46E08EA">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:01:40 UTC</createdTime>
+<commentInRDBMS><![CDATA[댓글 카운트]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>11</dataTypePrecision>
+<ownDataTypeParameters>,11,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="REG_DATA" id="3C6A8F0A-8BB5-B603-A6A9-8686820D9D77">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:05:06 UTC</createdTime>
+<commentInRDBMS><![CDATA[등록일시]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="UPDATE_DATA" id="57202E2F-34FE-EC82-E220-47A39CFC7376">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:05:49 UTC</createdTime>
+<commentInRDBMS><![CDATA[수정일시]]></commentInRDBMS>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT015</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="BOARD_TYPE" id="317A0CDB-3A3B-27D2-FBFE-25B0147AA66E">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:14:13 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="D9F67660-C63F-4833-970C-C6BF958B5687" referredColumn="C0CF5F8C-D684-EE1B-1F63-44866FDE213F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9E49C81B-6122-5D9E-98E3-E9133F346A43" name="TBL_BOARD_PK">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 02:48:30 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DF1C3C5E-37E7-C623-0514-3A6C40420262"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="01B40D8B-EA2B-1A7B-6BA7-AC0C8A41BF32" name="TBL_BOARD_TBL_BOARD_TYPE_FK">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 03:14:13 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="317A0CDB-3A3B-27D2-FBFE-25B0147AA66E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

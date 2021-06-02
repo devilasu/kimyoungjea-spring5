@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxyOraclev11g class="oracle.dbtools.crest.model.design.storage.oracle.v11g.TableProxyOraclev11g" name="TBL_MEMBER" directorySegmentName="seg_0" id="5856D1E6-8A89-A738-583A-13E90276957B">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<logging>YES</logging>
+<partitionedRowMovement>DISABLE</partitionedRowMovement>
+<temporaryChanged>false</temporaryChanged>
+<accessDriverType>oracle_loader</accessDriverType>
+<rejectLimit></rejectLimit>
+<columnProxies itemClass="oracle.dbtools.crest.model.design.storage.oracle.v12c.ColumnProxyOraclev12c">
+<ColumnProxy name="LEVELS" id="5DFCF2FF-2579-E20C-A5F1-4E64486558E5">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="ENABLED" id="8581193E-826C-DAA6-1996-527AAE53C030">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="EMAIL" id="8A3FF94C-88E8-5E1E-FA5B-0B220AAC6F9F">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="USER_ID" id="9D23BC67-499C-1D0E-517A-F730B81ACA50">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="UPDATE_DATE" id="9DEACE9F-5CE0-2EB6-D4C4-BE6D427EC154">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="USER_NAME" id="9E28DE56-4B0C-4C67-3250-272BF70213AB">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="USER_PW" id="A465CF5F-41D8-6B22-7725-E04BC0CECBA0">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy name="POINT" id="CA7B12AB-2834-C179-0CB1-9A99E29A9C7D">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.oracle.v10g.PKProxyOraclev10g" name="TBL_MEMBER_PK" id="BE32D712-3B77-6FF8-F8F5-8CFB18F1CFBC">
+<createdBy>hcopp</createdBy>
+<createdTime>2021-05-31 05:39:49 UTC</createdTime>
+<ownerDesignName>XE</ownerDesignName>
+<indexSort>SORTED</indexSort>
+</PrimaryKey>
+</primaryKeys>
+</TableProxyOraclev11g>

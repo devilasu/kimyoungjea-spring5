@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title> view </title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- jQuery Core import -->
+<script src="/resources/home/js/jquery-3.6.0.js"></script>
+<!-- 상단 바로가기 링크시 부드럽게 이동하는 외부lib import -->
+<script src="/resources/home/js/jquery.smooth-scroll.min.js"></script>
+
+<!-- 화면 초기화시키는 스타일 import: 크로스브라우징을 처리하기 위해서-->
+<!-- chrome, IE, Edge, Safari, fireFox의 h1, p, ul, div영역의 태그의 크기가 전부 조금씩 다르다. -->
+<!-- 작업한 결과가 모든 브라우저에서 다르게 보이는걸 똑같이 보이게 하기 위한 reset.css(crossingBrowser) -->
+<link rel="stylesheet" href="/resources/home/css/reset.css">
+<!-- 여기서부터는 사용자 정의형 스타일 + 스크립트 추가 -->
+<script src="/resources/home/js/main.js"></script>
+<link rel="stylesheet" href="/resources/home/css/mobile.css">
+<link rel="stylesheet" href="/resources/home/css/tablet.css">
+<link rel="stylesheet" href="/resources/home/css/pc.css">
+<link rel="stylesheet" href="/resources/home/css/board.css">
+<script src="/resources/home/js/slideMain.js"></script>
+<!-- fontawesome CSS import -->
+<link rel="stylesheet" href="/resources/admin/plugins/fontawesome-free/css/all.min.css">
+<!-- 부트스트랩CSS코어 import -->
+<link rel="stylesheet" href="/resources/admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+<!-- 부트스트랩JS코어 import -->
+<script src ="/resources/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- adminLTE전용CSS코어 import-->
+<link rel="stylesheet" href="/resources/admin/dist/css/adminlte.min.css">
+<style>
+
+.timeline, .card-default{
+	text-align: left;
+}
+
+.bs-stepper-content{
+	margin: 20px 10px;
+}
+
+/* tablet용 메인페이지 스타일 지정 */
+@media all and (min-width:801px){
+}
+/* PC용 메인페이지 스타일 지정 */
+@media all and (min-width:1066px){
+}
+
+</style>
+<script>
+$(document).ready(function() {
+
+});
+</script>
+</head>
+<body>
+<!-- 헤더에서푸터까지 -->
+<div id="wrap">
+	<!-- 헤더상단메뉴영역영역 -->
+	<header id="header">
+		<div class="header_area box_inner clear">
+			<!-- 상단로고영역 -->
+			<h1><a href="/resources/index.html">스프링 in 자바</a></h1>
+			<!-- //상단로고영역 -->
+			
+			<!-- 상단메뉴메뉴영역 -->
+			<p class="openMOgnb"><a href="#"><b class="hdd">메뉴열기</b> <span></span><span></span><span></span></a></p>
+			<div class="header_cont">
+				<ul class="util clear">
+					<li><a href="login.html">로그인</a></li>
+					<li><a href="join.html">회원가입</a></li>
+					<!-- 로그인 후 보이는 메뉴(아래) -->
+					<li><a href="#">OOO님 환영합니다.</a></li>
+					<li><a href="mypage.html">마이페이지</a></li>
+					<li><a href="../admin/home.html">AdminLTE</a></li>
+				</ul>	
+				<nav>
+				<ul class="gnb clear">
+					<li><a href="board_list.html" class="openAll1">샘플홈페이지</a>
+
+                        <div class="gnb_depth gnb_depth2_1">
+                            <ul class="submenu_list">
+                                <li><a href="board_list.html">반응형홈페이지</a></li>
+                            </ul>
+                        </div>
+					</li>
+					<li><a href="board_list.html" class="openAll2">커뮤니티</a>
+				        <div class="gnb_depth gnb_depth2_2">
+                            <ul class="submenu_list">
+                                <li><a href="board_list.html">공지사항</a></li>
+                                <li><a href="board_list.html">갤러리게시판</a></li>
+                            </ul>
+                        </div>
+					</li>
+				</ul>
+                </nav>
+				<p class="closePop"><a href="javascript:;">닫기</a></p>
+			</div>
+			<!-- //상단메뉴메뉴영역 -->
+		</div>
+	</header>
+	<!-- //헤더상단메뉴영역영역 -->
+	
+	<!-- 메인컨텐츠영역 -->
+    <div id="container">
+		<!-- 메인상단위치표시영역 -->
+		<div class="location_area customer">
+			<div class="box_inner">
+				<h2 class="tit_page">스프링 <span class="in">in</span> 자바</h2>
+				<p class="location">고객센터 <span class="path">/</span> 공지사항</p>
+				<ul class="page_menu clear">
+					<li><a href="#" class="on">공지사항</a></li>
+					<li><a href="#">문의하기</a></li>
+				</ul>
+			</div>
+		</div>	
+		<!-- //메인상단위치표시영역 -->
+
+		<!-- 메인본문영역 -->
+		<div class="bodytext_area box_inner">			
+			<ul class="bbsview_list">
+				<li class="bbs_title">박물관 미션 투어 응모 당첨자 발표</li>
+				<li class="bbs_date">작성일 : <span>2018.08.09</span></li>
+				<li class="bbs_hit">조회수 : <span>235</span></li>
+				<li class="bbs_content">
+					<div class="editer_content">
+					    안녕하세요. 믿을 수 있는 스프링정보, 스프링입니다.<br>
+                        박물관 미션투어에 관심과 참여 감사드립니다. <br>
+                        선정되신 분들도 진심으로 축하드립니다. <br>
+                        앞으로도 큰 관심 부탁드리며, 메일로도 안내 예정이니 참고하시기 바랍니다. <br>
+                        감사합니다. <br><br>
+                        [당첨자]<br>
+                        김용* kimyong***@naver.com <br>
+                        인봉* in2018a***@naver.com<br>
+                        예경* yyhong***@naver.com<br>
+                        한진* haha***@naver.com<br>
+                        박수* pky**@naver.com<br>
+                        명진* mma5**@nate.com<br>
+                        김영* rtfg6*@naver.com<br>
+                        서영* seo20**@gmail.com<br>
+                        윤소* yoon2***@naver.com<br>
+                        지은* ji***@daum.net
+                    </div>
+				</li>
+			</ul>
+			<p class="btn_line txt_right">
+				<a href="board_list.html" class="btn_bbs">목록</a>
+			</p>
+			
+		</div>
+		<!-- //메인본문영역 -->
+
+		<!-- 댓글 영역 -->
+		<div class="container-fluid">
+			<!-- Timelime example  -->
+			<div class="row">
+					<!-- 댓글 입력 폼 -->
+					<div class="col-md-12">
+						<div class="card-default">
+						  <div class="card-header">
+							<h3 class="card-title">댓글 작성</h3>
+						  </div>
+						  <div class="card-body p-0">
+							<div class="bs-stepper linear">
+							  <div class="bs-stepper-header" role="tablist">
+							  <div class="bs-stepper-content">
+								<!-- your steps content here -->
+								<div id="logins-part" class="content active dstepper-block" role="tabpanel" aria-labelledby="logins-part-trigger">
+								  <div class="form-group">
+									<label for="replyer">작성자</label>
+									<input type="text" class="form-control" id="replyer" placeholder="작성자를 입력해 주세요.">
+								  </div>
+								  <div class="form-group">
+									<label for="reply_text">댓글내용</label>
+									<input type="text" class="form-control" id="reply_text" placeholder="내용을 입력해 주세요.">
+								  </div>
+								</div>
+								<div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger"></div>
+								  <button type="button" class="btn btn-warning" id="btn_reply_write">댓글등록</button>
+								</div>
+							  </div>
+							</div>
+						  </div>
+						</div>
+						<div class="card-footer">
+							아래 댓글리스트 버튼을 클릭하시면 댓글 목록이 나옵니다.
+						</div>
+					  </div>
+					<!-- //댓글 입력 폼 -->
+			  <div class="col-md-12">
+				<!-- The time line -->
+				<div class="timeline">
+				  <!-- timeline time label -->
+				  <div class="time-label">
+					<span id="btn_reply_list" class="bg-red" data-toggle="collapse" href="#collapseReply" role="button">
+						댓글 리스트
+						[<span>2</span>]
+					</span>
+					</div>
+					<!-- /.timeline-label -->
+					<!-- timeline item -->
+					<!-- 댓글리스트를 자바스크립트의 빵틀(templete)을 만듭니다. -->
+					<!-- 기존 퍼블리셔가 만든 태그를 그대로 사용 가능 -->
+					<div class="collapse timeline" id="collapseReply">
+						<!-- END timeline item -->
+						<ul class="pagination">
+						</ul>
+					</div>
+			  <!-- /.col -->
+			</div>
+		  </div>
+		  <!-- //댓글 영역 -->
+	</div>
+    <!-- //메인컨텐츠영역 -->
+	
+	<!-- 푸터메뉴및사업자정보영역 -->
+	<footer>
+		<div class="foot_area box_inner">
+			<ul class="foot_list clear">
+				<li><a href="javascript:;">이용약관</a></li>
+				<li><a href="javascript:;">개인정보취급방침</a></li>
+			</ul>
+			<h2>스프링</h2>
+            <p class="addr">OOOO OOOOO OOOO OOOOOOOOO OOOOO <span class="gubun">/</span>        
+				<span class="br_line">대표전화 <span class="space0">02-1234-5678</span> <span class="gubun">/</span>        
+					<span class="br_line">E-mail : <span class="space0"> admin@OOOO OOOOO.com</span></span>
+				</span>
+			</p>
+			<p class="copy box_inner">Copyright(c) OOOO OOOOO all right reserved</p>
+			<ul class="snslink clear">
+				
+				<li><a href="javascript:;">blog</a></li>
+				<li><a href="javascript:;">facebook</a></li>
+				<li><a href="javascript:;">instargram</a></li>
+			</ul>
+		</div>
+	</footer>
+	<!-- //푸터메뉴및주소영역 -->
+		</div>
+<!-- //헤더에서푸터까지 -->
+
+<!-- 하단퀵메뉴영역 -->
+<div class="quick_area">
+	<p class="to_top"><a href="#wrap" class="s_point">TOP</a></p>
+</div>
+<!-- //하단퀵메뉴영역 -->
+
+<!-- 모달창(초기에 안보임) -->
+<div class="modal fade" id="modal-reply">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h4 class="modal-title">작성자이름</h4>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  <input type="text" class="form-control" id="modal_reply_text" placeholder="댓글내용수정">
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+		  <button type="button" class="btn btn-primary">수정</button>
+		  <button type="button" class="btn btn-danger">삭제</button>
+		  <input type="hidden" id="rno" name="rno">
+		</div>
+	  </div>
+	  <!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+  </div>
+
+  <script>
+	  //댓글 데이터 통신 후 출력
+	  var replyList = function(){
+		$.ajax({
+				  method:"get",
+				  url:"./board_view.html",//RestAPI
+				  dataType:"text",
+				  success:function(result){
+					//   alert("RestAPI성공");
+					result = [
+						{rno:1, bno:2, reply_text:"첫번째 댓글입니다.",replyer:"관리자", regdate:1601234512345},
+						{rno:2, bno:2, reply_text:"두번째 댓글입니다.",replyer:"관리자", regdate:1601234512345},
+						{rno:3, bno:2, reply_text:"세번째 댓글입니다.",replyer:"관리자", regdate:1601234512345}
+					];
+					//자바스크립트는 함수기반 구조화된 언어.
+					printReplyList(result, $("#collapseReply"),$("#template"));
+					printPagingList(5, $(".pagination"));
+				  },
+				  error:function(){
+					  alert("RestApi서버가 작동하지 않습니다.");
+				  }
+			  });
+	  }
+
+	  //화면을 재구현하는 함수
+	  var printReplyList = function(data, target, templateObject){
+		  var template = Handlebars.compile(templateObject.html()); //html태그로 변환
+		  var html = template(data); //빅데이터를 리스트템플릿에 바인딩 결합시켜주는 역할
+		  $(".div_template").remove();//화면에 보이는 댓글리스트만 지우기
+		  target.prepend(html);
+	  };
+	  //페이징을 재구현하는 함수
+	  var printPagingList = function(pageVO, target){
+		  var paging = "";
+			paging +='<li class="paginate_button page-item previous disabled" id="example1_previous">';
+			paging += '<a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>'
+			paging += '</li>';
+			var active = "";
+			for(var i = 0; i<pageVO; i++)
+			{
+				if(i==0) {active = "active";} else {active = '';}
+					paging += '<li class="paginate_button page-item '+ active+'">';
+					paging += '<a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">'+(i+1)+'</a>';
+					paging += '</li>';
+			}
+			//next출력
+			paging += '<li class="paginate_button page-item next" id="example1_next">';
+			paging += '<a href="#" aria-controls="example1" data-dt-idx="7" tabindex="0" class="page-link">Next</a>';
+			paging += '</li>';
+			target.html(paging);
+	  }
+
+	  $(document).ready(function(){
+		  $("#btn_reply_list").click(function(){
+			replyList();
+		  });
+		  $("#btn_reply_write").click(function(){
+			$("#collapseReply").addClass("show");
+			replyList();
+		  });
+	  });
+  </script>
+
+
+<!-- 팝업창 내용 동적으로 변경 -->
+  <script>
+	  $(document).ready(function(){
+		  $(".timeline").on("click", ".div_template",function(){
+			  $("#rno").val($(this).attr("data-rno"));
+			  $(".modal-title").html($(this).find(".timeline-header").text());
+			  $("#modal_reply_text").val($(this).find(".timeline-body").text());
+		  })
+	  });
+  </script>
+
+<!-- 댓글내용 출력 원본 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script id="template" type="text/x-handlebars-template">
+		{{#each .}}
+	<div class="div_template" data-rno="{{rno}}">
+		<i class="fas fa-envelope bg-blue"></i>
+		<div class="timeline-item">
+		<h3 class="timeline-header">{{replyer}}</h3>
+		<div class="timeline-body">{{reply_text}}</div>
+		<div class="timeline-footer">
+			<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-reply">수정</a>
+		</div>
+		</div>
+		</div>
+	</div>
+	{{/each}}
+	</script>
+
+</body>
+</html>
