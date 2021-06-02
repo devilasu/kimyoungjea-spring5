@@ -29,8 +29,6 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {//콜백메서드, 자동실행됨
-//		logger.info("Welcome home! The client locale is {}.", locale);
-		
 		String jspVar = "@Service(DB)에서 처리한 결과";
 //		model객체에 Attribute를 추가하면 스프링이 전송하는 결과.
 		model.addAttribute("jspObject", jspVar );

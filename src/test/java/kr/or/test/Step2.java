@@ -13,6 +13,10 @@ class MemberVO{
 	public String getName() {
 		return name;
 	}
+	@Override
+	public String toString() {
+		return "MemberVO [name=" + name + ", age=" + age + ", phoneNum=" + phoneNum + "]";
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
