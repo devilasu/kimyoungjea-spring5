@@ -8,7 +8,15 @@
 - UI구현 시작 -------스프링프로젝트(Java+이클립스+Oracle+Spring) 시작.
 - UI구현 ......UI디자인 이용해서 프로그램 입히게 됩니다.
 
-#### 20210603 (목) 작업예정
+#### 20210603 (목) 작업
+- @Autowired와  @inject 차이.
+
+- c와 다르게 java에는 #ifdef가 없다. 때문에 log4j는 로그 관리측면에서 매우 유용하다.
+- 스프링에서 오라클연동 순서:
+- 1. JDBC(Java DataBase Connection)확장모듈 porm.xml에 추가
+- 2. 오라클 접속 드라이버 추가.(확장모듈을 직접 jar파일로 추가)
+- root-context.xml 파일에 오라클 커넥션 빈을 추가.
+- 스프링이 관리하는 클래스 추가방법:@Controller, @Repository, @Service, @Component, -context.xml에서 빈을 추가
 - JUnit테스트: 오라클 연동한 후 회원관리부분 CRUD 테스트 진행예정
 - 자바 대신에 오라클04장 부터 CRUD 실습예정.
 - admin 회원관리 (jsp디자인) 부터 프로그램 작업 시작 예정.
