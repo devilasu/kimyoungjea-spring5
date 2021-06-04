@@ -1,6 +1,5 @@
 package com.edu.test;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
 
 /**
  * 이 클래스는 오라클과 연동해서 CRUD를 테스트하는 클래스입니다.
@@ -53,16 +53,21 @@ public class DataSourceTest {
 		
 		//insert쿼리 문장을 만듭니다
 		//더미데이터를 입력하는 방법.
-		for(int cnt = 0; cnt <100;cnt++)//deptno 자리수가 2자리수로 고정이기때문에 100이상의 수가 들어가지 못한다.
-			stmt.executeQuery("INSERT INTO dept02 VALUES((select count(*) from dept02),'디자인','경기도')");
-		
+		/*
+		 * for(int cnt = 0; cnt <100;cnt++)//deptno 자리수가 2자리수로 고정이기때문에 100이상의 수가 들어가지
+		 * 못한다. stmt.
+		 * executeQuery("INSERT INTO dept02 VALUES((select count(*) from dept02),'디자인','경기도')"
+		 * );
+		 */
 		ResultSet rs = stmt.executeQuery("select * from dept02");
 		//위에서 만든 쿼리를 실행
 		while(rs.next())
 		{
 			logger.debug(rs.getString("deptno")+ "  " + rs.getString("dname"));
 		}
+		stmt = null;
 		connection = null; //메모리 초기화
+		rs = null;
 		
 	}
 	
