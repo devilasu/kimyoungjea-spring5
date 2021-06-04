@@ -1,3 +1,28 @@
+--20장
+--19장 사용자 추가시 오라클 데스크탑(고전) 대신 웹프로그램을 사용.(http://127.0.0.1:9000/apex/f?p=4950)
+--16장 PK = NOT NULL+UNIQUE+INDEX, FK(외래키): 두 테이블의 연결을 담당.
+--15장 NOT NULL(빈 값 방지), UNIQUE(중복 방지)
+--14장 트랜잭션 DB에서는 사용하지 않고, 스프링에서 사용. @Transactional
+--12장 테이블 구조생성(create;), 변경(alter;), 삭제(drop;)
+--ERD 관계형 다이어그램으로 물리테이블 생성.
+create table tbl_member_DEL
+(
+USER_ID varchar2(50) primary key,
+USER_PW varchar2(255),
+USER_NAME varchar2(255),
+EMAIL VARCHAR2(100),
+POINT number(11,0),
+ENABLED number(1,0),
+LEVELS VARCHAR2(50),
+REG_DATE timestamp(6),
+update_date timestamp(6)
+);
+desc dept;
+--작은자리에서 큰자리로 이동은 문제 없음, 그러나 큰 자리를 작은 자리로 변경은 에러.
+alter table dept modify(deptno number(2));
+alter table tbl_member_del rename column email to user_email;
+drop table tbl_member_del;
+
 --10장 테이블 조인 2개의 테이블을 연결해서 결과값을 구한다.
 --카티시안프러덕트 조인 (합집합)안씀
 --오라클 방식 조인
