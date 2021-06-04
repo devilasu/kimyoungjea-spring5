@@ -32,6 +32,16 @@ select * from emp where NVL(comm,0) = 0;
 --nvl(a,b) a는 검색위치, b는 null값을 바꿀 수.
 select nvl(comm,0), E.* from emp E where nvl(comm,0) = 0;
 --오라클은 표준쿼리x, ANSI쿼리 표준입니다.
+--case 출력문: 모든 가능성에 대해서 조건을 설정하고 세팅해주지 않으면 설정되지 않은 값은 null로 출력된다.
+select ename,deptno,
+case when comm is null then 0
+when comm = 0 then 0
+when comm > 0 then comm
+end comm
+from emp;
+
+
+
 select * from emp E where nvl(comm,0) = 0;
 --nvl2(a,b,c) a에 존재하는 null값을 c로, null이 아닌 값을 b로 변환
 select nvl2(comm,0,100), E.* from emp E;
@@ -51,3 +61,29 @@ select distinct deptno "부서번호" from emp;
 --문자열을 연결할때 concat 함수 외에 ||로 구현
 select ename || ' is a ' ||job "연결정의 예", emp.* from emp;
 
+--DDL문(create; alter;), DCL문(commit; rollback;)
+--DML문(DataManufactureLangage) insert, update, delete
+--insert문: 테이블에 새로운 레코드(row)를 추가
+--dept 테이블과 구조와 내용이 똑같은 테이블 생성
+create table dept02 as select * from dept;
+--where 1=0을 추가하면 내용을 생략하고 만든다.
+create table dept02 as select * from dept where 1=0;
+select * from dept02;
+--테이블의 컬럼 수 만큼 입력 
+insert into dept02 values(1, 'RESEART', 'LA');
+insert into dept02 values(2, 'RESEART', null);
+
+--지정한 컬럼에 데이터 입력, 나머지는 null을 입력한다.
+insert into dept02(deptno,dname) values(2,'lollewn');
+select * from dept02;
+--dept02테이블의 모든 LOC를 LA로 변경
+update dept02 set LOC = 'LA';
+--dept02테이블의 loc가 sydny인 데이터의 dname을 'John'으로, loc를 la로 변경하라
+update dept02 set dname='john', loc='LA' where loc='sydny';
+--실험결과: 다중값의 입력은 에러로 실행되지 않는다. (개수가 같아도 실행디지 않는다.)
+update dept02 set loc=(select loc from detp02 where deptno = 1) where loc = null;
+--dept02테이블의 모든 데이터 삭제
+delete from dept02;--통으로 지우는 것은 좋지 않다.
+delete from dept02 where deptno <=100;
+commit;
+delete from dept02 where deptno = 2;

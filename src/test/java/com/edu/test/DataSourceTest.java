@@ -3,6 +3,7 @@ package com.edu.test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -42,11 +43,26 @@ public class DataSourceTest {
 	public void oldQueryTest() throws Exception{
 		//직접 커넥션 세팅
 		Connection connection = null;
-		connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE","XE","apmsetup");
+		connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE","XEDB","apmsetup");
+		logger.debug("데이터베이스 직접접속이 성공하였습니다. DB종류는 " +connection.getMetaData().getDatabaseProductName());;
+		//직접쿼리를 날립니다. 날리기전 쿼리문장 객체생석 statement
+		//쿼리문장객체를 만드는 이유? 보안(SQL인젝션공격 방지)
 		Statement stmt = connection.createStatement();
-		connection = null; //메모리 초기화
+		//stmt객체가 없으면, 개발자가 SQL인젝션 방지코딩을 넣어야 한다.
+		//테이블에 입력되어 있는 레코드를 select 쿼리 stmt문장으로 가져옴
 		
-		stmt.executeQuery("INSERC INTO tbl_board VALUES("+"(select count(*) from tbl_board)+1"+",'강제 수정된 글입니다.','수정 테스트 '");
+		//insert쿼리 문장을 만듭니다
+		//더미데이터를 입력하는 방법.
+		for(int cnt = 0; cnt <100;cnt++)//deptno 자리수가 2자리수로 고정이기때문에 100이상의 수가 들어가지 못한다.
+			stmt.executeQuery("INSERT INTO dept02 VALUES((select count(*) from dept02),'디자인','경기도')");
+		
+		ResultSet rs = stmt.executeQuery("select * from dept02");
+		//위에서 만든 쿼리를 실행
+		while(rs.next())
+		{
+			logger.debug(rs.getString("deptno")+ "  " + rs.getString("dname"));
+		}
+		connection = null; //메모리 초기화
 		
 	}
 	
