@@ -50,3 +50,4 @@ select rownum, E.* from (select emp.*, emp.sal 월급 from emp order by nvl(empn
 select distinct deptno "부서번호" from emp;
 --문자열을 연결할때 concat 함수 외에 ||로 구현
 select ename || ' is a ' ||job "연결정의 예", emp.* from emp;
+
