@@ -44,7 +44,7 @@ public class DataSourceTest {
 		//직접 커넥션 세팅
 		Connection connection = null;
 		connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE","XEDB","apmsetup");
-		logger.debug("데이터베이스 직접접속이 성공하였습니다. DB종류는 " +connection.getMetaData().getDatabaseProductName());;
+		logger.info("데이터베이스 직접접속이 성공하였습니다. DB종류는 " +connection.getMetaData().getDatabaseProductName());;
 		//직접쿼리를 날립니다. 날리기전 쿼리문장 객체생석 statement
 		//쿼리문장객체를 만드는 이유? 보안(SQL인젝션공격 방지)
 		Statement stmt = connection.createStatement();
@@ -59,11 +59,11 @@ public class DataSourceTest {
 		 * executeQuery("INSERT INTO dept02 VALUES((select count(*) from dept02),'디자인','경기도')"
 		 * );
 		 */
-		ResultSet rs = stmt.executeQuery("select * from dept02");
+		ResultSet rs = stmt.executeQuery("select * from dept");
 		//위에서 만든 쿼리를 실행
 		while(rs.next())
 		{
-			logger.debug(rs.getString("deptno")+ "  " + rs.getString("dname"));
+			logger.info(rs.getString("deptno")+ "  " + rs.getString("dname"));
 		}
 		stmt = null;
 		connection = null; //메모리 초기화
@@ -77,7 +77,7 @@ public class DataSourceTest {
 		
 		try {
 			Connection connection = dataSource.getConnection();
-			logger.debug("데이터베이스 접속이 성공하였습니다. DB종류는 "+connection.getMetaData());
+			logger.info("데이터베이스 접속이 성공하였습니다. DB종류는 "+connection.getMetaData());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
