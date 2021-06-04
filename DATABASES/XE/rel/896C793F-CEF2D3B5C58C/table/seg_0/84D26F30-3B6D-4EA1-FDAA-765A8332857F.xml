@@ -85,7 +85,7 @@
 <ownDataTypeParameters>,11,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="REG_DATA" id="3C6A8F0A-8BB5-B603-A6A9-8686820D9D77">
+<Column name="REG_DATE" id="3C6A8F0A-8BB5-B603-A6A9-8686820D9D77">
 <createdBy>hcopp</createdBy>
 <createdTime>2021-05-31 03:05:06 UTC</createdTime>
 <commentInRDBMS><![CDATA[등록일시]]></commentInRDBMS>
@@ -97,7 +97,7 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="UPDATE_DATA" id="57202E2F-34FE-EC82-E220-47A39CFC7376">
+<Column name="UPDATE_DATE" id="57202E2F-34FE-EC82-E220-47A39CFC7376">
 <createdBy>hcopp</createdBy>
 <createdTime>2021-05-31 03:05:49 UTC</createdTime>
 <commentInRDBMS><![CDATA[수정일시]]></commentInRDBMS>
@@ -118,7 +118,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>20</dataTypeSize>
-<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <previousColumn>false</previousColumn>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>

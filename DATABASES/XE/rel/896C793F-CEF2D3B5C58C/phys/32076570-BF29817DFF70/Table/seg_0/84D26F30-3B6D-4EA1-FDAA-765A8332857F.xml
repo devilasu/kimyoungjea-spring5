@@ -24,7 +24,7 @@
 <createdTime>2021-05-31 05:39:49 UTC</createdTime>
 <ownerDesignName>XE</ownerDesignName>
 </ColumnProxy>
-<ColumnProxy name="REG_DATA" id="3C6A8F0A-8BB5-B603-A6A9-8686820D9D77">
+<ColumnProxy name="REG_DATE" id="3C6A8F0A-8BB5-B603-A6A9-8686820D9D77">
 <createdBy>hcopp</createdBy>
 <createdTime>2021-05-31 05:39:49 UTC</createdTime>
 <ownerDesignName>XE</ownerDesignName>
@@ -34,7 +34,7 @@
 <createdTime>2021-05-31 05:39:49 UTC</createdTime>
 <ownerDesignName>XE</ownerDesignName>
 </ColumnProxy>
-<ColumnProxy name="UPDATE_DATA" id="57202E2F-34FE-EC82-E220-47A39CFC7376">
+<ColumnProxy name="UPDATE_DATE" id="57202E2F-34FE-EC82-E220-47A39CFC7376">
 <createdBy>hcopp</createdBy>
 <createdTime>2021-05-31 05:39:49 UTC</createdTime>
 <ownerDesignName>XE</ownerDesignName>

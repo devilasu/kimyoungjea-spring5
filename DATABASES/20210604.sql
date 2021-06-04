@@ -1,5 +1,24 @@
---8장 함수(count, upper, lower, to_char, round..)
---그룹함수
+--10장 테이블 조인 2개의 테이블을 연결해서 결과값을 구한다.
+--카티시안프러덕트 조인 (합집합)안씀
+--오라클 방식 조인
+select * from dept d, emp e where d.deptno = e.deptno and e.ename = 'SCOTT';
+--표준쿼리(ANSI)방식 inner는 default값이다.
+select * from emp e join dept d on e.deptno = d.deptno;
+select * from emp e join dept d on e.deptno = d.deptno where e.ename = 'SCOTT';
+select * from dept inner join emp on dept.deptno = emp.deptno; 
+select * from dept left outer join emp on dept.deptno = emp.deptno; 
+select * from dept right outer join emp on dept.deptno = emp.deptno; 
+
+--조인과 그룹을 이용해서 댓글카운터도 출력하는 게시판리스트 만들기
+select b.bno, title, writer, view_count, b.reg_date, count(r.rno) reply_count from tbl_board b join tbl_reply r on b.bno=r.bno group by b.bno, title, writer, b.reg_date, view_count order by b.bno;
+
+alter table tbl_board rename column update_data to update_date;
+
+--9장 패스( 레포트용 함수사용)
+--8장 함수(count, upper, lower, to_char, round..) 그룹함수
+--having는 group by의 조건문을 적습니다.
+--부서별 평균 연봉이 2000이상인 부서의 번호와 부서별 평균 급여.
+SELECT deptno, round(AVG(sal)) FROM emp GROUP BY deptno HAVING AVG(sal) >= 2000;
 --round(a,b): a의 데이터를 전부 b만큼 반올림
 SELECT deptno,sal,round(sal,-3) FROM emp01;
 --sum(a) 컬럼a의 레코드를 모두 더해서 출력.
