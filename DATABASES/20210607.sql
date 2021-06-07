@@ -5,5 +5,12 @@
 drop user xe2 cascade;
 --xe2사용자를 지울때, 사용자가 생성한 테이블까지 모두 지운다.
 --cascade:계층형
-
 select SEQ_BNO.nextval from dual;
+
+call proc_dumy_member(100);
+select * from tbl_member;
+commit;
+
+call proc_dummy_board(100);
+select * from tbl_board order by reg_date desc;
+commit;
