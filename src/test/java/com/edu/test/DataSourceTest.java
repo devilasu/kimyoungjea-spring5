@@ -43,7 +43,7 @@ public class DataSourceTest {
 	public void oldQueryTest() throws Exception{
 		//직접 커넥션 세팅
 		Connection connection = null;
-		connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE","XEDB","apmsetup");
+		connection = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE","XE","apmsetup");
 		logger.info("데이터베이스 직접접속이 성공하였습니다. DB종류는 " +connection.getMetaData().getDatabaseProductName());;
 		//직접쿼리를 날립니다. 날리기전 쿼리문장 객체생석 statement
 		//쿼리문장객체를 만드는 이유? 보안(SQL인젝션공격 방지)
