@@ -9,6 +9,31 @@
 - UI구현 ......UI디자인 이용해서 프로그램 입히게 됩니다.
 
 #### 20210608 (화) 작업
+- 페이징에서 사용되는 변수
+- queryStartNo, queryPerPageNum, page, perPageNum, startPage, endPage
+- 검색에 사용되는 변수(query변수만): 검색어(search_keyword), 검색조건(search_type), 
+
+```
+--sql쿼리 페이징을 구현해서 변수로 삼을 것을 정의
+--pageVO의 멤버변수로 사용
+select TABLE_B.* from
+(
+	select ROWNUM as RNUM, TABLE_A.* from
+	(
+		select * from tbl_member
+		where user_id like '%admin%'
+		or user_name like '%사용자8%'
+		order by reg_date desc
+	) TABLE_A
+    where ROWNUM <=(0*10)+10
+) TABLE_B
+where TABLE_B.RNUM > (0*10);
+--페이징 쿼리에서 필요한 변수는 2개
+--오라클과 mysql을 연동하깅 위해서 a = 페이지 시작 번호, b= 한 페이지당 보이는 갯수
+--a+b보다 작고 a보다 크거나 같다.는 의미.
+--UI하단의 페이지 총개수의 변수 c: select count(*) from tbl_member/b
+```
+
 - Interface로 Inject 하는 이유는 캡슐화.
 - Mapper가 있으면 마이바티스를 사용한다고 생각해도 된다.
 - 스프링코딩 작업순서 1부터6까지(아래)
