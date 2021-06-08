@@ -54,6 +54,11 @@ public class DataSourceTest {
 	@Test
 	public void selectMember() throws Exception{
 		//회원관리 테이블에서 레코드 출력
+		//검색기능, 페이징기능 여기서 구현.
+		//1페이지에 10명씩 나오게 변경.
+		//현재 몇페이지, 검색어 임시저장 공간->DB에 페이징 조건문, 검색 조건문
+		//변수를 2~3개 이상은 바로 만들지 않고, VO만들어서 사용.
+		//pageVO.java 클래스를 만들어서 페이징 처리 변수와, 검색어변수 선언
 		List<MemberVO> listMember = memberService.selectMember();
 		listMember.toString();
 	}
