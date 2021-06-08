@@ -22,7 +22,7 @@ public class MemberVO {
 	private Boolean enabled;//Boolean null도 가능
 	private String m_level;
 	private Date reg_date;
-	private Date Update_date;
+	private Date update_date;
 	
 	public String getUser_id() {
 		return user_id;
@@ -73,9 +73,9 @@ public class MemberVO {
 		this.reg_date = reg_date;
 	}
 	public Date getUpdate_date() {
-		return Update_date;
+		return update_date;
 	}
 	public void setUpdate_date(Date update_date) {
-		Update_date = update_date;
+		this.update_date = update_date;
 	}
 }

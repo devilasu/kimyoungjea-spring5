@@ -17,7 +17,7 @@ import com.edu.vo.MemberVO;
  *
  */
 @Repository
-public class MemberDAOimpl implements IF_MemberDAO{
+public class MemberDAOImpl implements IF_MemberDAO{
 	@Inject//과거에는 객체를 생성하여 사용했지만, 현재는 Inject를 통해 사용.
 	private SqlSession sqlSession;
 	

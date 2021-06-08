@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -16,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.edu.service.IF_MemberService;
+import com.edu.vo.MemberVO;
 
 
 /**
@@ -33,7 +37,7 @@ public class DataSourceTest {
 	//dataSource 객체는 데이터베이스 객체를 pool로 저장해서 사용할때 dataSource를 사용합니다
 	
 	@Inject//객체의 메모리 관리를 스프링이 대신 해줌.
-	DataSource dataSource;
+	private DataSource dataSource;
 	//Inject는 자바8부터 지원, 이전자바7에서는 @Autowired로 객체를 만들었다.
 	
 	//디버그용 로그 객체변수생성
@@ -44,10 +48,14 @@ public class DataSourceTest {
 	// 보통 ValueObject클래스는 DB테이블과 1:1로 매칭이 됩니다.
 	//1. MemberVO.java. VO클래스 생성
 	//2. DB(마이바티스)쿼리를 만듭니다. (VO사용됨)
+	@Inject
+	private IF_MemberService memberService;
 	
 	@Test
 	public void selectMember() throws Exception{
 		//회원관리 테이블에서 레코드 출력
+		List<MemberVO> listMember = memberService.selectMember();
+		listMember.toString();
 	}
 	@Test
 	public void oldQueryTest() throws Exception{

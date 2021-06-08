@@ -2,8 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- 알리아스Alias(별칭) dataSource로 만듭니다. 여러DB와 호환되게 만들기 위해서
@@ -17,7 +19,7 @@
 		<property name="driverClassName" 
 				  value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
 		<property name="url" 
-				  value="jdbc:oracle:thin:@localhost:1521/XE"></property>
+				  value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE"></property>
 		<property name="username" value="XE"></property>
 		<property name="password" value="apmsetup"></property>
 	</bean>
@@ -43,5 +45,9 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
      <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
     </bean>
+    
+    <!-- 클래스를 스프링빈으로 등록하기 위한 클래스위치 지정  -->
+    <context:component-scan base-package="com.edu.dao" />
+    <context:component-scan base-package="com.edu.service" />
 	
 </beans>
