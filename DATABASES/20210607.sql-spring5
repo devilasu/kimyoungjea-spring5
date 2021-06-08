@@ -9,7 +9,7 @@ DROP TABLE "XE"."TBL_BOARD_TYPE" cascade constraints;
 DROP TABLE "XE"."TBL_MEMBER" cascade constraints;
 DROP TABLE "XE"."TBL_REPLY" cascade constraints;
 DROP PROCEDURE "XE"."PROC_DUMMY_BOARD";
-DROP PROCEDURE "XE"."PROC_DUMY_MEMBER";
+DROP PROCEDURE "XE"."PROC_DUMMY_MEMBER";
 DROP FUNCTION "XE"."CUSTOM_AUTH";
 DROP FUNCTION "XE"."CUSTOM_HASH";
 --------------------------------------------------------
@@ -446,11 +446,11 @@ END PROC_DUMMY_BOARD;
 
 /
 --------------------------------------------------------
---  DDL for Procedure PROC_DUMY_MEMBER
+--  DDL for Procedure PROC_DUMMY_MEMBER
 --------------------------------------------------------
 set define off;
 
-  CREATE OR REPLACE PROCEDURE "XE"."PROC_DUMY_MEMBER" 
+  CREATE OR REPLACE PROCEDURE "XE"."PROC_DUMMY_MEMBER" 
 (
   P_COUNT IN NUMBER 
 ) AS 
@@ -488,7 +488,7 @@ BEGIN
     END IF;
     END LOOP;
     commit;
-END PROC_DUMY_MEMBER;
+END PROC_DUMMY_MEMBER;
 
 /
 --------------------------------------------------------
