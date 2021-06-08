@@ -8,10 +8,14 @@
 - UI구현 시작 -------스프링프로젝트(Java+이클립스+Oracle+Spring) 시작.
 - UI구현 ......UI디자인 이용해서 프로그램 입히게 됩니다.
 
+#### 20210609 (수) 작업예정
+- 
+
 #### 20210608 (화) 작업
 - 페이징에서 사용되는 변수
-- queryStartNo, queryPerPageNum, page, perPageNum, startPage, endPage
-- 검색에 사용되는 변수(query변수만): 검색어(search_keyword), 검색조건(search_type), 
+- queryStartNo, queryPerPageNum, page, perPageNum, startPage, endPage, totalCount
+- 검색에 사용되는 변수(query변수만): 검색어(search_keyword), 검색조건(search_type)
+
 
 ```
 --sql쿼리 페이징을 구현해서 변수로 삼을 것을 정의
