@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.edu.service.IF_MemberService;
+import com.edu.vo.MemberVO;
 import com.edu.vo.PageVO;
 
 
@@ -51,6 +52,24 @@ public class DataSourceTest {
 	private IF_MemberService memberService;
 	
 	@Test
+	public void deleteMember() throws Exception{
+		memberService.deleteMember("user_del");
+		selectMember();
+	}
+	@Test
+	public void insertMember() throws Exception{
+		MemberVO memberVO=new MemberVO();
+		memberVO.setUser_id("user_del");
+		memberVO.setUser_pw("1234"); //스프링시큐리티 중 암호화만 사용
+		memberVO.setEmail("del@test.com");
+		memberVO.setEnabled(true);
+		memberVO.setM_point(10);
+		memberVO.setM_level("ROLE_USER");
+		memberVO.setUser_name("삭제유저");
+		memberService.insertMember(memberVO);
+		selectMember();	
+	}
+	@Test
 	public void selectMember() throws Exception{
 		//회원관리 테이블에서 레코드 출력
 		//검색기능, 페이징기능 여기서 구현.
@@ -64,13 +83,14 @@ public class DataSourceTest {
 		pageVO.setQueryPerPageNum(5);
 		pageVO.setPerPageNum(5);
 		pageVO.setTotalCount(memberService.countMember());//테스트를 위해 임시로 100명 입력.
-		pageVO.setSearch_type("user_id"); //검색타입 al, user_id, user_name
-		pageVO.setSearch_keyword("admin");
+		pageVO.setSearch_type("user_id"); //검색타입 all, user_id, user_name
+		pageVO.setSearch_keyword("user");
 		//매퍼쿼리_DAO클래스_Service클래스_JUnit(나중엔 컨트롤러에서 작업)
 		//pageVO객체에는 어떤값이 들어있는지 확인
 		//List<>로 자료구조 사용 가능.
 		logger.info("디버그:"+pageVO.toString());
 		memberService.selectMember(pageVO);
+		pageVO=null;
 	}
 	@Test
 	public void oldQueryTest() throws Exception{

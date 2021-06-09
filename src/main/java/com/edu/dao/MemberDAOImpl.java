@@ -34,4 +34,19 @@ public class MemberDAOImpl implements IF_MemberDAO{
 		return sqlSession.selectOne("memberMapper.countMember");
 	}
 
+	@Override
+	public void insertMember(MemberVO memberVO) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert("memberMapper.insertMember",memberVO);
+	}
+
+	@Override
+	public void deleteMember(String member_id) throws Exception {
+		// TODO Auto-generated method stub
+		MemberVO memberVO = new MemberVO();
+		memberVO.setUser_id(member_id);
+		sqlSession.delete("memberMapper.deleteMember",memberVO);
+		
+	}
+
 }
