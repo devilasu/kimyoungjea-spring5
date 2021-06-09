@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -19,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.edu.service.IF_MemberService;
-import com.edu.vo.MemberVO;
+import com.edu.vo.PageVO;
 
 
 /**
@@ -59,8 +58,19 @@ public class DataSourceTest {
 		//현재 몇페이지, 검색어 임시저장 공간->DB에 페이징 조건문, 검색 조건문
 		//변수를 2~3개 이상은 바로 만들지 않고, VO만들어서 사용.
 		//pageVO.java 클래스를 만들어서 페이징 처리 변수와, 검색어변수 선언
-		List<MemberVO> listMember = memberService.selectMember();
-		listMember.toString();
+		//pageVO 객체를 만들어서 가상으로 초기값을 입력합니다.
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(1);
+		pageVO.setQueryPerPageNum(5);
+		pageVO.setPerPageNum(5);
+		pageVO.setTotalCount(memberService.countMember());//테스트를 위해 임시로 100명 입력.
+		pageVO.setSearch_type("user_id"); //검색타입 al, user_id, user_name
+		pageVO.setSearch_keyword("admin");
+		//매퍼쿼리_DAO클래스_Service클래스_JUnit(나중엔 컨트롤러에서 작업)
+		//pageVO객체에는 어떤값이 들어있는지 확인
+		//List<>로 자료구조 사용 가능.
+		logger.info("디버그:"+pageVO.toString());
+		memberService.selectMember(pageVO);
 	}
 	@Test
 	public void oldQueryTest() throws Exception{

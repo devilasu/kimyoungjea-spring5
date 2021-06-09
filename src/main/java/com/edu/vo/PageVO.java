@@ -5,8 +5,8 @@ package com.edu.vo;
  * PS이 클래스는 오라클이든, MySql(마리아DB) 어디서든 공통으로 사용하는 Get/Set 
  */
 public class PageVO {
-	private int queryStartNo;	//쿼리 전용 출력되는 페이지의 시작점
-	private int queryPerPageNum;//쿼리 전용 한 페이지에 출력되는 게시물 수.
+	private int queryStartNum;	//쿼리 전용 출력되는 페이지의 시작점
+	private int queryPerPageNum;//쿼리 전용 한 페이지에 출력되는 개수.
 	private Integer page;		//jsp에서 선택한 페이지 번호값이 들어가는 변수
 	private int perPageNum;		//리스트 하단에 보이는 페이지번호의 개수(계산 필요)
 	private int totalCount;		//계산식의 기초값으로 전체개수가 구해진 이후 페이징등의 계산식이 진행됩니다.
@@ -19,13 +19,22 @@ public class PageVO {
 	private String search_keyword;	//jsp에서 받은 검색어. 쿼리전용 변수.
 	private String search_type;		//검색 조건에 해당하는 쿼리전용 변수.
 	
-	public int getQueryStartNo() {
-		//this.page-1은 jsp에서는 1부터 시작하는데, query에서는 0부터 시작하기 때문에.
-		queryStartNo = queryPerPageNum*(this.page-1);
-		return queryStartNo;
+	
+	
+	@Override
+	public String toString() {
+		return "PageVO [queryStartNo=" + queryStartNum + ", queryPerPageNum=" + queryPerPageNum + ", page=" + page
+				+ ", perPageNum=" + perPageNum + ", totalCount=" + totalCount + ", startPage=" + startPage
+				+ ", endPage=" + endPage + ", prev=" + prev + ", next=" + next + ", search_keyword=" + search_keyword
+				+ ", search_type=" + search_type + "]";
 	}
-	public void setQueryStartNo(int queryStartNo) {
-		this.queryStartNo = queryStartNo;
+	public int getQueryStartNum() {
+		//this.page-1은 jsp에서는 1부터 시작하는데, query에서는 0부터 시작하기 때문에.
+		queryStartNum = queryPerPageNum*(this.page-1);
+		return queryStartNum;
+	}
+	public void setQueryStartNum(int queryStartNo) {
+		this.queryStartNum = queryStartNo;
 	}
 	public int getQueryPerPageNum() {
 		return queryPerPageNum;
@@ -97,5 +106,13 @@ public class PageVO {
 		//예) < 1 2 3 4 5 6 7 8 9 10(tempEnd) > 페이징 리스트의 시작1 과 끝10 값이 바뀌게 됩니다.
 		//예) < 11 12 13 14 15 16 17 18 19 20(tempEnd) > 시작 11 과 끝 20
 		this.startPage = (tempEnd-this.perPageNum)+1;
+		//totalPage = 101이고 11페이지가 눌렸을 때.perPageNum=10
+		if(tempEnd*queryPerPageNum > this.totalCount)
+			this.endPage = (int)(Math.ceil(this.totalCount/(double)this.queryPerPageNum));
+		else {
+			this.endPage = tempEnd;
+		}
+		this.prev = (this.startPage >= 11);//startPage가 11보다 크면 prev=true(prev와 next를 queryPerPageNum단위로 옮길 예정.)
+		this.next = this.endPage*this.queryPerPageNum < this.totalCount;//next를 활성화하는 공식인데 위와 동일.
 	}
 }

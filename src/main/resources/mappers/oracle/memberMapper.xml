@@ -5,8 +5,42 @@
 이 mapper는 회원관리 CRUD(입력,조회,수정,삭제)를 처리하는 쿼리를 모아놓은 파일.
 이번주 조회기능 중  검색, 페이징처리 기능을 실습하는 것이 핵심. -->
 <mapper namespace="memberMapper">
-<!-- 무조건 조회 쿼리 -->
-<select id="selectMember" resultType="com.edu.vo.MemberVO">
-select * from tbl_member
+<!-- 공통 쿼리 include문 만들기 -->
+<sql id="sqlWhere">
+<if test="search_type != '' and search_type != null">
+	where
+	<if test="search_type == 'all'.toString()">
+		user_id like '%'||#{search_keyword}||'%'
+		or user_name like '%'||#{search_keyword}||'%'
+	</if>
+	<if test="search_type == 'user_id'.toString()">
+		user_id like '%'||#{search_keyword}||'%'
+	</if>
+	<if test="search_type == 'user_name'.toString()">
+		user_name like '%'||#{search_keyword}||'%' 
+	</if>
+</if>
+</sql>
+<!-- 회원 수 조회 쿼리 -->
+<select id="countMember" resultType="int">
+select count(*) from tbl_member
+
 </select>
-</mapper>	
+<!-- 조건 조회 쿼리 -->
+<select id="selectMember" resultType="com.edu.vo.MemberVO">
+
+select TABLE_B.* from
+(
+	select ROWNUM as RNUM, TABLE_A.* from
+	(
+		select * from tbl_member
+		<include refid="sqlWhere"></include>
+		order by reg_date DESC
+	) TABLE_A
+	<![CDATA[
+    where ROWNUM <= #{queryStartNum}+#{queryPerPageNum}
+) TABLE_B
+where TABLE_B.RNUM > #{queryStartNum}
+]]>
+</select>
+</mapper>

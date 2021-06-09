@@ -3,6 +3,7 @@ package com.edu.dao;
 import java.util.List;
 
 import com.edu.vo.MemberVO;
+import com.edu.vo.PageVO;
 
 /**
  * 이 인터페이스는 회원관리에 관련된 CRUD 메서드 명세가 포함되는 파일.
@@ -12,5 +13,7 @@ import com.edu.vo.MemberVO;
  */
 public interface IF_MemberDAO {
 	//List<제네릭타입>: 다수의 레코드를 저장할 수 있도록 해주는 형태
-	public List<MemberVO> selectMember() throws Exception;
+	public List<MemberVO> selectMember(PageVO pageVO) throws Exception;
+	//회원의 전체명수를 구한다.
+	public int countMember() throws Exception;
 }
