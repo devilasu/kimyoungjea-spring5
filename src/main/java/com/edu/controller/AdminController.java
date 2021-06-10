@@ -34,13 +34,13 @@ public class AdminController {
 		//이 매서드는 회원목록을 출력하는 jsp와 매칭합니다.
 		//model.addAttribute("",)를 통해 jsp로 전송
 		if(pageVO.getPage() == null) {
-			pageVO.setPage(1);
+			pageVO.setPage(6);
 		}
 		//pageVO의 calcPage 메서드 실행을 위해서는 필수 변수값이 필요.
 		pageVO.setQueryPerPageNum(10);
-		pageVO.setPerPageNum(10);
+		pageVO.setPerPageNum(5);
+		pageVO.setTotalCount(memberService.countMember(pageVO));
 		List<MemberVO> listMember = memberService.selectMember(pageVO);
-		pageVO.setTotalCount(listMember.size());
 		
 		
 		logger.info("디버그: "+pageVO.toString());

@@ -30,9 +30,9 @@ public class MemberServiceImpl implements IF_MemberService{
 	
 	
 	@Override
-	public int countMember() throws Exception {
+	public int countMember(PageVO pageVO) throws Exception {
 		// TODO Auto-generated method stub
-		return memberDAO.countMember();
+		return memberDAO.countMember(pageVO);
 	}
 
 

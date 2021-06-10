@@ -29,9 +29,9 @@ public class MemberDAOImpl implements IF_MemberDAO{
 	}
 	
 	@Override
-	public int countMember() throws Exception {
+	public int countMember(PageVO pageVO) throws Exception {
 		// sqlSession빈의 메서드를 이용해서 매퍼쿼리를 실행
-		return sqlSession.selectOne("memberMapper.countMember");
+		return sqlSession.selectOne("memberMapper.countMember",pageVO);
 	}
 
 	@Override
