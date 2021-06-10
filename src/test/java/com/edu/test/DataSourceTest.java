@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -51,6 +53,36 @@ public class DataSourceTest {
 	@Inject
 	private IF_MemberService memberService;
 	@Test
+	public void updateMember() throws Exception{
+		//이 메서드는 회원 정보수정(1개 레코드). jsp에서 사용예정
+		MemberVO memberVO = new MemberVO();
+		memberVO.setEmail("admin@test.com");
+		memberVO.setEnabled(true);
+		memberVO.setM_level("ROLE_ADMIN");
+		memberVO.setM_point(100);
+		
+		//String userPwEncoder = passwordEncoder.encode(memberVO.getUser_pw());
+		memberVO.setUser_name("최고관리자");
+		//memberVO.setUser_pw(userPwEncoder);
+		memberVO.setUser_id("admin");
+		//아래 수정을 회원 수만큼 반복 필요.
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(1);
+		pageVO.setQueryPerPageNum(1000);
+		pageVO.setPerPageNum(5);
+		List<MemberVO> listMember = memberService.selectMember(pageVO);
+		for(MemberVO memberOne:listMember) {
+			//이중 암호화시킬 수 있으므로 일정 크기 이상이면 실행이 안되도록.
+			if(memberOne.getUser_pw().length()<50)
+			{
+			String onePwEncoder = passwordEncoder.encode(memberOne.getUser_pw());
+			memberOne.setUser_pw(onePwEncoder);
+			memberService.updateMember(memberOne); //모든 회원 업데이트
+			}
+		}
+	}
+	@Test
 	public void readMember() throws Exception{
 		//이 메서드는 회원 상세보기 jsp에 사용될 예정
 		//MemberVO memberVO = new MemberVO();
@@ -68,7 +100,7 @@ public class DataSourceTest {
 	public void insertMember() throws Exception{
 		MemberVO memberVO=new MemberVO();
 		memberVO.setUser_id("user_del");
-		memberVO.setUser_pw("1234"); //스프링시큐리티 중 암호화만 사용
+		memberVO.setUser_pw(""); //스프링시큐리티 중 암호화만 사용
 		memberVO.setEmail("del@test.com");
 		memberVO.setEnabled(true);
 		memberVO.setM_point(10);
@@ -88,15 +120,17 @@ public class DataSourceTest {
 		//pageVO 객체를 만들어서 가상으로 초기값을 입력합니다.
 		PageVO pageVO = new PageVO();
 		pageVO.setPage(1);
-		pageVO.setQueryPerPageNum(5);
+		pageVO.setQueryPerPageNum(1000);
 		pageVO.setPerPageNum(5);
-		pageVO.setTotalCount(memberService.countMember());//테스트를 위해 임시로 100명 입력.
+		//pageVO.setTotalCount(memberService.countMember());//테스트를 위해 임시로 100명 입력.
+		/* 모든 사용자를 출력하지 않고, 일부 사용자만 출력할때 아래 2줄 필요.
 		pageVO.setSearch_type("user_id"); //검색타입 all, user_id, user_name
 		pageVO.setSearch_keyword("user");
+		*/
 		//매퍼쿼리_DAO클래스_Service클래스_JUnit(나중엔 컨트롤러에서 작업)
 		//pageVO객체에는 어떤값이 들어있는지 확인
 		//List<>로 자료구조 사용 가능.
-		logger.info("디버그:"+pageVO.toString());
+		//logger.info("디버그:"+pageVO.toString());
 		memberService.selectMember(pageVO);
 		pageVO=null;
 	}

@@ -11,7 +11,7 @@
 -->
 
 <sql id="sqlWhere">
-<if test="search_type.isEmpty()">
+<if test="search_type != '' and search_type != null">
 	where
 	<if test="search_type == 'all'.toString()">
 		user_id like '%'||#{search_keyword}||'%'
@@ -25,6 +25,22 @@
 	</if>
 </if>
 </sql>
+<!-- 업데이트 쿼리 -->
+<update id="updateMember" >
+update tbl_member
+set
+email = #{email},
+m_level = #{m_level},
+m_point = #{m_point},
+user_name = #{user_name},
+update_date = systimestamp
+<if test="user_pw !=''">
+,user_pw = #{user_pw}
+</if>
+where
+user_id = #{user_id}
+</update>
+
 <!-- jsp 상세보기에 출력할 쿼리 -->
 <select id="readMember" resultType="com.edu.vo.MemberVO">
 select * from tbl_member where user_id=#{user_id}

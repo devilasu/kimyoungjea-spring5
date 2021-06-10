@@ -16,4 +16,5 @@ public interface IF_MemberService {
 	public void insertMember(MemberVO memberVO) throws Exception;
 	public void deleteMember(String member_id) throws Exception;
 	public MemberVO readMember(String member_id) throws Exception;
+	public void updateMember(MemberVO memberVO) throws Exception;
 }
