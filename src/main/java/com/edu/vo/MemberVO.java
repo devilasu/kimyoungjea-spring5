@@ -24,6 +24,12 @@ public class MemberVO {
 	private Date reg_date;
 	private Date update_date;
 	
+	@Override
+	public String toString() {
+		return "MemberVO [user_id=" + user_id + ", user_pw=" + user_pw + ", user_name=" + user_name + ", email=" + email
+				+ ", m_point=" + m_point + ", enabled=" + enabled + ", m_level=" + m_level + ", reg_date=" + reg_date
+				+ ", update_date=" + update_date + "]";
+	}
 	public String getUser_id() {
 		return user_id;
 	}

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 //	스프링에서는 logger로 출력한다.
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+//	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
 	 * return값으로 view를 선택하여 작업한 결과를 변수로 담아서  화면에 결과를 표시.
@@ -32,7 +32,6 @@ public class HomeController {
 		String jspVar = "@Service(DB)에서 처리한 결과";
 //		model객체에 Attribute를 추가하면 스프링이 전송하는 결과.
 		model.addAttribute("jspObject", jspVar );
-		logger.info("스프링로고사용: "+ jspVar);
 		return "home/index";//확장자 .jsp가 생략.
 	}
 	

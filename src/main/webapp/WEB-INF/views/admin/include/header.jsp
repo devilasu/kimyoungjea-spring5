@@ -100,7 +100,7 @@
             </a>
           </li>
             <li class="nav-item">
-              <a href="pages/charts/chartjs.html" class="nav-link">
+              <a href="/admin/member/member_list" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>관리자 관리</p>
               </a>
