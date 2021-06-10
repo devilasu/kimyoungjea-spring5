@@ -8,6 +8,13 @@
 - UI구현 시작 -------스프링프로젝트(Java+이클립스+Oracle+Spring) 시작.
 - UI구현 ......UI디자인 이용해서 프로그램 입히게 됩니다.
 
+#### 20210610 (목) 작업
+- 업데이트 실습은 회원암호를 스프링시큐리티5 암호화(1234->해시데이터)로 일괄변경 실습예정.
+- 정방향 암호화 가능, 역방향 복호화는 불가능(JAVA용 스프링시큐리티암호화,DB용 MD5등등)
+- DB서버에 타임존설정(Asia/Seoul)일 경우 그냥 사용, 아닐 경우 연산을 통해 처리.
+- 오라클일때: SELECT TO_CHAR(systimestamp + numtodsinterval(9, 'HOUR'),'YYYY-MM-DD HH24:MI.SS.FF4') from dual;
+- mysql(마리아db): SELECT DATE_ADD(NOW(3),INTERVAL 9 HOUR);
+
 #### 20210609 (수) 작업
 - pageVO클래스 생성 마무리
 - <![CDATA[쿼리]]>: 사용하는 목적은 태그 안쪽에 부등호를 사용하기 위해서 문자열 변환 태그

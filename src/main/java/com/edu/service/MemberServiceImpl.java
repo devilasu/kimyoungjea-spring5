@@ -48,4 +48,11 @@ public class MemberServiceImpl implements IF_MemberService{
 		// TODO Auto-generated method stub
 		memberDAO.deleteMember(member_id);
 	}
+
+
+	@Override
+	public MemberVO readMember(String member_id) throws Exception {
+		// TODO Auto-generated method stub
+		return memberDAO.readMember(member_id);
+	}
 }

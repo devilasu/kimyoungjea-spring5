@@ -9,8 +9,9 @@
 <!-- test="'all'.equals(search_type)"비교 가능 
 참고: equals메서드 사용의 장점은 null비교까지 가능.
 -->
+
 <sql id="sqlWhere">
-<if test="search_type != '' and search_type != null">
+<if test="search_type.isEmpty()">
 	where
 	<if test="search_type == 'all'.toString()">
 		user_id like '%'||#{search_keyword}||'%'
@@ -24,6 +25,11 @@
 	</if>
 </if>
 </sql>
+<!-- jsp 상세보기에 출력할 쿼리 -->
+<select id="readMember" resultType="com.edu.vo.MemberVO">
+select * from tbl_member where user_id=#{user_id}
+</select>
+
 <!-- 회원 수 조회 쿼리 -->
 <select id="countMember" resultType="int">
 select count(*) from tbl_member

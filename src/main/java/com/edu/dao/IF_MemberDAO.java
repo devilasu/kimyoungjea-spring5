@@ -18,4 +18,5 @@ public interface IF_MemberDAO {
 	public int countMember() throws Exception;
 	public void insertMember(MemberVO memberVO) throws Exception;
 	public void deleteMember(String member_id) throws Exception;
+	public MemberVO readMember(String member_id) throws Exception;
 }

@@ -49,4 +49,10 @@ public class MemberDAOImpl implements IF_MemberDAO{
 		
 	}
 
+	@Override
+	public MemberVO readMember(String member_id) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("memberMapper.readMember",member_id);
+	}
+
 }

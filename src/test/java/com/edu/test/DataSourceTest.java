@@ -50,7 +50,15 @@ public class DataSourceTest {
 	//2. DB(마이바티스)쿼리를 만듭니다. (VO사용됨)
 	@Inject
 	private IF_MemberService memberService;
-	
+	@Test
+	public void readMember() throws Exception{
+		//이 메서드는 회원 상세보기 jsp에 사용될 예정
+		//MemberVO memberVO = new MemberVO();
+		//100명중 1명을 보려면, 고유키(기본키, 주키, PK)필요 = user_id
+		String user_id="admin";
+		memberService.readMember(user_id);
+		
+	}
 	@Test
 	public void deleteMember() throws Exception{
 		memberService.deleteMember("user_del");
