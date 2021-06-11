@@ -23,8 +23,18 @@ public class MemberServiceImpl implements IF_MemberService{
 	private IF_MemberDAO memberDAO; 
 
 	@Override
-	public List<MemberVO> selectMember(PageVO pageVO) throws Exception {
+	public List<MemberVO> searchMember(PageVO pageVO) throws Exception {
 		// pageVO를 받아서 select동작
+		if(pageVO.getPage() == null) {
+			pageVO.setPage(1);
+		}
+		if(pageVO.getPerPageNum() == 0) {
+			pageVO.setPerPageNum(5);
+		}
+		if(pageVO.getQueryPerPageNum() == 0) {
+		pageVO.setQueryPerPageNum(5);
+		}
+		pageVO.setTotalCount(memberDAO.countMember(pageVO));
 		return memberDAO.selectMember(pageVO);
 	}
 	

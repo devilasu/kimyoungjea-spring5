@@ -112,7 +112,7 @@ public class PageVO {
 		else {
 			this.endPage = tempEnd;
 		}
-		this.prev = (this.startPage >= endPage+1);//startPage가 11보다 크면 prev=true(prev와 next를 queryPerPageNum단위로 옮길 예정.)
+		this.prev = (this.startPage > perPageNum);//startPage가 endPage+1보다 크면 prev=true(prev와 next를 queryPerPageNum단위로 옮길 예정.)
 		this.next = this.endPage*this.queryPerPageNum < this.totalCount;//next를 활성화하는 공식인데 위와 동일.
 	}
 }

@@ -72,7 +72,7 @@ public class DataSourceTest {
 		pageVO.setQueryPerPageNum(1000);
 		pageVO.setPerPageNum(5);
 		pageVO.setTotalCount(memberService.countMember(pageVO));
-		List<MemberVO> listMember = memberService.selectMember(pageVO);
+		List<MemberVO> listMember = memberService.searchMember(pageVO);
 		for(MemberVO memberOne:listMember) {
 			//이중 암호화시킬 수 있으므로 일정 크기 이상이면 실행이 안되도록.
 			if(memberOne.getUser_pw().length()<50)
@@ -132,7 +132,7 @@ public class DataSourceTest {
 		//pageVO객체에는 어떤값이 들어있는지 확인
 		//List<>로 자료구조 사용 가능.
 		//logger.info("디버그:"+pageVO.toString());
-		memberService.selectMember(pageVO);
+		memberService.searchMember(pageVO);
 		pageVO=null;
 	}
 	@Test

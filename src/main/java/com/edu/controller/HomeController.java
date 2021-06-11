@@ -2,8 +2,8 @@ package com.edu.controller;
 
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +29,9 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {//콜백메서드, 자동실행됨
-		String jspVar = "@Service(DB)에서 처리한 결과";
+//		String jspVar = "@Service(DB)에서 처리한 결과";
 //		model객체에 Attribute를 추가하면 스프링이 전송하는 결과.
-		model.addAttribute("jspObject", jspVar );
+//		model.addAttribute("jspObject", jspVar );
 		return "home/index";//확장자 .jsp가 생략.
 	}
 	

@@ -11,7 +11,7 @@ import com.edu.vo.PageVO;
  *
  */
 public interface IF_MemberService {
-	public List<MemberVO> selectMember(PageVO pageVO) throws Exception;
+	public List<MemberVO> searchMember(PageVO pageVO) throws Exception;
 	public int countMember(PageVO pageVO) throws Exception;
 	public void insertMember(MemberVO memberVO) throws Exception;
 	public void deleteMember(String member_id) throws Exception;
