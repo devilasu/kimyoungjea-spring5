@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.edu.service.IF_MemberService;
@@ -58,7 +57,7 @@ public class AdminController {
 		//사용자1명의 레코드를 가져오는 멤버서비스(쿼리)를 실행(아래)
 		//사용자1명의 레코드를 model에 담아서 + @ModelAttribute에 담아서 jsp로 보냅니다.
 		model.addAttribute("memberVO", memberService.readMember(memberVO.getUser_id()));
-		return "admin/member/member_list";
+		return "admin/member/member_update";
 	}
 	@PostMapping("/member/member_delete")
 	public String deleteMember(MemberVO memberVO) throws Exception{

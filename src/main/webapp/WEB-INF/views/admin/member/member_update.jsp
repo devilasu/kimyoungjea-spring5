@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ include file="../include/header.jsp"%>
+<%@ include file="../include/header.jsp" %>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -36,14 +37,15 @@
           <!-- 첨부파일을 전송할때 enctype=필수 없으면, 첨부파일이 전송X -->
           <form name="form_write" action="/admin/member/member_update" method="post" enctype="multipart/form-data">
             <div class="card-body">
-
+              
               <div class="form-group">
                 <label for="user_id">사용자ID</label>
                 <input readonly value="${memberVO.user_id}" name="user_id" type="text" class="form-control" id="user_id" placeholder="회원ID를 입력해 주세요" required>
               </div>
               <div class="form-group">
                 <label for="user_pw">암호</label>
-               <input value="" name="user_pw" type="password" class="form-control" id="user_pw" placeholder="암호를 입력해 주세요">
+                <!-- 암호는 기존값이 필요없음. 이유는 값이 있으면 업데이트진행, 없으면 업데이트제외됨 -->
+                <input value="" name="user_pw" type="password" class="form-control" id="user_pw" placeholder="암호를 입력해 주세요">
               </div>
               <div class="form-group">
                 <label for="user_name">사용자이름</label>
@@ -107,4 +109,4 @@ $(document).ready(function(){
 		form_update.submit();
 	});
 });
-</script> 
+</script>

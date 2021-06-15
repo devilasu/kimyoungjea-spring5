@@ -30,8 +30,8 @@
 update tbl_member
 set
 email = #{email},
-m_level = #{m_level},
-m_point = #{m_point},
+levels = #{levels},
+point = #{point},
 user_name = #{user_name},
 update_date = systimestamp
 <if test="user_pw !=''">
@@ -76,9 +76,9 @@ values(
 #{user_pw},
 #{user_name},
 #{email},
-#{m_point},
+#{point},
 #{enabled},
-#{m_level},
+#{levels},
 systimestamp,
 systimestamp
 )

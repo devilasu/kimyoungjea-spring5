@@ -18,16 +18,16 @@ public class MemberVO {
 	private String user_pw;
 	private String user_name;
 	private String email;
-	private Integer m_point;//Integer null도 가능
+	private Integer point;//Integer null도 가능
 	private Boolean enabled;//Boolean null도 가능
-	private String m_level;
+	private String levels;
 	private Date reg_date;
 	private Date update_date;
 	
 	@Override
 	public String toString() {
 		return "MemberVO [user_id=" + user_id + ", user_pw=" + user_pw + ", user_name=" + user_name + ", email=" + email
-				+ ", m_point=" + m_point + ", enabled=" + enabled + ", m_level=" + m_level + ", reg_date=" + reg_date
+				+ ", point=" + point + ", enabled=" + enabled + ", levels=" + levels + ", reg_date=" + reg_date
 				+ ", update_date=" + update_date + "]";
 	}
 	public String getUser_id() {
@@ -54,11 +54,11 @@ public class MemberVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Integer getM_point() {
-		return m_point;
+	public Integer getPoint() {
+		return point;
 	}
-	public void setM_point(Integer m_point) {
-		this.m_point = m_point;
+	public void setPoint(Integer point) {
+		this.point = point;
 	}
 	public Boolean getEnabled() {
 		return enabled;
@@ -66,11 +66,11 @@ public class MemberVO {
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
-	public String getM_level() {
-		return m_level;
+	public String getLevels() {
+		return levels;
 	}
-	public void setM_level(String m_level) {
-		this.m_level = m_level;
+	public void setLevels(String levels) {
+		this.levels = levels;
 	}
 	public Date getReg_date() {
 		return reg_date;

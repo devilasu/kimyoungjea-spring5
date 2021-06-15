@@ -58,8 +58,8 @@ public class DataSourceTest {
 		MemberVO memberVO = new MemberVO();
 		memberVO.setEmail("admin@test.com");
 		memberVO.setEnabled(true);
-		memberVO.setM_level("ROLE_ADMIN");
-		memberVO.setM_point(100);
+		memberVO.setLevels("ROLE_ADMIN");
+		memberVO.setPoint(100);
 		
 		//String userPwEncoder = passwordEncoder.encode(memberVO.getUser_pw());
 		memberVO.setUser_name("최고관리자");
@@ -104,8 +104,8 @@ public class DataSourceTest {
 		memberVO.setUser_pw(""); //스프링시큐리티 중 암호화만 사용
 		memberVO.setEmail("del@test.com");
 		memberVO.setEnabled(true);
-		memberVO.setM_point(10);
-		memberVO.setM_level("ROLE_USER");
+		memberVO.setPoint(10);
+		memberVO.setLevels("ROLE_USER");
 		memberVO.setUser_name("삭제유저");
 		memberService.insertMember(memberVO);
 		selectMember();	
