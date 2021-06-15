@@ -33,7 +33,7 @@
                 <div class="card-header">
                   <h3 class="card-title">목록</h3>
                   <div class="card-tools" style="width:70%;">
-                    <form class="form-horizontal" name="form_search" action="/admin/member/member_list.html" method="GET">
+                    <form class="form-horizontal" name="form_search" action="/admin/member/member_list" method="GET">
                     <div class="input-group input-group-sm">
                         <select name="search_type" class="form-control col-3">
                           <option value="all">전체</option>

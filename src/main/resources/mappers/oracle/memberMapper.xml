@@ -59,7 +59,7 @@ select TABLE_B.* from
 	select ROWNUM as RNUM, TABLE_A.* from
 	(
 		select * from tbl_member
-		<include refid="sqlWhere"></include>
+		<include refid="sqlWhere" />
 		order by reg_date DESC
 	) TABLE_A
 	<![CDATA[

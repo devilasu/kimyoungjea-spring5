@@ -30,6 +30,20 @@
 - 헤로쿠 클라우드에 배포 (9.클라우드 배포구현).
 - 문서작업(제출용)
 
+#### 20210614 (월) 작업
+- multipart(첨부파일기능) 라는 폼태그 전송방식을 추가-> commons.fileupload 외부모듈필수(pom.xml에 추가)
+- 위 외부모듈을 스프링 빈으로 등록합니다.(servlet-context.xml 하단에 추가)
+- CRUD에서 multipart를 사용한다면, 리졸브(resolve-해석기) 스프링빈이 필요.
+
+```
+<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+```
+- GET: Insert(외부 사이트 입력폼에서도 입력이 가능하다)
+- POST: Insert(외부 사이트에서 입력 불가능, 내부 사이트의 입력폼에서만 가능)
+- 나머지 관리자 회원관리 CRUD 화면 JSP구현 update, delete, insert
+- [공지]06-17 목요일(4교시) UI디자인 시험 있습니다.(화면기획서XLS제작, 화면설계서PPT제출용)
+- 관리자 게시판 생성관리 CRUD 정방향 방식으로 JSP 구현.
+
 #### 20210611 (금) 작업
 - 수업전 관리자단 회원관리 페이징처리에서 컨트롤러와 calcPage()메서드의 관계 확인
 - JSTL: Java Standard Tag Libary 자바표준태그모듈로서 JSP에서 자바를 사용하는 표준.
