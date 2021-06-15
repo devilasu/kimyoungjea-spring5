@@ -34,6 +34,25 @@ public class AdminController {
 	private Logger logger = LoggerFactory.getLogger(AdminController.class);
 	@Inject
 	private IF_MemberService memberService;
+	
+	@GetMapping("/member/member_insert_form")
+	public String insertMemberForm() throws Exception{
+		return "admin/member/member_insert";
+	}
+	
+	@PostMapping("/member/member_insert")
+	public String insertMember(@ModelAttribute("PageVO")PageVO pageVO,MemberVO memberVO) throws Exception{
+		String rawPassword = memberVO.getUser_pw();
+		if(!rawPassword.isEmpty()) {//수정폼에서 암호 입력값이 비어있지 않을때만 아래로직실행.
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String encPassword = passwordEncoder.encode(rawPassword);
+			memberVO.setUser_pw(encPassword);
+		}
+		memberService.insertMember(memberVO);
+		return "admin/member/member_list";
+	}
+	
+	
 	//수정처리를 호출=DB 변경처리함.
 	@PostMapping("/member/member_update")
 	public String updateMember(MemberVO memberVO, PageVO pageVO) throws Exception{

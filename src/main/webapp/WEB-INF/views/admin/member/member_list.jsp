@@ -92,7 +92,7 @@
           <div class="row" >
             <div class="col-12">
               <div class="text-right">
-                <a href="/admin/member/member_insert" class="btn btn-primary">회원등록</a>
+                <a href="/admin/member/member_insert_form?page=${pageVO.page}$search_keyword=${pageVO.search_keyword}&search_type=${pageVO_search_type}" class="btn btn-primary" id="btn_insert">회원등록</a>
               </div>
               
               <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
