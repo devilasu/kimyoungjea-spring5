@@ -37,6 +37,7 @@ public class MemberDAOImpl implements IF_MemberDAO{
 	@Override
 	public void insertMember(MemberVO memberVO) throws Exception {
 		// TODO Auto-generated method stub
+		
 		sqlSession.insert("memberMapper.insertMember",memberVO);
 	}
 

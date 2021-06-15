@@ -41,15 +41,16 @@ public class AdminController {
 	}
 	
 	@PostMapping("/member/member_insert")
-	public String insertMember(@ModelAttribute("PageVO")PageVO pageVO,MemberVO memberVO) throws Exception{
+	public String insertMember(MemberVO memberVO, @ModelAttribute("PageVO")PageVO pageVO) throws Exception{
 		String rawPassword = memberVO.getUser_pw();
 		if(!rawPassword.isEmpty()) {//수정폼에서 암호 입력값이 비어있지 않을때만 아래로직실행.
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String encPassword = passwordEncoder.encode(rawPassword);
 			memberVO.setUser_pw(encPassword);
 		}
+		System.out.println("컨트롤러의 insert 출력");
 		memberService.insertMember(memberVO);
-		return "admin/member/member_list";
+		return "redirect:/admin/member/member_list";
 	}
 	
 	

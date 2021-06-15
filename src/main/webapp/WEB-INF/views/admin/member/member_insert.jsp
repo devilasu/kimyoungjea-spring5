@@ -35,7 +35,7 @@
           <!-- /.card-header -->
           <!-- form start -->
           <!-- 첨부파일을 전송할때 enctype=필수 없으면, 첨부파일이 전송X -->
-          <form name="form_write" action="/admin/member/member_insert_form" method="post" enctype="multipart/form-data">
+          <form name="form_write" action="/admin/member/member_insert" method="post" enctype="multipart/form-data">
             <div class="card-body">
               
               <div class="form-group">
@@ -109,7 +109,7 @@ $(document).ready(function(){
 			url:"/utill/id_check?user_id="+user_id,//RestAPI서버(스프링 클래스)에 만들 예정.
 			dataType:"text",
 			success:function(result){
-				alert(result);
+				//alert(result);
 				if(result==0){
 					alert("사용 가능한 아이디 입니다.");
 					$("#btn_insert").attr("disabled",false);
@@ -135,15 +135,11 @@ $(document).ready(function(){
 	});
 	
 	var form_write = $("form[name='form_write']");
-	$("#btn_write").click(function(){
-		form_write.attr("action","/admin/member/member_insert");
-		form_write.attr("method","post");
-		form_write.submit();
-	});
+
 	$("#btn_list").click(function(){
-		form_update.attr("action","/admin/member/member_list");
-		form_update.attr("method","get");
-		form_update.submit();
+		form_write.attr("action","/admin/member/member_list");
+		form_write.attr("method","get");
+		form_write.submit();
 	});
 });
 </script>
