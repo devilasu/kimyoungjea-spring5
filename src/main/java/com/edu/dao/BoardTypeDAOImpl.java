@@ -5,9 +5,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.edu.vo.BoardTypeVO;
 
+@Repository
 public class BoardTypeDAOImpl implements IF_BoardTypeDAO {
 	//sqlSession템플릿(틀) 의존성을 주입
 		@Inject //자바8부터 신규로 나온 애노테이션 입니다.
