@@ -9,9 +9,9 @@ import com.edu.vo.BoardTypeVO;
  */
 
 public interface IF_BoardTypeService {
-	void deleteBoardType(String board_type) throws Exception;
-	void updateBoardType(BoardTypeVO boardTypeVO) throws Exception;
-	BoardTypeVO readBoardType(String board_type) throws Exception;
-	void insertBoardType(BoardTypeVO boardTypeVO) throws Exception;
-	List<BoardTypeVO> selectBoardType() throws Exception;
+	public boolean deleteBoardType(String board_type) throws Exception;
+	public boolean updateBoardType(BoardTypeVO boardTypeVO) throws Exception;
+	public BoardTypeVO readBoardType(String board_type) throws Exception;
+	public boolean insertBoardType(BoardTypeVO boardTypeVO) throws Exception;
+	public List<BoardTypeVO> selectBoardType() throws Exception;
 }

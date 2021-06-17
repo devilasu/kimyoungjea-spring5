@@ -9,12 +9,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">게시판 수정</h1>
+            <h1 class="m-0">게시판 생성</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">게시판수정관리</li>
+              <li class="breadcrumb-item active">게시판생성관리</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -28,33 +28,32 @@
         <!-- 콘텐츠 내용 -->
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">수정</h3>
+            <h3 class="card-title">생성</h3>
           </div>
           <!-- /.card-header -->
           <!-- form start -->
           <!-- 첨부파일을 전송할때 enctype=필수 없으면, 첨부파일이 전송X -->
-          <form name="form_update" action="/admin/bbs_type/bbs_type_update" method="post" enctype="multipart/form-data">
+          <form name="form_insert" action="/admin/bbs_type/bbs_type_insert" method="post" enctype="multipart/form-data">
             <div class="card-body">
               <div class="form-group">
               <!-- PK 고유키, 실별자는 수정하면 엮인 하위 게시물들이 부모를 잃어버린다.-->
                 <label for="board_type">게시판타입</label>
-                <input readonly value="${boardTypeVO.board_type}" name="board_type" type="text" class="form-control" id="board_type" placeholder="게시판타입을 입력해 주세요" required>
+                <input name="board_type" style="ime-mode:disabled" type="text" class="form-control" id="board_type" placeholder="게시판타입을 입력해 주세요" required>
               </div>
               <div class="form-group">
                 <label for="board_name">게시판이름</label>
-                <input value="${boardTypeVO.board_name}" name="board_name" type="text" id="board_name" class="form-control" placeholder="게시판명을 입력해주세요." required>
+                <input name="board_name" type="text" id="board_name" class="form-control" placeholder="게시판명을 입력해주세요." required>
               </div>
               <div class="form-group">
                 <label for="board_sun">출력순서</label>
-                <input value="${boardTypeVO.board_sun}" name="board_sun" type="text" class="form-control" id="board_sun" placeholder="출력순서를 입력해 주세요" required>
+                <input name="board_sun" type="text" class="form-control" id="board_sun" placeholder="출력순서를 입력해 주세요" required>
               </div>
               
             </div>
             <!-- /.card-body -->
 
             <div class="card-footer text-right">
-              <button type="submit" class="btn btn-primary">수정</button>
-              <button type="button" class="btn btn-danger"id="btn_delete">삭제</button>
+              <button type="submit" class="btn btn-primary">생성</button>
               <a href="/admin/bbs_type/bbs_type_list" class="btn btn-default">목록</a>
             </div>
           </form>
@@ -65,17 +64,5 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-<%@ include file="../include/footer.jsp" %>
 
-<script>
-$(document).ready(function(){
-	var form_update = $("form[name='form_update']");
-	$("#btn_delete").click(function(){
-		if(confirm("정말로 삭제하시겠습니까?")){
-		form_update.attr("action","/admin/bbs_type/bbs_type_delete");
-		form_update.attr("method","post");
-		form_update.submit();
-		}
-	})
-});
-</script>
+<%@ include file="../include/footer.jsp" %>

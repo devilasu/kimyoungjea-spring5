@@ -16,15 +16,27 @@ public class BoardTypeServiceImpl implements IF_BoardTypeService {
 	private IF_BoardTypeDAO boardTypeDAO;
 	
 	@Override //부모super 인터페이스의 메서드를 상속받아서 재정의Override 합니다.
-	public void deleteBoardType(String board_type) throws Exception {
+	public boolean deleteBoardType(String board_type) throws Exception {
 		// TODO DAO클래스 객체를 이용해서 메서드를 호출(실행)
+		if(readBoardType(board_type)==null) {
+			return false;
+		}
+		else {
 		boardTypeDAO.deleteBoardType(board_type);
+		return true;
+		}
 	}
 
 	@Override
-	public void updateBoardType(BoardTypeVO boardTypeVO) throws Exception {
+	public boolean updateBoardType(BoardTypeVO boardTypeVO) throws Exception {
 		// TODO 아래 주석과 동일
-		boardTypeDAO.updateBoardType(boardTypeVO);
+		if(readBoardType(boardTypeVO.getBoard_type())==null) {
+			return false;
+		}
+		else {
+			boardTypeDAO.updateBoardType(boardTypeVO);
+			return true;
+		}
 	}
 
 	@Override
@@ -34,9 +46,16 @@ public class BoardTypeServiceImpl implements IF_BoardTypeService {
 	}
 
 	@Override
-	public void insertBoardType(BoardTypeVO boardTypeVO) throws Exception {
+	public boolean insertBoardType(BoardTypeVO boardTypeVO) throws Exception {
 		// TODO 아래 주석과 동일
-		boardTypeDAO.insertBoardType(boardTypeVO);
+		if(readBoardType(boardTypeVO.getBoard_type())==null) {
+			boardTypeDAO.insertBoardType(boardTypeVO);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	@Override

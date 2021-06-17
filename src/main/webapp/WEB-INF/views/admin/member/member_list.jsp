@@ -76,7 +76,7 @@
 	                        <td><c:out value="${member.user_id}"/></td>
 	                        <td><c:out value="${member.user_name}" /> </td>
 	                        <td><c:out value="${member.email}"></c:out></td>
-	                        <td><span class="tag tag-success">${member.levels}</span></td>
+	                        <td><span class="badge badge-danger">${member.levels}</span></td>
 	                        <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss.SSS" value="${member.reg_date}"/></td>
 	                      </tr>
                       </c:forEach>

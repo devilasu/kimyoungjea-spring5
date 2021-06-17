@@ -5,7 +5,6 @@
 <insert id="insertBoardType">
 insert into tbl_board_type
 values(
-call seq_bno,
 #{board_type},
 #{board_name},
 #{board_sun}

@@ -70,3 +70,24 @@
   <!-- /.content-wrapper -->
 
 <%@ include file="../include/footer.jsp" %>
+
+<script>
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+var success = getParameterByName("success");
+$(document).ready(function(){
+	if(success!=null){
+		if(success){
+			alert("성공하였습니다.");
+		}
+		else{
+			alert("실패하였습니다.");
+		}
+	}
+});
+</script>
