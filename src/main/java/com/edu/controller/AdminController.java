@@ -17,10 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.edu.service.IF_BoardTypeService;
@@ -30,7 +29,6 @@ import com.edu.vo.MemberVO;
 import com.edu.vo.PageVO;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
 	//디버그용 로그객체 생성
 	private Logger logger = LoggerFactory.getLogger(AdminController.class);
@@ -41,18 +39,18 @@ public class AdminController {
 	
 	//jsp에서 게시판생성관리에 Get/Post 접근할때 URL을 bbs_type로 지정합니다.
 	//왜 board_type하지않고, bbs_type하는 이유는 왼쪽메뉴 고정시키는 로직에서 경로 board와 겹치지 않도록
-	@GetMapping("/bbs_type/bbs_type_list")
+	@RequestMapping(value="/admin/bbs_type/bbs_type_list", method=RequestMethod.GET)
 	public String selectBoardTypeList(Model model) throws Exception {//목록폼1
 		model.addAttribute("listBoardTypeVO", boardTypeService.selectBoardType());
 		return "admin/bbs_type/bbs_type_list";//상대경로일때는 views폴더가 root(최상위)
 	}
 	//bbs_type_list.jsp에서 게시판생성 버튼을 클릭했을때 이동하는 폼 경로 
-	@GetMapping("/bbs_type/bbs_type_insert")
+	@RequestMapping(value="/admin/bbs_type/bbs_type_insert", method=RequestMethod.GET)
 	public String insertBoardTypeForm() throws Exception {//입력폼1
 		return "admin/bbs_type/bbs_type_insert";//.jsp생략
 	}
 	//bbs_type_insert.jsp의 입력폼에서 전송된 값을 boardTypeVO 자동담겨서 {구현} 단, 자동으로 값이 바인딩되려면, 폼name과, VO 멤버변수명 동일해야함. 
-	@PostMapping("/bbs_type/bbs_type_insert")
+	@RequestMapping(value="/admin/bbs_type/bbs_type_insert", method=RequestMethod.POST)
 	public String insertBoardType(BoardTypeVO boardTypeVO) throws Exception {//입력처리1
 		boardTypeService.insertBoardType(boardTypeVO);
 		return "redirect:/admin/bbs_type/bbs_type_list";
@@ -61,28 +59,28 @@ public class AdminController {
 		//forward로 결제화면을 처리 후 뒤로가기를 누르면, 재결제가 발생됩니다. 이러면 않되기때문에 사용안함. 
 	}
 	//게시판 생성관리는 이 기능은 사용자단에서 UI를 사용할 일이 없기때문에, Read, Update를 1개로 사용.
-	@GetMapping("/bbs_type/bbs_type_update")
+	@RequestMapping(value="/admin/bbs_type/bbs_type_update", method=RequestMethod.GET)
 	public String updateBoardTypeForm(@RequestParam("board_type")String board_type, Model model) throws Exception {//수정폼1
 		model.addAttribute("boardTypeVO", boardTypeService.readBoardType(board_type));
 		//서식model.add~("jsp변수로담아서 view화면으로 보냄","서비스에서 쿼리실행한 데이터객체");
 		return "admin/bbs_type/bbs_type_update";//.jsp생략
 	}
-	@PostMapping("/bbs_type/bbs_type_update")
+	@RequestMapping(value="/admin/bbs_type/bbs_type_update", method=RequestMethod.POST)
 	public String updateBoardType(BoardTypeVO boardTypeVO) throws Exception {//수정처리1
 		boardTypeService.updateBoardType(boardTypeVO);
-		return "redirect:/admin/bbs_type/bbs_type_update?board_type="+boardTypeVO.getBoard_type();//수정한 이후 수정폼을 GET방식으로 이동
+		return "redirect:/admin/bbs_type/bbs_type_list?board_type="+boardTypeVO.getBoard_type();//수정한 이후 수정폼을 GET방식으로 이동
 	}
-	@PostMapping("/bbs_type/bbs_type_delete")
+	@RequestMapping(value="/admin/bbs_type/bbs_type_delete", method=RequestMethod.POST)
 	public String deleteBoardType(@RequestParam("board_type")String board_type) throws Exception {//삭제처리1
 		boardTypeService.deleteBoardType(board_type);//삭제서비스 호출(실행) 끝
 		return "redirect:/admin/bbs_type/bbs_type_list";//.jsp생략
 	}
-	@GetMapping("/member/member_insert_form")
+	@RequestMapping(value="/admin/member/member_insert_form", method=RequestMethod.GET)
 	public String insertMemberForm() throws Exception{
 		return "admin/member/member_insert";
 	}
 	
-	@PostMapping("/member/member_insert")
+	@RequestMapping(value="/admin/member/member_insert", method=RequestMethod.POST)
 	public String insertMember(MemberVO memberVO, @ModelAttribute("PageVO")PageVO pageVO) throws Exception{
 		String rawPassword = memberVO.getUser_pw();
 		if(!rawPassword.isEmpty()) {//수정폼에서 암호 입력값이 비어있지 않을때만 아래로직실행.
@@ -97,7 +95,7 @@ public class AdminController {
 	
 	
 	//수정처리를 호출=DB 변경처리함.
-	@PostMapping("/member/member_update")
+	@RequestMapping(value="/admin/member/member_update", method=RequestMethod.POST)
 	public String updateMember(MemberVO memberVO, PageVO pageVO) throws Exception{
 		//update 서비스만 처리하면 끝
 		//업데이트 쿼리서비스 호출하기 전 스프링시큐리티 암호화 적용합니다.
@@ -113,7 +111,7 @@ public class AdminController {
 		return "redirect:/admin/member/member_update_form?"+queryString;
 	}
 	//아래 경로는 수정폼을 호출=화면에 출력만=렌더링만
-	@GetMapping("/member/member_update_form")
+	@RequestMapping(value="/admin/member/member_update_form", method=RequestMethod.GET)
 	public String updateMemberForm(MemberVO memberVO, Model model,@ModelAttribute("pageVO")PageVO pageVO) throws Exception{
 		//이 메서드는 수정폼에 pageVO, memberVO 2개의 데이터객체를 jsp로 보냅니다.
 		//사용자1명의 레코드를 가져오는 멤버서비스(쿼리)를 실행(아래)
@@ -121,7 +119,7 @@ public class AdminController {
 		model.addAttribute("memberVO", memberService.readMember(memberVO.getUser_id()));
 		return "admin/member/member_update";
 	}
-	@PostMapping("/member/member_delete")
+	@RequestMapping(value="/admin/member/member_delete", method=RequestMethod.POST)
 	public String deleteMember(MemberVO memberVO) throws Exception{
 		//이 메서드는 회원상세보기페이지에서 삭제버튼을 클릭시 전송받은 memberVO값을 이용해서 삭제를 구현
 		memberService.deleteMember(memberVO.getUser_id());//삭제쿼리가 실행됨
@@ -129,7 +127,7 @@ public class AdminController {
 	}
 	
 	//@RequestMapping(value="/member/member_view", method=RequestMethod.GET)
-	@GetMapping("/member/member_view")
+	@RequestMapping(value="/admin/member/member_view", method=RequestMethod.GET)
 	public String viewMemberForm(Model model, @RequestParam("user_id")String user_id, @ModelAttribute("pageVO") PageVO pageVO) throws Exception{
 		/**
 		 * 이 메서드는 리스트페이지에서 상세보기로 이동할 때 보여주는 1개 레코드 값을 보여주는 구현
@@ -142,7 +140,7 @@ public class AdminController {
 		return "admin/member/member_view";
 	}
 	//@RequestMapping(value = "/member/member_list", method = RequestMethod.GET)
-	@GetMapping("/member/member_list")
+	@RequestMapping(value="/admin/member/member_list", method=RequestMethod.GET)
 	public String listMember(@ModelAttribute PageVO pageVO, Model model) throws Exception{
 		//이 매서드는 회원목록을 출력하는 jsp와 매칭합니다.
 		//model.addAttribute("",)를 통해 jsp로 전송
@@ -158,7 +156,7 @@ public class AdminController {
 	}
 //	URL요청 경로는 @RequestMapping 절대경로로 표시
 	//@RequestMapping(value = "/", method = RequestMethod.GET)
-	@GetMapping("")
+	@RequestMapping(value="/admin", method=RequestMethod.GET)
 	public String admin(Model model) throws Exception{ //예외 발생시 정보를 담은 Exception 객체가 throw된다.
 //		Views가 서블렛에 root폴더로 지정되어 있다.
 		return "admin/home";//확장자 .jsp가 생략.

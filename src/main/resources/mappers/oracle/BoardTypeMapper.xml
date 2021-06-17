@@ -12,7 +12,7 @@ call seq_bno,
 )
 </insert>
 
-<select id="readBoardType" resultType="com.edu.vo.BoardVO">
+<select id="readBoardType" resultType="com.edu.vo.BoardTypeVO">
 select * from tbl_board_type
 where board_type=#{board_type}
 </select>

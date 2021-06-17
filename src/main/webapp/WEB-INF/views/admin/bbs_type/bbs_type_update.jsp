@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="../include/header.jsp" %>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -29,16 +28,17 @@
         <!-- 콘텐츠 내용 -->
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">등록/수정</h3>
+            <h3 class="card-title">수정</h3>
           </div>
           <!-- /.card-header -->
           <!-- form start -->
           <!-- 첨부파일을 전송할때 enctype=필수 없으면, 첨부파일이 전송X -->
-          <form name="form_write" action="board_write.html" enctype="multipart/form-data">
+          <form name="form_update" action="/admin/bbs_type/bbs_type_update" method="post" enctype="multipart/form-data">
             <div class="card-body">
               <div class="form-group">
+              <!-- PK 고유키, 실별자는 수정하면 엮인 하위 게시물들이 부모를 잃어버린다.-->
                 <label for="board_type">게시판타입</label>
-                <input value="${boardTypeVO.board_type}" name="board_type" type="text" class="form-control" id="board_type" placeholder="게시판타입을 입력해 주세요" required>
+                <input readonly value="${boardTypeVO.board_type}" name="board_type" type="text" class="form-control" id="board_type" placeholder="게시판타입을 입력해 주세요" required>
               </div>
               <div class="form-group">
                 <label for="board_name">게시판이름</label>
@@ -53,8 +53,8 @@
             <!-- /.card-body -->
 
             <div class="card-footer text-right">
-              <button type="submit" class="btn btn-primary">등록</button>
-              <a href="board_list.html" class="btn btn-default">목록</a>
+              <button type="submit" class="btn btn-primary">수정</button>
+              <a href="/admin/bbs_type/bbs_type_list" class="btn btn-default">목록</a>
             </div>
           </form>
         </div>
