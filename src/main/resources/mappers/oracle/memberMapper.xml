@@ -49,7 +49,7 @@ select * from tbl_member where user_id=#{user_id}
 <!-- 회원 수 조회 쿼리 -->
 <select id="countMember" resultType="int">
 select count(*) from tbl_member
-<include refid="sqlWhere"></include>
+<include refid="sqlWhere" />
 
 </select>
 <!-- 조건 조회 쿼리 -->
