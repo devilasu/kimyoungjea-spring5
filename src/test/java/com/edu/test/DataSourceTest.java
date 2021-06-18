@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.edu.service.IF_MemberService;
+import com.edu.vo.BoardVO;
 import com.edu.vo.MemberVO;
 import com.edu.vo.PageVO;
 
@@ -52,6 +54,22 @@ public class DataSourceTest {
 	//2. DB(마이바티스)쿼리를 만듭니다. (VO사용됨)
 	@Inject
 	private IF_MemberService memberService;
+	
+	@Inject
+	SqlSession sqlSession;
+
+	@Test
+	public void insertBoard() throws Exception{
+		BoardVO boardVO = new BoardVO();
+		boardVO.setBoard_type("gallery");
+		boardVO.setContent("dfdf");
+		boardVO.setTitle("tmpTitle");
+		boardVO.setWriter("admin");
+		sqlSession.insert("boardMapper.insertBoard",boardVO);
+		logger.info("BNO키 확인"+boardVO.getBno());
+		
+	}
+	
 	@Test
 	public void updateMember() throws Exception{
 		//이 메서드는 회원 정보수정(1개 레코드). jsp에서 사용예정

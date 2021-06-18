@@ -1,9 +1,10 @@
 package com.edu.vo;
 
 import java.util.Date;
+import java.util.List;
 
 public class BoardVO {
-	private int BNO;
+	private int bno;
 	private String title;
 	private String content;
 	private String writer;
@@ -11,19 +12,21 @@ public class BoardVO {
 	private int reply_count;
 	private Date reg_date;
 	private Date update_date;
-	private int board_type;
+	private String board_type;
+	//게시물 1개 등록시, 첨부파일 1개이상 필요, DB에 없는 필드 1개 만듬.
+	private List<AttachVO> attachVO;
 	
 	@Override
 	public String toString() {
-		return "BoardVO [BNO=" + BNO + ", title=" + title + ", content=" + content + ", writer=" + writer
+		return "BoardVO [BNO=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer
 				+ ", view_count=" + view_count + ", reply_count=" + reply_count + ", reg_date=" + reg_date
-				+ ", update_date=" + update_date + ", board_type=" + board_type + "]";
+				+ ", update_date=" + update_date + ", board_type=" + board_type + ", attachVO=" + attachVO + "]";
 	}
-	public int getBNO() {
-		return BNO;
+	public int getBno() {
+		return bno;
 	}
-	public void setBNO(int bNO) {
-		BNO = bNO;
+	public void setBno(int bno) {
+		this.bno = bno;
 	}
 	public String getTitle() {
 		return title;
@@ -31,10 +34,10 @@ public class BoardVO {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getcontent() {
+	public String getContent() {
 		return content;
 	}
-	public void setcontent(String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 	public String getWriter() {
@@ -67,10 +70,17 @@ public class BoardVO {
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
 	}
-	public int getBoard_type() {
+	public String getBoard_type() {
 		return board_type;
 	}
-	public void setBoard_type(int board_type) {
+	public void setBoard_type(String board_type) {
 		this.board_type = board_type;
 	}
+	public List<AttachVO> getAttachVO() {
+		return attachVO;
+	}
+	public void setAttachVO(List<AttachVO> attachVO) {
+		this.attachVO = attachVO;
+	}
+
 }

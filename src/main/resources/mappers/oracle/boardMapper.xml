@@ -81,20 +81,21 @@ select * from tbl_board where bno = #{bno}
 </if>
 </sql>
 
-<insert id="insertBoard">
+<insert id="insertBoard" parameterType="com.edu.vo.BoardVO">
+<selectKey keyProperty="bno" resultType="int" order="BEFORE">
+	select seq_bno.nextval from dual
+</selectKey>
 insert into tbl_board(
 	BNO, title, content, writer, reg_date, update_date, board_type
 )
 values(
-<selectKey keyProperty = "seq_bno" resultType="int" order="BEFORE">
-	select seq_bno.nextval from dual
-</selectKey>,
+#{bno},
 #{title},
-#{mainCont},
+#{content},
 #{writer},
 systimestamp,
 systimestamp,
-#{boardType}
+#{board_type}
 )
 </insert>
 <select id="countBoard" resultType="int">
