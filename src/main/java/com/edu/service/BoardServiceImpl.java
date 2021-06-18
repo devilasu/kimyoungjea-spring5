@@ -47,16 +47,24 @@ public class BoardServiceImpl implements IF_BoardService {
 	@Override
 	public void updateBoard(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		boardDAO.updateAttach(null);
 		boardDAO.updateBoard(boardVO);
+		//첨부파일 DB처리
+		int bno = boardVO.getBno();
+		List<AttachVO> attachVOs = boardVO.getAttachVO();
+		if(attachVOs == null) {return;}
+		for(AttachVO attachVO:attachVOs) {
+			boardDAO.updateAttach(attachVO);
+		}
+		
+		boardDAO.updateAttach(null);
+		
 	}
 
 	@Override
 	public BoardVO readBoard(int bno) throws Exception {
 		// TODO readBoard+updateViewCount
-		BoardVO boardVO= boardDAO.readBoard(bno);
 		boardDAO.updateViewCount(bno);
-		return boardVO;
+		return boardDAO.readBoard(bno);
 	}
 
 	@Override
@@ -65,14 +73,12 @@ public class BoardServiceImpl implements IF_BoardService {
 		//게시물 등록
 		int boardIndex = boardDAO.insertBoard(boardVO);
 		//첨부파일 등록
-		int index=0;
 		if(boardVO.getAttachVO()==null) {return;}
 		for(AttachVO attachVO:boardVO.getAttachVO()) {//첨부파일 개수만큼 반복진행
 			if(attachVO !=null) {
 				attachVO.setTbl_board_bno(boardIndex);
 				boardDAO.insertAttach(attachVO);
 			}
-			index++;
 		}
 	}
 

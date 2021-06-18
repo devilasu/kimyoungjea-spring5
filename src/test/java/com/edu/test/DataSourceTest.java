@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,17 +49,18 @@ public class DataSourceTest {
 	//디버그용 로그 객체변수생성
 	private Logger logger = LoggerFactory.getLogger(DataSourceTest.class);
 	
-	//스프링 코딩 시작 순서
-	//M-V-C 사이에 데이터를 임시저장하는 공간(VO클래스-맴버변수+Get/Set메서드) 생성
-	// 보통 ValueObject클래스는 DB테이블과 1:1로 매칭이 됩니다.
-	//1. MemberVO.java. VO클래스 생성
-	//2. DB(마이바티스)쿼리를 만듭니다. (VO사용됨)
 	@Inject
 	private IF_MemberService memberService;
 	
 	@Inject
 	private IF_BoardService boardService;
 
+	
+	//스프링 코딩 시작 순서
+	//M-V-C 사이에 데이터를 임시저장하는 공간(VO클래스-맴버변수+Get/Set메서드) 생성
+	// 보통 ValueObject클래스는 DB테이블과 1:1로 매칭이 됩니다.
+	//1. MemberVO.java. VO클래스 생성
+	//2. DB(마이바티스)쿼리를 만듭니다. (VO사용됨)
 	@Test
 	public void insertBoard() throws Exception{
 		BoardVO boardVO = new BoardVO();
