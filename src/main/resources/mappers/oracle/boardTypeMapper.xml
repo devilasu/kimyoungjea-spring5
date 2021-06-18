@@ -31,7 +31,4 @@ where board_type=#{board_type}
 <delete id="deleteBoardType">
 delete from tbl_board_type where board_type = #{board_type}
 </delete>
-
-
-
 </mapper>

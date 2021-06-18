@@ -117,6 +117,4 @@ select TABLE_B.* from
 where TABLE_B.RNUM > #{queryStartNum}
 ]]>
 </select>
-
-
 </mapper>
