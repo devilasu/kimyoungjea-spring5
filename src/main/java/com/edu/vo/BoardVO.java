@@ -5,19 +5,19 @@ import java.util.Date;
 public class BoardVO {
 	private int BNO;
 	private String title;
-	private String mainCont;
+	private String content;
 	private String writer;
 	private int view_count;
 	private int reply_count;
 	private Date reg_date;
 	private Date update_date;
-	private int TBL_BOARD_TYPE_BOARD_TYPE;
+	private int board_type;
 	
 	@Override
 	public String toString() {
-		return "BoardVO [BNO=" + BNO + ", title=" + title + ", mainCont=" + mainCont + ", writer=" + writer
+		return "BoardVO [BNO=" + BNO + ", title=" + title + ", content=" + content + ", writer=" + writer
 				+ ", view_count=" + view_count + ", reply_count=" + reply_count + ", reg_date=" + reg_date
-				+ ", update_date=" + update_date + ", TBL_BOARD_TYPE_BOARD_TYPE=" + TBL_BOARD_TYPE_BOARD_TYPE + "]";
+				+ ", update_date=" + update_date + ", board_type=" + board_type + "]";
 	}
 	public int getBNO() {
 		return BNO;
@@ -31,11 +31,11 @@ public class BoardVO {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getMainCont() {
-		return mainCont;
+	public String getcontent() {
+		return content;
 	}
-	public void setMainCont(String mainCont) {
-		this.mainCont = mainCont;
+	public void setcontent(String content) {
+		this.content = content;
 	}
 	public String getWriter() {
 		return writer;
@@ -67,10 +67,10 @@ public class BoardVO {
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
 	}
-	public int getTBL_BOARD_TYPE_BOARD_TYPE() {
-		return TBL_BOARD_TYPE_BOARD_TYPE;
+	public int getBoard_type() {
+		return board_type;
 	}
-	public void setTBL_BOARD_TYPE_BOARD_TYPE(int tBL_BOARD_TYPE_BOARD_TYPE) {
-		TBL_BOARD_TYPE_BOARD_TYPE = tBL_BOARD_TYPE_BOARD_TYPE;
+	public void setBoard_type(int board_type) {
+		this.board_type = board_type;
 	}
 }
