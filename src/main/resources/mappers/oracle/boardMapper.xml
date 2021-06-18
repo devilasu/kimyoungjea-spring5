@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">
+
+<!-- 첨부파일 CRUD 우리 로직에서는 첨부파일은 업데이트, 수정 없다-->
+<!-- 왜 수정이 없는가: 첨부파일은 파일명으로 저장되고 다른 저장소에 저장되기 때문에 -->
+
+<insert id="updateAttach">
+	insert into tbl_attach values (#{save_file_name},#{real_file_name},sysdate,#{bno})
+</insert>
+
+<select id="readAttach">
+	select * from tbl_attach where bno = #{bno}
+</select>
+
+<delete id="deleteAttachAll">
+	delete from tbl_attach
+	where bno = #{bno}
+</delete>
+
+<delete id="deleteAttach">
+delete from tbl_attach
+where save_file_name = #{save_file_name}
+</delete>
+
+<insert id="insertAttach">
+insert into tbl_attach values
+(
+#{save_file_name},
+#{real_file_name},
+systimestamp,
+select bno from(
+select bno
+from tbl_board
+order by bno desc
+) where rownum=1
+</insert>
+
+<!-- 게시물 CRUD -->
+<delete id="deleteBoard">
+delete from tbl_board
+where bno = #{bno}
+</delete>
+<!-- viewCount는 게시물 조회시 증가. -->
+<update id="updateViewCount">
+update tbl_board set
+view_count = nvl(view_count,0)+1
+where bno=#{bno}
+</update>
+
+<update id="updateBoard">
+update tbl_board set
+	title = #{title},
+	content = #{content},
+	writer = #{writer},
+	update_date = #{update_date},
+	board_type = #{board_type}
+where bno=#{bno}
+</update>
+
+<select id="readBoard" resultType="com.edu.vo.BoardVO">
+select * from tbl_board where bno = #{bno}
+</select>
+
 <!-- bno가 자동증가 필요. -->
 <!-- 검색처리는 memberQuery에서 만든 내용 붙여넣기. -->
 <sql id="sqlWhere">
@@ -36,6 +97,10 @@ systimestamp,
 #{boardType}
 )
 </insert>
+<select id="countBoard" resultType="int">
+	select count(*) from tbl_board
+	<include refid="sqlWhere" />
+</select>
 
 <select id="selectBoard" resultType="com.edu.vo.BoardVO">
 select TABLE_B.* from
@@ -52,5 +117,6 @@ select TABLE_B.* from
 where TABLE_B.RNUM > #{queryStartNum}
 ]]>
 </select>
+
 
 </mapper>
