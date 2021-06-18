@@ -29,12 +29,13 @@ insert into tbl_attach values
 #{save_file_name},
 #{real_file_name},
 systimestamp,
-select bno from(
+#{bno}
+</insert>
+<!-- select bno from(
 select bno
 from tbl_board
 order by bno desc
-) where rownum=1
-</insert>
+) where rownum=1 -->
 
 <!-- 게시물 CRUD -->
 <delete id="deleteBoard">

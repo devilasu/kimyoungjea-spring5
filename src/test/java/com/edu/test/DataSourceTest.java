@@ -20,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.edu.service.IF_BoardService;
 import com.edu.service.IF_MemberService;
 import com.edu.vo.BoardVO;
 import com.edu.vo.MemberVO;
@@ -56,16 +57,16 @@ public class DataSourceTest {
 	private IF_MemberService memberService;
 	
 	@Inject
-	SqlSession sqlSession;
+	private IF_BoardService boardService;
 
 	@Test
 	public void insertBoard() throws Exception{
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBoard_type("gallery");
-		boardVO.setContent("dfdf");
-		boardVO.setTitle("tmpTitle");
+		boardVO.setContent("J유닛 테스트");
+		boardVO.setTitle("테스트 타이틀");
 		boardVO.setWriter("admin");
-		sqlSession.insert("boardMapper.insertBoard",boardVO);
+		boardService.insertBoard(boardVO);
 		logger.info("BNO키 확인"+boardVO.getBno());
 		
 	}

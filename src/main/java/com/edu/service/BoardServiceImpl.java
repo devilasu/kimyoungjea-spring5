@@ -74,7 +74,6 @@ public class BoardServiceImpl implements IF_BoardService {
 			}
 			index++;
 		}
-		boardDAO.insertAttach(null);
 	}
 
 	@Override
