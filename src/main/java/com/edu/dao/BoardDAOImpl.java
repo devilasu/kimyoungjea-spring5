@@ -64,9 +64,9 @@ public class BoardDAOImpl implements IF_BoardDAO{
 	}
 
 	@Override
-	public void deleteBoard(BoardVO boardVO) throws Exception {
+	public void deleteBoard(int bno) throws Exception {
 		// TODO Auto-generated method stub
-		sqlSession.delete("boardMapper.deleteBoard",boardVO);
+		sqlSession.delete("boardMapper.deleteBoard",bno);
 	}
 
 	@Override
