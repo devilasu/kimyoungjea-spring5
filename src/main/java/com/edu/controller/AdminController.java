@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.edu.service.IF_BoardService;
 import com.edu.service.IF_BoardTypeService;
 import com.edu.service.IF_MemberService;
 import com.edu.vo.BoardTypeVO;
@@ -36,6 +37,17 @@ public class AdminController {
 	private IF_MemberService memberService;
 	@Inject
 	private IF_BoardTypeService boardTypeService;
+	@Inject
+	private IF_BoardService boardService;
+	
+	//게시물 목록은 URL로 접근하기 때문에.
+	@RequestMapping(value = "/admin/board/board_list", method = RequestMethod.GET)
+	public String selectBoardList(@ModelAttribute("pageVO")PageVO pageVO, Model model) throws Exception{
+		//페이징 처리를 위한 기본 값 추가는 Service에서 실행.
+		model.addAttribute("listBoardVO",boardService.selectBoard(pageVO));
+		return "admin/board/board_list";
+	}
+	
 	
 	//jsp에서 게시판생성관리에 Get/Post 접근할때 URL을 bbs_type로 지정합니다.
 	//왜 board_type하지않고, bbs_type하는 이유는 왼쪽메뉴 고정시키는 로직에서 경로 board와 겹치지 않도록

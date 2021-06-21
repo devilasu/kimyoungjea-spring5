@@ -20,7 +20,6 @@ import com.edu.vo.PageVO;
 public class BoardDAOImpl implements IF_BoardDAO{
 	@Inject
 	private SqlSession sqlSession;
-	
 	@Override
 	public void deleteAttachAll(Integer bno) throws Exception {
 		// TODO Auto-generated method stub

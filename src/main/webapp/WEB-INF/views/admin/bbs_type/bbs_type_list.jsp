@@ -58,10 +58,31 @@
         </div>
         <!-- //콘텐츠 내용 -->
         <!-- 페이징 처리 -->
-        <div class="col-12 text-right">
-          <a href="/admin/bbs_type/bbs_type_insert" class="btn btn-primary mb-3">게시판생성</a>
-          
-        </div>
+        <div class="row" >
+            <div class="col-12">
+		        <div class="col-12 text-right">
+		          <a href="/admin/bbs_type/bbs_type_insert" class="btn btn-primary mb-3">게시판생성</a>
+		        </div>
+              
+              <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                <ul class="pagination justify-content-center">
+                  <li class="paginate_button page-item previous ${pageVO.prev?'':'disabled' }" id="previous">
+                    <a href="/admin/member/member_list?page=${pageVO.startPage-1}" aria-controls="example2" data-dt-idx="${pageVO.startPage-1}" tabindex="0"
+                      class="page-link">Previous</a>
+                  </li>
+                  <c:forEach var="idx" begin="${pageVO.startPage}" end="${pageVO.endPage}" step="1">
+                  	<!-- c:out value값에 삼항 연산자 -->
+	                  <li class="paginate_button page-item <c:out value="${idx==pageVO.page?'active':'' }" />">
+	                    <a href="/admin/member/member_list?page=${idx}&search_keyword=${pageVO.search_keyword}&search_type=${pageVO.search_type}" aria-controls="example2" data-dt-idx="idx" tabindex="0" class="page-link">${idx}</a>
+	                  </li>
+                  </c:forEach>
+                  <li class="paginate_button page-item next ${pageVO.next?'':'disabled' }" id="next"><a href="/admin/member/member_list?page=${pageVO.endPage+1}"
+                      aria-controls="example2" data-dt-idx="${pageVO.endPage+1}" tabindex="0" class="page-link">Next</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
         <!-- //페이징 처리 -->
       </div><!-- /.container-fluid -->
     </section>
@@ -81,7 +102,7 @@ function getParameterByName(name) {
 }
 var success = getParameterByName("success");
 $(document).ready(function(){
-	if(success!=null){
+	if(success!=null && success !=""){
 		if(success){
 			alert("성공하였습니다.");
 		}
