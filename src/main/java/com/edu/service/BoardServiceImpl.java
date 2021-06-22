@@ -24,9 +24,9 @@ public class BoardServiceImpl implements IF_BoardService {
 	private IF_BoardDAO boardDAO;
 	
 	@Override
-	public List<AttachVO> readAttach(String save_file_name) throws Exception {
+	public List<AttachVO> readAttach(int bno) throws Exception {
 		// TODO 첨부파일 List형으로 조회 DAO호출
-		return boardDAO.readAttach(save_file_name);
+		return boardDAO.readAttach(bno);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class BoardServiceImpl implements IF_BoardService {
 		List<AttachVO> attachVOs = boardVO.getAttachVO();
 		if(attachVOs == null) {return;}
 		for(AttachVO attachVO:attachVOs) {
-			attachVO.setTbl_board_bno(bno);
+			attachVO.setBno(bno);
 			boardDAO.updateAttach(attachVO);
 		}
 		
@@ -81,7 +81,7 @@ public class BoardServiceImpl implements IF_BoardService {
 		if(boardVO.getAttachVO()==null) {return;}
 		for(AttachVO attachVO:boardVO.getAttachVO()) {//첨부파일 개수만큼 반복진행
 			if(attachVO !=null) {
-				attachVO.setTbl_board_bno(boardIndex);
+				attachVO.setBno(boardIndex);
 				boardDAO.insertAttach(attachVO);
 			}
 		}

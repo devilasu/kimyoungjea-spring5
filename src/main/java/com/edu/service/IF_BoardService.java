@@ -8,7 +8,7 @@ import com.edu.vo.PageVO;
 
 public interface IF_BoardService {
 	
-	public List<AttachVO> readAttach(String save_file_name) throws Exception;
+	public List<AttachVO> readAttach(int bno) throws Exception;
 	//페이징 없는 게시물 개수
 	public int countBoard(PageVO pageVO) throws Exception;
 	//게시판 CRUD

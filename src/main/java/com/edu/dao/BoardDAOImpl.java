@@ -45,9 +45,9 @@ public class BoardDAOImpl implements IF_BoardDAO{
 	}
 
 	@Override
-	public List<AttachVO> readAttach(String save_file_name) throws Exception {
+	public List<AttachVO> readAttach(int bno) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("boardMapper.readAttach",save_file_name);
+		return sqlSession.selectList("boardMapper.readAttach",bno);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class BoardDAOImpl implements IF_BoardDAO{
 	@Override
 	public BoardVO readBoard(int bno) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("boadMapper.selectBoard",bno);
+		return sqlSession.selectOne("boardMapper.readBoard",bno);
 	}
 
 	@Override

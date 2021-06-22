@@ -9,9 +9,9 @@
 	insert into tbl_attach values (#{save_file_name},#{real_file_name},sysdate,#{bno})
 </insert>
 
-<select id="readAttach">
-	select * from tbl_attach where bno = #{bno}
-</select>
+<select id="readAttach" resultType="com.edu.vo.AttachVO">
+select * from tbl_attach where bno = #{bno}
+</select> 
 
 <delete id="deleteAttachAll">
 	delete from tbl_attach

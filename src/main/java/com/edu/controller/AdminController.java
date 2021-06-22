@@ -25,7 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.edu.service.IF_BoardService;
 import com.edu.service.IF_BoardTypeService;
 import com.edu.service.IF_MemberService;
+import com.edu.utill.CommonUtill;
+import com.edu.vo.AttachVO;
 import com.edu.vo.BoardTypeVO;
+import com.edu.vo.BoardVO;
 import com.edu.vo.MemberVO;
 import com.edu.vo.PageVO;
 
@@ -39,7 +42,20 @@ public class AdminController {
 	private IF_BoardTypeService boardTypeService;
 	@Inject
 	private IF_BoardService boardService;
-	
+	@Inject
+	private CommonUtill commonUtill;
+	//게시물 상세보기 폼으로 접근하지 않고 URL쿼리 스트링으로 접근(GET)
+	@RequestMapping(value = "/admin/board/board_view", method = RequestMethod.GET)
+	public String readBoardList(@RequestParam("bno")int bno, Model model, @ModelAttribute("pageVO")PageVO pageVO) throws Exception{
+		BoardVO boardVO = boardService.readBoard(bno);
+		boardVO.setAttachVO(boardService.readAttach(bno));
+		
+		model.addAttribute("boardVO", boardVO);
+		//업로드한 파일이 이미지인지 아닌지 확인하는 용도의 데이터.(이미지일때 미리보기 img태그를 사용)
+		model.addAttribute("checkImgArray",commonUtill.getCheckImgArray());
+		
+		return "admin/board/board_view";
+	}
 	//게시물 목록은 URL로 접근하기 때문에.
 	@RequestMapping(value = "/admin/board/board_list", method = RequestMethod.GET)
 	public String selectBoardList(@ModelAttribute("pageVO")PageVO pageVO, Model model) throws Exception{

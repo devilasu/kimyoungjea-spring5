@@ -18,7 +18,7 @@ public interface IF_BoardDAO {
 	public void deleteAttach(String save_file_name) throws Exception;
 	public void updateAttach(AttachVO attachVO) throws Exception;
 	public void insertAttach(AttachVO attachVO) throws Exception;
-	public List<AttachVO> readAttach(String save_file_name) throws Exception;
+	public List<AttachVO> readAttach(int bno) throws Exception;
 	//상세보기시 조회수 올리는 메서드
 	public void updateViewCount(int bno) throws Exception;
 	//페이징 없는 게시물 개수

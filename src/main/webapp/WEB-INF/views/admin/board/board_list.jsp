@@ -65,7 +65,7 @@
                     <tbody>
                       <!-- 링크 주소에 jsp에서 프로그램 처리 -->
                       <c:forEach var="boardVO" items="${listBoardVO}">
-                      <tr style="cursor:pointer" onclick="location.replace('admin/board/board_view?bno=${boardVO.bno}')">
+                      <tr style="cursor:pointer" onclick="location.replace('/admin/board/board_view?bno=${boardVO.bno}&page=${pageVO.page}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}')">
                         <td>${boardVO.bno}</td>
                         <td>${boardVO.board_type}</td>
                         <td>${boardVO.title}</td>
@@ -113,3 +113,7 @@
     <!-- /.content-wrapper -->
 
 <%@ include file="../include/footer.jsp" %>
+
+<script>
+encodeURI()
+</script>

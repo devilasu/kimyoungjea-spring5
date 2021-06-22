@@ -11,12 +11,12 @@ public class AttachVO {
 	private String save_file_name;
 	private String real_file_name;
 	private Date reg_date;
-	private int tbl_board_bno;
+	private int bno;
 	
 	@Override
 	public String toString() {
 		return "AttachVO [save_file_name=" + save_file_name + ", real_file_name=" + real_file_name + ", reg_date="
-				+ reg_date + ", tbl_board_bno=" + tbl_board_bno + "]";
+				+ reg_date + ", bno=" + bno + "]";
 	}
 	
 	public String getSave_file_name() {
@@ -37,10 +37,10 @@ public class AttachVO {
 	public void setReg_date(Date reg_date) {
 		this.reg_date = reg_date;
 	}
-	public int getTbl_board_bno() {
-		return tbl_board_bno;
+	public int getBno() {
+		return bno;
 	}
-	public void setTbl_board_bno(int tbl_board_bno) {
-		this.tbl_board_bno = tbl_board_bno;
+	public void setBno(int bno) {
+		this.bno = bno;
 	}
 }
