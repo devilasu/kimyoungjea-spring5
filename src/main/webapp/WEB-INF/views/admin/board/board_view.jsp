@@ -36,7 +36,7 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <!-- <form name="" method="" action="" anctype="" -->
-                <form name="form_view" action="/admin/board/board_update" enctype="multipart/form-data">
+                <form name="form_view" action="/admin/board/board_update_form" enctype="multipart/form-data">
                   <div class="card-body">
                     <div class="form-group">
                       <label for="exampleInputEmail1">제목</label>
@@ -65,29 +65,43 @@
                     </div>
                     <div class="form-group">
                       <label for="exampleInputFile">첨부파일</label>
-                      <c:forEach begin="0" end="1" var='idx'>
-                      <c:if test="${boardVO.attachVO == null}">
+                      <c:if test="${boardVO.getAttachVO().size() > 0}">
+                      <c:forEach var="attachVO" items="boardVO.getAttachVO()">
                       <div class="input-group">
                         <div class="custom-file">
-                        <a href='/download?save_file_name=${boardVO.AttachVO[idx].save_file_name}&real_file_name=${boardVO.AttachVO[idx].real_file_name}'>
-                          ${boardVO.real_file_names[idx]}
+                        <a href='/download?save_file_name=${attachVO.getSave_file_name()}&real_file_name=${attachVO.getReal_file_name()}'>
+                          ${attachVO.getReal_file_name()}
                          </a>
                          <!-- jstl에서 변수사용하기 fn.split('데이터','구분자') 목적: 확장자를 이용해서 이미지 미리보기 할지 결정.-->
-                         <c:set var="fileNameArray" value="${fn:split('boardVO.attachVO[index].save_file_name','.')}" />
+                         <c:set var="fileNameArray" value="${fn:split('attachVO.getSave_file_name','.')}" />
+                         <!-- 그림판.얼굴.jpg 일 경우가 있기 때문에 아래 형태면 가장 마지막 배열이 나온다. (확장자) -->
                          <c:set var="extName" value="${fileNameArray[fn:length(fileNameArray)-1] }"/>
+                        <!-- switch ~ case 문 -->
+                        <c:choose>
+                        	<c:when test="${fn:containsIgnoreCase(checkImgArray,extName)}">
+                        	<img src="/image_preview?save_file_name=${attachVO.getSave_file_name()}" style="width:100%">
+                        	</c:when>
+                        	<c:otherwise>
+                        		<c:out value="${checkImgArray}" />이미지가 아님.
+                        	</c:otherwise>
+                        </c:choose>
                         </div>
                       </div>
-                      </c:if>
                       </c:forEach>
+                      </c:if>
                     </div>
                   </div>
                   <!-- /.card-body -->
   
                   <div class="card-footer text-right">
-                    <button type="revise" class="btn btn-primary">수정</button>
-                    <button type="delete" class="btn btn-danger">삭제</button>
-                    <a href="board_list.html" class="btn btn-default">목록</a>
+                    <button type="submit" class="btn btn-primary">수정</button>
+                    <button type="button" class="btn btn-danger" id="btn_delete">삭제</button>
+                    <button type="button" class="btn btn-default" id="btn_list">목록</a>
                   </div>
+                  <input name="page" type="hidden" value="${pageVO.page}">
+                  <input name="search_type" type="hidden" value="${pageVO.search_type}">
+                  <input name="search_keyword" type="hidden" value="${pageVO.search_keyword}">
+                  <input name="bno" type="hidden" value="${boardVO.bno}">
                 </form>
               </div>
               <!-- 댓글 타임라인 -->
@@ -155,3 +169,16 @@
     <!-- /.content-wrapper -->
 
 <%@include file="../include/footer.jsp" %>
+
+<script>
+	$(document).ready(function(){
+		$("#btn_list").click(function(){
+			var form_view = $("form[name='form_view']");
+			form_view.attr("action","/admin/board/board_list");
+			form_view.submit();
+		});
+		$("#btn_delete").click(function(){
+			alert("준비중입니다.");
+		});
+	});
+</script>
