@@ -106,7 +106,7 @@ $(document).ready(function(){
 		//alert(user_id);
 		$.ajax({
 			type:"get",
-			url:"/utill/id_check?user_id="+user_id,//RestAPI서버(스프링 클래스)에 만들 예정.
+			url:"/util/id_check?user_id="+user_id,//RestAPI서버(스프링 클래스)에 만들 예정.
 			dataType:"text",
 			success:function(result){
 				//alert(result);

@@ -18,7 +18,6 @@ public class ExceptionTest {
 		
 		//배열 변수 선언
 		String[] stringArray = {"10", "2a", "100"};
-		int indexValue = 0;
 		for (int cnt=0; cnt<=4;cnt++) {
 			/**
 			 * try{구현내용}
@@ -26,7 +25,7 @@ public class ExceptionTest {
 			 * finally{에러유무와 상관없이 무조건 실행}
 			 */
 			try {
-			indexValue = Integer.parseInt(stringArray[cnt]);
+			Integer.parseInt(stringArray[cnt]);
 			}catch(NumberFormatException err) {//Exception 대신에 선별적으로 예외사항을 잡습니다.
 				System.out.println(err.toString());
 			}catch(Exception err) {

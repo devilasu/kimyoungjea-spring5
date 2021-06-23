@@ -1,31 +1,33 @@
 package com.edu.vo;
 
+import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class BoardVO {
-	private int bno;
+	private Integer bno;
 	private String title;
 	private String content;
 	private String writer;
-	private int view_count;
-	private int reply_count;
+	private Integer view_count;
+	private Integer reply_count;
 	private Date reg_date;
 	private Date update_date;
 	private String board_type;
 	//게시물 1개 등록시, 첨부파일 1개이상 필요, DB에 없는 필드 1개 만듬.
-	private List<AttachVO> attachVO;
+	private String[] save_file_names;//Null가능
+	private String[] real_file_names;//Null가능
 	
 	@Override
 	public String toString() {
-		return "BoardVO [BNO=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer
+		return "BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer
 				+ ", view_count=" + view_count + ", reply_count=" + reply_count + ", reg_date=" + reg_date
-				+ ", update_date=" + update_date + ", board_type=" + board_type + ", attachVO=" + attachVO + "]";
+				+ ", update_date=" + update_date + ", board_type=" + board_type + ", save_file_names="
+				+ Arrays.toString(save_file_names) + ", real_file_names=" + Arrays.toString(real_file_names) + "]";
 	}
-	public int getBno() {
+	public Integer getBno() {
 		return bno;
 	}
-	public void setBno(int bno) {
+	public void setBno(Integer bno) {
 		this.bno = bno;
 	}
 	public String getTitle() {
@@ -46,16 +48,16 @@ public class BoardVO {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-	public int getView_count() {
+	public Integer getView_count() {
 		return view_count;
 	}
-	public void setView_count(int view_count) {
+	public void setView_count(Integer view_count) {
 		this.view_count = view_count;
 	}
-	public int getReply_count() {
+	public Integer getReply_count() {
 		return reply_count;
 	}
-	public void setReply_count(int reply_count) {
+	public void setReply_count(Integer reply_count) {
 		this.reply_count = reply_count;
 	}
 	public Date getReg_date() {
@@ -76,11 +78,19 @@ public class BoardVO {
 	public void setBoard_type(String board_type) {
 		this.board_type = board_type;
 	}
-	public List<AttachVO> getAttachVO() {
-		return attachVO;
+	public String[] getSave_file_names() {
+		return save_file_names;
 	}
-	public void setAttachVO(List<AttachVO> attachVO) {
-		this.attachVO = attachVO;
+	public void setSave_file_names(String[] save_file_names) {
+		this.save_file_names = save_file_names;
+	}
+	public String[] getReal_file_names() {
+		return real_file_names;
+	}
+	public void setReal_file_names(String[] real_file_names) {
+		this.real_file_names = real_file_names;
 	}
 
+	
+	
 }

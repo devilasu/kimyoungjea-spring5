@@ -12,12 +12,13 @@ import com.edu.vo.PageVO;
  *
  */
 public interface IF_MemberDAO {
-	//List<제네릭타입>: 다수의 레코드를 저장할 수 있도록 해주는 형태
+	//List<제네릭타입> : MemberVO1개레코드를 List클래스형 감싸주면 
+	//다수의 레코드를 저장할 수 가 있는 형태가 됩니다.
 	public List<MemberVO> selectMember(PageVO pageVO) throws Exception;
-	//회원의 전체명수를 구한다.
+	//회원의 전체 명수를 구합니다(아래)
 	public int countMember(PageVO pageVO) throws Exception;
-	public void insertMember(MemberVO memberVO) throws Exception;
-	public void deleteMember(String member_id) throws Exception;
-	public MemberVO readMember(String member_id) throws Exception;
-	public void updateMember(MemberVO memberVO) throws Exception;
+	public Integer insertMember(MemberVO memberVO) throws Exception;
+	public Integer deleteMember(String user_id) throws Exception;
+	public MemberVO readMember(String user_id) throws Exception;
+	public Integer updateMember(MemberVO memberOne) throws Exception;
 }
