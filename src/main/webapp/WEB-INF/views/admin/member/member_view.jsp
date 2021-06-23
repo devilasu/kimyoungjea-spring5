@@ -97,7 +97,7 @@ $(document).ready(function(){
 	});
 	
 	$("#btn_list").click(function(){
-		var queryString = "page=${pageVO.page}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}";
+		var queryString = "page=${pageVO.page}&search_type=${pageVO.search_type}";
 
 		location.replace('/admin/member/member_list?'+queryString);
 	});

@@ -40,7 +40,7 @@
                           <option value="title">제목</option>
                           <option value="content">내용</option>
                         </select>
-                      <input type="text" name="search_keyword" class="form-control float-right" placeholder="Search">
+                      <input type="text" value="${session_search_keyword}" name="search_keyword" class="form-control float-right" placeholder="Search">
 
                       <div class="input-group-append">
                         <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
@@ -65,7 +65,7 @@
                     <tbody>
                       <!-- 링크 주소에 jsp에서 프로그램 처리 -->
                       <c:forEach var="boardVO" items="${listBoardVO}">
-                      <tr style="cursor:pointer" onclick="location.replace('/admin/board/board_view?bno=${boardVO.bno}&page=${pageVO.page}&search_type=${pageVO.search_type}&search_keyword=${pageVO.search_keyword}')">
+                      <tr style="cursor:pointer" onclick="location.replace('/admin/board/board_view?bno=${boardVO.bno}&page=${pageVO.page}&search_type=${pageVO.search_type}')">
                         <td>${boardVO.bno}</td>
                         <td>${boardVO.board_type}</td>
                         <td>${boardVO.title}</td>
@@ -85,7 +85,7 @@
 <div class="row" >
             <div class="col-12">
               <div class="text-right">
-                <a href="/admin/board/board_insert_form?board_type=${pageVO.board_type}&page=${pageVO.page}$search_keyword=${pageVO.search_keyword}&search_type=${pageVO_search_type}" class="btn btn-primary" id="btn_insert">게시물등록</a>
+                <a href="/admin/board/board_insert_form?board_type=${pageVO.board_type}" class="btn btn-primary" id="btn_insert">게시물등록</a>
               </div>
               
               <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
@@ -97,7 +97,7 @@
                   <c:forEach var="idx" begin="${pageVO.startPage}" end="${pageVO.endPage}" step="1">
                   	<!-- c:out value값에 삼항 연산자 -->
 	                  <li class="paginate_button page-item <c:out value="${idx==pageVO.page?'active':'' }" />">
-	                    <a href="/admin/board/board_list?board_type=${pageVO.board_type}&page=${idx}&search_keyword=${pageVO.search_keyword}&search_type=${pageVO.search_type}" aria-controls="example2" data-dt-idx="idx" tabindex="0" class="page-link">${idx}</a>
+	                    <a href="/admin/board/board_list?page=${idx}&search_type=${pageVO.search_type}" aria-controls="example2" data-dt-idx="idx" tabindex="0" class="page-link">${idx}</a>
 	                  </li>
                   </c:forEach>
                   <li class="paginate_button page-item next ${pageVO.next?'':'disabled' }" id="next"><a href="/admin/board/board_list?board_type=${pageVO.board_type}&page=${pageVO.endPage+1}"
@@ -113,7 +113,3 @@
     <!-- /.content-wrapper -->
 
 <%@ include file="../include/footer.jsp" %>
-
-<script>
-encodeURI()
-</script>
