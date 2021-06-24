@@ -50,9 +50,11 @@ public class AdminController {
 	public String board_update(@RequestParam("file")MultipartFile[] files,BoardVO boardVO,PageVO pageVO) throws Exception{
 		//기존 등록된 첨부파일 목록 구하기
 		List<AttachVO> delFiles = boardService.readAttach(boardVO.getBno());
+		
 		String[] save_file_names=new String[files.length];
 		String[] real_file_names=new String[files.length];
 		int idx=0;//jsp폼에서 보내온 파일에 대한 인덱스 초기값 변수
+		
 		for(MultipartFile file:files) {
 			if(file.getOriginalFilename() !="") {
 				int sun = 0;//DB테이블에 저장된 순서에대한 인덱스 초기값 변수.
@@ -75,6 +77,7 @@ public class AdminController {
 		}
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
+
 		String rawData = boardVO.getContent();
 		String secData = commonUtil.unScript(rawData);
 		boardVO.setContent(secData);
@@ -95,13 +98,13 @@ public class AdminController {
 		BoardVO boardVO = new BoardVO();
 		boardVO = boardService.readBoard(bno);
 		
-		List<AttachVO> attachVOs = boardService.readAttach(bno);
-		String[] save_file_names=new String[attachVOs.size()];
-		String[] real_file_names=new String[attachVOs.size()];
+		List<AttachVO> listAttachVO = boardService.readAttach(bno);
+		String[] save_file_names=new String[listAttachVO.size()];
+		String[] real_file_names=new String[listAttachVO.size()];
 		int idx = 0;
-		for(AttachVO attachVO:attachVOs) {
-			save_file_names[idx] = attachVO.getSave_file_name();
-			real_file_names[idx] = attachVO.getReal_file_name();
+		for(AttachVO file_name:listAttachVO) {
+			save_file_names[idx] = file_name.getSave_file_name();
+			real_file_names[idx] = file_name.getReal_file_name();
 			idx++;
 		}
 		

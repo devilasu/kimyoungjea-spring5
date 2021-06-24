@@ -128,14 +128,11 @@
           ["view",["fullscreen","help"]]
         ]
       });
-    });
-    
-    ${"form[name='form_update']"}.on('submit',function(e){
-    	if($("#content").summernote('isEmpty')){
-    		console.log("contentes is empty");
-    		e.preventDefault();
-    	}else{
-    		submit();
-    	}
+      $("form[name='form_update']").on('submit',function(e){
+      	if($("#content").summernote('isEmpty')){
+      		alert("내용을 입력해주세요.");
+      		e.preventDefault();
+      	}
+      });
     });
   </script>

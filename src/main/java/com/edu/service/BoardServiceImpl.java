@@ -61,7 +61,7 @@ public class BoardServiceImpl implements IF_BoardService {
 		int index = 0;
 		String real_file_name = "";
 		for(String save_file_name:save_file_names) {
-			if(save_file_names != null) {//컨트롤러에서 null 이 들어갈 확률이 있는 로직.
+			if(save_file_name != null) {//컨트롤러에서 null 이 들어갈 확률이 있는 로직.
 				real_file_name = real_file_names[index];
 				attachVO.setBno(bno);
 				attachVO.setSave_file_name(save_file_name);

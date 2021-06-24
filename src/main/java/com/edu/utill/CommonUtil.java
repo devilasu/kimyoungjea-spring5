@@ -1,15 +1,22 @@
 package com.edu.utill;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
@@ -35,6 +42,51 @@ public class CommonUtil {
 	private Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 	@Inject
 	private IF_MemberService memberService;//스프링빈을 주입받아서(DI) 객체준비
+	
+	//페이지이동이 아닌 같은 페이지에 결과값만 반환
+	@RequestMapping(value="/image_preview",method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<byte[]> imagePreview(@RequestParam("save_file_name")String save_file_name, HttpServletResponse response) throws Exception{
+		//파일을 입출력할때는 스트림이 발생
+		FileInputStream fis = null;//입력
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();//출력
+		fis = new FileInputStream(uploadPath+"/"+save_file_name);
+		int readCount = 0;
+		byte[] buffer = new byte[1024];
+		byte[] fileArray = null;
+		//반복문: 배열이 빌때까지 반복
+		while((readCount = fis.read(buffer)) != -1) {
+			//fis에서 baos로 파일입출력은 바이트 단위로만 가능
+			baos.write(buffer,0,readCount);//(rawData,종료조건,반복횟수)
+			//결과는 baos에 누적결과가 들어갑니다.
+		}
+		fileArray = baos.toByteArray();//baos 객체를 byte[]로 파싱
+		fis.close(); //메모리 초기화
+		baos.close();//메모리 초기화
+		//fileArray값을 jsp로 보내는 작업 filnal은 변수 재설정 불가능.(상수)
+		final HttpHeaders headers = new HttpHeaders();
+		String ext = FilenameUtils.getExtension(save_file_name);
+		//이미지 확장자에 따라서 매칭되는 헤더값이 변해야지만, 이미지 미리보기 정상작동
+		switch(ext.toLowerCase()) {//소문자로 바꿔서 비교.
+		case "png":
+			headers.setContentType(MediaType.IMAGE_PNG);
+			break;
+		case "jpg":
+			headers.setContentType(MediaType.IMAGE_JPEG);
+			break;
+		case "gif":
+			headers.setContentType(MediaType.IMAGE_GIF);
+			break;
+		case "jpeg":
+			headers.setContentType(MediaType.IMAGE_GIF);
+			break;
+		case "bmp":
+			headers.setContentType(MediaType.parseMediaType("image/bmp"));
+			break;
+		default:break;
+		}
+		//return new ResponseEntity<byte[]>(fileArray,);
+	}
 	
 	//XSS 크로스사이트스크립트 방지용 코드로 파싱하는 매서드
 	public String unScript(String data) {
