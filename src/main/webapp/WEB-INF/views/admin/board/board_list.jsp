@@ -85,7 +85,7 @@
 <div class="row" >
             <div class="col-12">
               <div class="text-right">
-                <a href="/admin/board/board_insert_form?board_type=${pageVO.board_type}" class="btn btn-primary" id="btn_insert">게시물등록</a>
+                <a href="/admin/board/board_insert_form" class="btn btn-primary" id="btn_insert">게시물등록</a>
               </div>
               
               <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">

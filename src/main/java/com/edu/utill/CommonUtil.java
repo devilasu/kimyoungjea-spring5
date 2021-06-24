@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.edu.dao.IF_BoardDAO;
 import com.edu.service.IF_MemberService;
 import com.edu.vo.MemberVO;
 
@@ -42,6 +46,40 @@ public class CommonUtil {
 	private Logger logger = LoggerFactory.getLogger(CommonUtil.class);
 	@Inject
 	private IF_MemberService memberService;//스프링빈을 주입받아서(DI) 객체준비
+	@Inject
+	private IF_BoardDAO boardDAO;
+	
+	//첨부파일 개별삭제 Ajax로 받아서 처리
+	@RequestMapping(value = "/file_delete", method = RequestMethod.POST)
+	@ResponseBody
+	public String file_delete(@RequestParam("save_file_name")String save_file_name){//Ajax는 예외처리를 따로 한다.
+		String result = "";
+		
+		try {
+			boardDAO.deleteAttach(save_file_name);
+			File target = new File(uploadPath+"/"+save_file_name);
+			if(target.exists())
+				target.delete();
+			result="success";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result="fail: "+e.toString();
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/download", method = RequestMethod.GET)
+	@ResponseBody
+	public FileSystemResource download(@RequestParam("save_file_name")String save_file_name,@RequestParam("real_file_name")String real_file_name, HttpServletResponse response) throws Exception{
+		//FileSyste...은 스프링 코어에서 제공하는 전용 파일처리 클래스
+		File file = new File(uploadPath+"/"+save_file_name);
+		response.setContentType("application/download; utf-8");//한글 깨지는 것 방지.
+		real_file_name = URLEncoder.encode(real_file_name);//ie에서 URL한글일때 에러 방지 코드
+		response.setHeader("Content-Disposition", "attachment; filename="+real_file_name);
+		
+		
+		return new FileSystemResource(file);
+	}
 	
 	//페이지이동이 아닌 같은 페이지에 결과값만 반환
 	@RequestMapping(value="/image_preview",method = RequestMethod.GET)
@@ -85,7 +123,7 @@ public class CommonUtil {
 			break;
 		default:break;
 		}
-		//return new ResponseEntity<byte[]>(fileArray,);
+		return new ResponseEntity<byte[]>(fileArray,headers,HttpStatus.CREATED);
 	}
 	
 	//XSS 크로스사이트스크립트 방지용 코드로 파싱하는 매서드

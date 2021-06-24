@@ -9,12 +9,12 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">${boardVO.title} 수정</h1>
+              <h1 class="m-0">${session_board_type} 글쓰기</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">{게시판변수명}</li>
+                <li class="breadcrumb-item active">${session_board_name}</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -30,32 +30,33 @@
             <div class="col-12">
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">수정</h3>
+                  <h3 class="card-title">등록</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
                 <!-- <form name="" method="" action="" anctype="" -->
-                <form name="form_update" action="/admin/board/board_update" method="post" enctype="multipart/form-data">
+                <form name="form_write" action="/admin/board/board_insert" method="post" enctype="multipart/form-data">
                   <div class="card-body">
                     <div class="form-group">
                       <label>게시판타입</label>
-                      <select name="board_type" class="form-control">
+                      <select  name="board_type" class="form-control">
+                      <!-- 세션값을 비교값으로 사용하는 이유는 신규등록이기때문에 기존게시물 정보가 없습니다. -->
                       <c:forEach var="boardTypeVO" items="${listBoardTypeVO}"> 
-                        <option ${boardVO.board_type==boardTypeVO.board_type?'selected':''} value="${boardTypeVO.board_type}">${boardTypeVO.board_name}</option>
+                        <option ${session_board_type==boardTypeVO.board_type?'selected':''} value="${boardTypeVO.board_type}">${boardTypeVO.board_name}</option>
                       </c:forEach>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="title">글 제목</label>
-                      <input name="title" value="${boardVO.title}" type="text" class="form-control" id="title" placeholder="글 제목을 입력해주세요." required>
+                      <input name="title" type="text" class="form-control" id="title" placeholder="글 제목을 입력해주세요." required>
                     </div>
                     <div class="form-group">
                       <label for="maincont">글 내용</label>
-                      <textarea name="content" id="content" class="form-control" placeholder="내용을 입력해주세요.">${boardVO.content}</textarea>
+                      <textarea name="content" id="content" class="form-control" placeholder="내용을 입력해주세요."></textarea>
                     </div>
                     <div class="form-group">
                       <label for="writer">작성자</label>
-                      <input name="writer" value="${boardVO.writer}" type="text" class="form-control" id="writer" placeholder="작성자를 입력해주세요." required>
+                      <input name="writer" type="text" class="form-control" id="writer" placeholder="작성자를 입력해주세요." required>
                     </div>
                     <div class="form-group">
                       <label">첨부파일</label>
@@ -66,15 +67,7 @@
                           <input name="file" type="file" class="custom-file-input" id="file_${idx}">
                           <label class="custom-file-label" for="file_${idx}">파일선택</label>
                         </div>
-                      <c:if test="${boardVO.save_file_names[idx] != null}">
-                      	<p class="text-muted">
-                      		<a href="/download?save_file_name=${boardVO.save_file_names[idx]}&real_file_name=${boardVO.real_file_names[idx]}">첨부파일명
-                      		${boardVO.real_file_names[idx]}
-                      		</a>
-                      		&nbsp;<button type="button" class="btn btn-info btn-file-delete">삭제</button>
-                      		<input type="hidden" name="save_file_name" value="${boardVO.save_file_names[idx]}">
                       	</p>
-                      </c:if>
                       </div>
                       <div class="mb-2"></div>
                       </c:forEach>
@@ -83,13 +76,11 @@
                   <!-- /.card-body -->
   
                   <div class="card-footer text-right">
-                    <button type="submit" class="btn btn-primary">수정</button>
-                    <a href="board_view?bno=${boardVO.bno}&page=${pageVO.page}&search_type=${pageVO.search_type}" class="btn btn-default">뷰화면</a>
+                    <button type="submit" class="btn btn-primary">등록</button>
+                    <a href="board_list?page=${pageVO.page}&search_type=${pageVO.search_type}" class="btn btn-default">뷰화면</a>
                   </div>
 	                <input name="page" value="${pageVO.page}" type="hidden">
 		            <input name="search_type" value="${pageVO.search_type}" type="hidden">
-		            <%-- <input name="search_keyword" value="${pageVO.search_keyword}" type="hidden"> --%>
-		            <input name="bno" value="${boardVO.bno}" type="hidden">
                 </form>
               </div>
             </div>
@@ -101,30 +92,6 @@
     <!-- /.content-wrapper -->
 
 <%@ include file="../include/footer.jsp" %>
-<!-- 첨부파일 개별삭제 -->
-<script>
-$(document).ready(function(){
-	$(".btn-file-delete").click(function(){
-		if(confirm('선택한 첨부파일을 삭제하시겠습니까?')){
-			var click_element = $(this);
-			var save_file_name = click_element.parent().find('input[name=save_file_name]').val();
-			$.ajax({
-				type:"post",
-				url:"/file_delete?save_file_name="+save_file_name,
-				dataType:"text",
-				success:function(result){
-					if(result=="success"){
-						click_element.parents(".div_file_delete").remove();
-					}
-				},
-				error:function(){
-					alert("RestAPI서버가 작동하지 않습니다. 잠시 후에 이용해주세요.");
-				}
-			});
-		}
-	});
-});
-</script>
 
 <script src="/resources/admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js" ></script>
  <!-- 섬머노트 -->
