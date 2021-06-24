@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                       <label for="maincont">글 내용</label>
-                      <textarea name="content" id="content" class="form-control" placeholder="내용을 입력해주세요." required>${boardVO.content}</textarea>
+                      <textarea name="content" id="content" class="form-control" placeholder="내용을 입력해주세요.">${boardVO.content}</textarea>
                     </div>
                     <div class="form-group">
                       <label for="writer">작성자</label>
@@ -128,5 +128,14 @@
           ["view",["fullscreen","help"]]
         ]
       });
+    });
+    
+    ${"form[name='form_update']"}.on('submit',function(e){
+    	if($("#content").summernote('isEmpty')){
+    		console.log("contentes is empty");
+    		e.preventDefault();
+    	}else{
+    		submit();
+    	}
     });
   </script>

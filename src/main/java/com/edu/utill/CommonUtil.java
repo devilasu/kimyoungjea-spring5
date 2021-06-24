@@ -1,6 +1,7 @@
 package com.edu.utill;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -93,12 +94,14 @@ public class CommonUtil {
 	}
 
 	//파일 업로드 공통 메서드(Admin컨트롤러에서 사용, Home컨트롤러에서 사용)
-	public String fileUpload(MultipartFile file) throws Exception {
+	public String fileUpload(MultipartFile file) throws IOException {
 		// TODO UUID클랫그로 저장될 고유식별 파일명을 생성.
 		String realFileName = file.getOriginalFilename();
 		//폴더에 저장할 PK파일명을 생성
 		UUID uid = UUID.randomUUID();
 		String saveFileName = uid.toString()+"."+StringUtils.getFilenameExtension(realFileName);
+		//file의 MultipartFile의 자료는 직접 저장할 수 없음.
+		//그래서, 바이트형으로 변환해서 저장해야함.
 		byte[] fileData = file.getBytes();
 		File target = new File(uploadPath,saveFileName);
 		FileCopyUtils.copy(fileData, target);

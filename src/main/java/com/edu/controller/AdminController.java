@@ -52,23 +52,29 @@ public class AdminController {
 		List<AttachVO> delFiles = boardService.readAttach(boardVO.getBno());
 		String[] save_file_names=new String[files.length];
 		String[] real_file_names=new String[files.length];
-		int idx=0;
+		int idx=0;//jsp폼에서 보내온 파일에 대한 인덱스 초기값 변수
 		for(MultipartFile file:files) {
 			if(file.getOriginalFilename() !="") {
-				int sun = 0;
+				int sun = 0;//DB테이블에 저장된 순서에대한 인덱스 초기값 변수.
 				for(AttachVO file_name:delFiles) {//jsp폼에서 1번위치에 기존파일이 있으면, 1번 위치 지우고 새 파일 저장.
 					if(idx==sun) {
 						File target = new File(commonUtil.getUploadPath(),file_name.getSave_file_name());
 						if(target.exists()) {
 							target.delete();//물리적인 파일 지우는 명령
 						}
-						sun = sun+1;
 					}
-					save_file_names[idx] = commonUtil.fileUpload(file); //jsp폼에서 전송파일
-					real_file_names[idx] = file.getOriginalFilename();//UI용 임시저장
+						sun = sun+1;
 				}
+				save_file_names[idx] = commonUtil.fileUpload(file); //jsp폼에서 전송파일
+				real_file_names[idx] = file.getOriginalFilename();//UI용 임시저장
+			}else {
+				save_file_names[idx] = null;
+				real_file_names[idx] = null;
 			}
+			idx++;
 		}
+		boardVO.setSave_file_names(save_file_names);
+		boardVO.setReal_file_names(real_file_names);
 		String rawData = boardVO.getContent();
 		String secData = commonUtil.unScript(rawData);
 		boardVO.setContent(secData);

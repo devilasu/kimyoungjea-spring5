@@ -60,7 +60,7 @@
 	</bean>
     <!-- 파일업로드 설정 업로드 폴더위치 전역변수로 생성-->
     <bean id="uploadPath" class="java.lang.String">
-    <constructor-arg value="D:\\study" />
+    <constructor-arg value="D:\\study\uploadFile" />
     </bean>
 	
 </beans>
