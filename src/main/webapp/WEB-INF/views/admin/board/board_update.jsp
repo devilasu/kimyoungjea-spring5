@@ -50,7 +50,7 @@
                       <input name="title" value="${boardVO.title}" type="text" class="form-control" id="title" placeholder="글 제목을 입력해주세요." required>
                     </div>
                     <div class="form-group">
-                      <label for="maincont">글 내용</label>
+                      <label for="content">글 내용</label>
                       <textarea name="content" id="content" class="form-control" placeholder="내용을 입력해주세요.">${boardVO.content}</textarea>
                     </div>
                     <div class="form-group">
@@ -68,7 +68,12 @@
                         </div>
                       <c:if test="${boardVO.save_file_names[idx] != null}">
                       	<p class="text-muted">
-                      		<a href="/download?save_file_name=${boardVO.save_file_names[idx]}&real_file_name=${boardVO.real_file_names[idx]}">첨부파일명
+                      		<c:url value="/download" var="downloadUrl">
+                      			<c:param name="save_file_name" value="${boardVO.save_file_names[idx]}" />
+                      			<c:param name="real_file_name" value="${boardVO.real_file_names[idx]}" />
+                      		</c:url>
+                      		<a href="${downloadUrl}">
+                      		<%-- <a href="/download?save_file_name=${boardVO.save_file_names[idx]}&real_file_name=${boardVO.real_file_names[idx]}"> --%>첨부파일명
                       		${boardVO.real_file_names[idx]}
                       		</a>
                       		&nbsp;<button type="button" class="btn btn-info btn-file-delete">삭제</button>

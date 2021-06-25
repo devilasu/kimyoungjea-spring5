@@ -39,19 +39,14 @@
                   <div class="card-body">
                     <div class="form-group">
                       <label>게시판타입</label>
-                      <select  name="board_type" class="form-control">
-                      <!-- 세션값을 비교값으로 사용하는 이유는 신규등록이기때문에 기존게시물 정보가 없습니다. -->
-                      <c:forEach var="boardTypeVO" items="${listBoardTypeVO}"> 
-                        <option ${session_board_type==boardTypeVO.board_type?'selected':''} value="${boardTypeVO.board_type}">${boardTypeVO.board_name}</option>
-                      </c:forEach>
-                      </select>
+                      <input readonly type="text" class="form-control"  name="board_type" value="${session_board_type}">게시판
                     </div>
                     <div class="form-group">
                       <label for="title">글 제목</label>
                       <input name="title" type="text" class="form-control" id="title" placeholder="글 제목을 입력해주세요." required>
                     </div>
                     <div class="form-group">
-                      <label for="maincont">글 내용</label>
+                      <label for="content">글 내용</label>
                       <textarea name="content" id="content" class="form-control" placeholder="내용을 입력해주세요."></textarea>
                     </div>
                     <div class="form-group">
@@ -67,7 +62,6 @@
                           <input name="file" type="file" class="custom-file-input" id="file_${idx}">
                           <label class="custom-file-label" for="file_${idx}">파일선택</label>
                         </div>
-                      	</p>
                       </div>
                       <div class="mb-2"></div>
                       </c:forEach>
@@ -119,7 +113,7 @@
           ["view",["fullscreen","help"]]
         ]
       });
-      $("form[name='form_update']").on('submit',function(e){
+      $("form[name='form_write']").on('submit',function(e){
       	if($("#content").summernote('isEmpty')){
       		alert("내용을 입력해주세요.");
       		e.preventDefault();

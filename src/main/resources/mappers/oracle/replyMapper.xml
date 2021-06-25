@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="replyMapper">
+<delete id="deleteReply">
+	delete from tbl_reply where tbl_reply.rno=#{rno}
+</delete>
+
+<delete id="deleteReplyAll">
+	 delete from tbl_reply where tbl_reply.bno=#{bno} 
+</delete>
+
+<update id="updateReply">
+	update tbl_reply set
+	reply_text=#{reply_text}
+	,update_text = systimestamp
+	where replyer=#{replyer}
+</update>
+<!-- 댓글 등록시 replyCount++ -->
+<update id="replyCountUpdate">
+	update tbl_board set
+	reply_count= (select count(*) from tbl_reply where tbl_reply.bno=#{bno})
+	where tbl_board.bno=#{bno}
+</update>
+
+<insert id="insertReply">
+	insert into tbl_reply values(
+		<selectKey keyProperty="rno" resultType="int" order="BEFORE">
+		select seq_rno.nextVal from dual
+		</selectKey>
+		#{reply_text},
+		#{replyer},
+		systimedate,
+		#{update_date}
+		#{bno},
+	)
+	
+</insert>
+<select id="countReply" resultType="int">
+	select count(*) from tbl_reply
+</select>
+<select id="selectReply" resultType="com.edu.vo.ReplyVO">
+	select * from
+	(
+	select rownum, tableA.* from
+	(
+		select * from tbl_reply
+		order by rno desc
+	)tableA
+	<![CDATA[
+	where rownum < #{queryStartNo}+#{queryPerPageNo}
+	)tableB
+	where rownum >= queryStartNo
+	]]>
+</select>
+</mapper>

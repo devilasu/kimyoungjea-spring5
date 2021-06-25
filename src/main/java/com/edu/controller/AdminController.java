@@ -48,6 +48,25 @@ public class AdminController {
 	@Inject
 	private IF_BoardDAO boardDAO;
 	
+	@RequestMapping(value="/admin/board/board_insert",method=RequestMethod.POST)
+	public String board_insert(@RequestParam("file")MultipartFile[] files, BoardVO boardVO) throws Exception{
+		//신규 등록이기 때문에 기존 파일 불러오는 로직이 필요 없다.
+		String[] save_file_names=new String[files.length];
+		String[] real_file_names=new String[files.length];
+		int idx = 0;
+		for(MultipartFile file:files) {
+			if(file.getOriginalFilename() != "") {//첨부파일이 있다면
+				save_file_names[idx] = commonUtil.fileUpload(file);
+				real_file_names[idx] = file.getOriginalFilename();
+			}
+			idx++;
+		}
+		boardVO.setSave_file_names(save_file_names);
+		boardVO.setReal_file_names(real_file_names);
+		boardService.insertBoard(boardVO);
+		return "redirect:/admin/board/board_list";//redirect를 사용하지 않으면, 새로고침시 무한등록
+	}
+	
 	@RequestMapping(value="/admin/board/board_insert_form",method=RequestMethod.GET)
 	public String board_insert_form(@ModelAttribute("pageVO")PageVO pageVO) throws Exception{
 		
