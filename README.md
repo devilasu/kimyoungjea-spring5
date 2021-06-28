@@ -30,8 +30,13 @@
 - 헤로쿠 클라우드에 배포 (9.클라우드 배포구현).
 - 문서작업(제출용)
 
-#### 20210628 (월) 작업예정.
+#### 20210628 (월) 작업.
 - @RestController클래스 제작->크롬부메랑테스트->JSP제작
+- @RestController클래스제작: 일반 컨트롤러와 다르게 반환값이 body임.
+- Endpoint	: 마이크로서비스는 RestAPI로 구현되고, 이 요청하는 URL을 Endpoint라고 한다.
+- 마이크로소프트	: 모듈화 하는거랑 같은듯?
+- 쿼리스트링	: /reply/reply_list?bno=59&page=1
+- Rest API	: /reply/reply_list/{bno}/{page}
 
 
 #### 20210625 (금) 작업.
