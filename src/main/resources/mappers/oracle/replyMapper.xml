@@ -12,8 +12,8 @@
 <update id="updateReply">
 	update tbl_reply set
 	reply_text=#{reply_text}
-	,update_text = systimestamp
-	where replyer=#{replyer}
+	,update_date = systimestamp
+	where rno=#{rno}
 </update>
 <!-- 댓글 등록시 replyCount++ -->
 <update id="replyCountUpdate">
@@ -23,15 +23,18 @@
 </update>
 
 <insert id="insertReply">
-	insert into tbl_reply values(
-		<selectKey keyProperty="rno" resultType="int" order="BEFORE">
-		select seq_rno.nextVal from dual
-		</selectKey>
+	<selectKey keyProperty="rno" resultType="int" order="BEFORE">
+	select seq_rno.nextVal from dual
+	</selectKey>
+	insert 
+	into tbl_reply(rno,reply_text,replyer,reg_date,update_date,bno)
+	values(
+		#{rno},
 		#{reply_text},
 		#{replyer},
-		systimedate,
-		#{update_date}
-		#{bno},
+		systimestamp,
+		systimestamp,
+		#{bno}
 	)
 	
 </insert>
@@ -48,9 +51,9 @@
 		order by rno desc
 	)tableA
 	<![CDATA[
-	where rownum < #{pageVO.queryStartNo}+#{pageVO.queryPerPageNo}
+	where rownum < #{pageVO.queryStartNum}+#{pageVO.queryPerPageNum}
 	)tableB
-	where rownum >= #{pageVO.queryStartNo}
+	where rownum >= #{pageVO.queryStartNum}
 	]]>
 </select>
 </mapper>

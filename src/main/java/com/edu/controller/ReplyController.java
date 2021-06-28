@@ -7,9 +7,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +31,35 @@ import com.edu.vo.ReplyVO;
 public class ReplyController {
 	@Inject
 	private IF_ReplyService replyService;
+	
+	//댓글은 Read가 필요없음. Ajax로 처리하기 때문에.
+	@RequestMapping(value = "reply/reply_update",method = RequestMethod.PATCH)
+	public ResponseEntity<String> reply_update(@RequestBody ReplyVO replyVO ){
+		ResponseEntity<String> result = null;
+		try {
+			replyService.updateReply(replyVO);
+			result = new ResponseEntity<String>("success",HttpStatus.OK);
+		}catch(Exception e) {
+			result = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return result;
+	}
+	
+	//댓글 등록
+	@RequestMapping(value="/reply/reply_insert", method = RequestMethod.POST)
+	public ResponseEntity<String> reply_insert(@RequestBody ReplyVO replyVO){
+		ResponseEntity<String> result = null;
+		//try~catch로 직접처리 하는 목적 Rest 상태값을 보내주기 위해서
+	
+		try {
+
+		replyService.insertReply(replyVO);
+		result = new ResponseEntity<String>("success",HttpStatus.OK);
+		}catch(Exception e){
+			result = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return result;
+	}
 	
 	@RequestMapping(value="/reply/reply_list/{bno}/{page}", method = RequestMethod.POST)//현재 도메인에서만 사용가능하도록 하기위해서.
 	public ResponseEntity<Map<String,Object>> reply_list(@PathVariable("bno")Integer bno, @PathVariable("page")Integer page) {
@@ -71,7 +102,9 @@ public class ReplyController {
 			//아래의 Json데이터형태는 일반컨트롤러에서 사용했던 model사용해서 ("변수명",객체내용) 전송한 방식과 동일
 			if(pageVO.getTotalCount() > 0) {
 				//아래 resultMap을 만든 목적은: 위 List객체를 ResponseEntity객체의 매개변수로 사용.
+				
 				resultMap.put("replyList", replyService.selectReply(bno,pageVO));
+				resultMap.put("pageVO", pageVO);
 				//객체를 2개 이상 보내게 되는 상황일때, Json데이터형태(key:value)로 만들어서 보냅니다. 
 				//--------------------------------------------------------
 				//result객체를 만든목적:RestApi클라이언트(jsp쪽)으로 resultMap객체를 보낼때 상태값을 위해서
