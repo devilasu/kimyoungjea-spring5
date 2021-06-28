@@ -32,6 +32,14 @@ public class ReplyController {
 	@Inject
 	private IF_ReplyService replyService;
 	
+	//댓글 삭제
+	@RequestMapping(value = "reply/reply_delete", method = RequestMethod.DELETE)
+	public ResponseEntity<String> reply_delete(){
+		ResponseEntity<String> result = null;
+		
+		return result;
+	}
+	
 	//댓글은 Read가 필요없음. Ajax로 처리하기 때문에.
 	@RequestMapping(value = "reply/reply_update",method = RequestMethod.PATCH)
 	public ResponseEntity<String> reply_update(@RequestBody ReplyVO replyVO ){
