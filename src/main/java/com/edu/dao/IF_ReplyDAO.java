@@ -12,5 +12,5 @@ public interface IF_ReplyDAO {
 	public void replyCountUpdate(Integer bno) throws Exception;
 	public int countReply(Integer bno) throws Exception;
 	public void insertReply(ReplyVO replyVO) throws Exception;
-	public List<ReplyVO> selectReply(PageVO pageVO) throws Exception;
+	public List<ReplyVO> selectReply(Integer bno, PageVO pageVO) throws Exception;
 }

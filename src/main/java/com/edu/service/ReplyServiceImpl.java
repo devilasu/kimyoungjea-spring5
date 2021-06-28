@@ -4,12 +4,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.dao.IF_ReplyDAO;
 import com.edu.vo.PageVO;
 import com.edu.vo.ReplyVO;
 
+@Service
 public class ReplyServiceImpl implements IF_ReplyService{
 
 	@Inject
@@ -44,9 +46,9 @@ public class ReplyServiceImpl implements IF_ReplyService{
 	}
 
 	@Override
-	public List<ReplyVO> selectReply(PageVO pageVO) throws Exception {
+	public List<ReplyVO> selectReply(Integer bno, PageVO pageVO) throws Exception {
 		// TODO Auto-generated method stub
-		return replyDAO.selectReply(pageVO);
+		return replyDAO.selectReply(bno, pageVO);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.edu.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,9 +57,12 @@ public class ReplyDAOImpl implements IF_ReplyDAO{
 	}
 
 	@Override
-	public List<ReplyVO> selectReply(PageVO pageVO) throws Exception {
+	public List<ReplyVO> selectReply(Integer bno, PageVO pageVO) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("replyMapper.selectReply",pageVO);
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("bno", bno);
+		paramMap.put("pageVO", pageVO);
+		return sqlSession.selectList("replyMapper.selectReply",paramMap);
 	}
 
 }
