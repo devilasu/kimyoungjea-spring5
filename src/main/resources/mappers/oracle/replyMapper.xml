@@ -44,7 +44,7 @@
 <select id="selectReply" resultType="com.edu.vo.ReplyVO">
 	select * from
 	(
-	select rownum, tableA.* from
+	select rownum as rnum, tableA.* from
 	(
 		select * from tbl_reply
 		where bno = #{bno}
@@ -53,7 +53,7 @@
 	<![CDATA[
 	where rownum < #{pageVO.queryStartNum}+#{pageVO.queryPerPageNum}
 	)tableB
-	where rownum >= #{pageVO.queryStartNum}
+	where rnum >= #{pageVO.queryStartNum}
 	]]>
 </select>
 </mapper>

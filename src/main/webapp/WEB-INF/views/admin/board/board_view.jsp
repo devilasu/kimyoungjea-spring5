@@ -144,6 +144,7 @@
                 </div>
                 <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
                 <button type="button" class="btn btn-warning" id="btn_reply_write">댓글등록</button>
+                <input type="hidden" value="1" id="reply_page">
                 </div>
               </div>
               </div>
@@ -163,7 +164,7 @@
           <div class="time-label">
             <span class="bg-red" data-toggle="collapse" href="#collapseReply" role="button" id="btn_reply_list">
               댓글리스트
-              [<span>1</span>]
+              [<span id="reply_count">${boardVO.reply_count}</span>]
             </span>
           </div>
           <!-- 콜랩스 시작 -->
@@ -238,6 +239,88 @@
 <script>
 $(document).ready(function(){
 	var form_view = $("form[name='form_view']");//전역변수
+	$("#btn_reply_list").click(function(){
+		replyList()
+	});
+	$("#btn_reply_write").click(function(){
+		//RestAPI서버로 보낼 값 지정
+		var bno = "${boardVO.bno}";	//자바 변수값
+		var reply_text =$("#reply_text").val();
+		var replyer = $("#replyer").val();
+		if(reply_text =="" || replyer==""){
+			alert("필수 입력값을 입력하지 않았습니다.");
+			return false;
+		}
+		$.ajax({
+			url:"/reply/reply_insert",
+			type:"post",
+			dataType:"text",	//전송받는 데이터 타입
+			data:JSON.stringify({//전송하는 데이터 타입
+				bno:bno,
+				reply_text:reply_text,
+				replyer:replyer
+			}),	//JSON을 텍스트로 변경
+			headers:{//JSON데이터 형식으로 브라우저에 내장된 헤더값 지정
+				"Content-Type":"application/json",
+				"X-HTTP-Method-Override":"POST"
+			},
+			success:function(){//댓글 입력이 성공했을 때.
+				var reply_count = $("#reply_count").text();
+				$("#reply_count").text(parsInt(reply_count)+1);
+				//댓글 신규등록 후 1페이지로 이동
+				$("#reply_page").val("1");
+			},
+			error:function(){
+				alert("서버 에러");
+			}
+		});
+	});
+});
+</script>
+
+<script>
+$(document).ready(function(){
+	$("#btn_reply_delete").click(function(){});
+	$("#btn_reply_update").click(function(){
+		var rno = $("#rno").val();
+		var reply_text = $("#modal_reply_text").val();
+		if(reply_text == ''||rno==''){
+			alert("댓글내용이 비었습니다.");
+			return false;
+		}
+		$.ajax({
+			type:'patch',
+			url:'/reply/reply_update',
+			dataType:'text',
+			data:JSON.stringify({
+				rno:rno,
+				reply_text:reply_text
+			}),
+			headers:{
+				"Content-Type":"application/json",
+				"X-HTTP-Method-Override":"PATH"
+			},
+			success:function(result){
+				if(result=="success"){
+					alert("수정에 성공했습니다.");
+					$("#modal-reply").modal("hide");
+					replyList();
+				}
+				
+			},
+			error:function(){
+				alert("서버에러");
+			}
+		})
+	});
+	
+	//하단 페이징 링크의 링크 속성처리
+	$(".pagination").on("click","li a",function(event){
+		event.preventDefault();//a태그의 링크속성을 사용하지 않겠다.
+		$("#reply_page").val($(this).attr("href"));
+		replyList();
+	});
+	//댓글리스트 버튼 
 	$("#btn_list").click(function(){
 		//여기서는 함수내 변수
 		form_view.attr("action","/admin/board/board_list");
@@ -251,4 +334,124 @@ $(document).ready(function(){
 		}
 	});
 });
+
 </script>
+
+<script>
+//화면을 재구현하는 함수
+var printReplyList = function(data, templateData, target){
+	  var template = Handlebars.compile(templateData.html()); //html태그로 변환
+	  var html = template(data); //빅데이터를 리스트템플릿에 바인딩 결합시켜주는 역할
+	  $(".div_template").remove();//화면에 보이는 댓글리스트만 지우기
+	  target.prepend(html);
+};
+//페이징을 재구현하는 함수
+//댓글 하단 페이징을 출력 함수
+var printPagingList = function(pageVO, target) {
+  //스프링RestAPI서버에서 받은 pageVO 오브젝트 target에 파싱합니다(아래)
+  $(target).html('');// tartget 의 내용만 지우고, target은 남아있음.
+//pageVO = 스프링에서 받은 json데이터, 변수3개 pageVO.prev(이전데이터가 있다면 true), pageVO.next(다음데이터 있다면 true), pageVO=5페이지로 가정
+	var pagination = '';//문자열 누적변수
+	//Previous 출력(아래)
+	var prevlink, nextlink;
+	if(pageVO.prev) { prevlink = ''; } else { prevlink = 'disabled'; }
+	pagination += '<li class="paginate_button page-item previous '+prevlink+'" id="example2_previous">';
+	pagination += '<a href="'+(pageVO.startPage-1)+'" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>';
+	pagination += '</li>';//pagination = pagination + '</li>';//여기 Previous
+	var active = '';
+	for(var i=pageVO.startPage; i<=pageVO.endPage; i++) {
+		if(i==pageVO.page) { active = 'active'; } else { active = ''; }
+		pagination += '<li class="paginate_button page-item '+active+'">';
+		pagination += '<a href="'+i+'" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">'+i+'</a>';
+		pagination += '</li>';
+	}
+	//Next 출력(아래)
+	if(pageVO.next) { nextlink = ''; } else { nextlink = 'disabled'; }
+	pagination += '<li class="paginate_button page-item next '+nextlink+'" id="example2_next">';
+	pagination += '<a href="'+(pageVO.endPage+1)+'" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>';
+	pagination += '</li>';
+	$(target).append(pagination);
+};
+
+var replyList = function(){
+	var page=$("#reply_page").val();
+	$.ajax({
+		type:"POST",
+		url:"/reply/reply_list/${boardVO.bno}/"+page,
+		dataType:"json",
+		success:function(result){
+			if(typeof result =="undefined" || result == "" ||result == null){
+				$("#collapseReply").empty(); //div태그를 삭제하기.
+				$("#collapseReply").html('<div class="pagination justify-content-center"><ul class="pagination pageVO">조회된 값이 없습니다.</ul></div>');	
+			}else{
+				//json데이터를 화면에 파싱합니다.
+				//템플릿에 result데이터를 바인딩
+				//JSON.parse(문자열)->일반문자열을 json으로
+				//JSON.stringify(json데이터)->json데이터를 문자열로
+				//console.log("여기까지"+JSON.stringify(result.replyList));
+				printReplyList(result.replyList,$("#template"),$("#collapseReply"));
+				printPagingList(result.pageVO,".pagination");
+				
+			}
+		},
+		error:function(){
+			alert("서버에러");
+		}
+		
+	});
+};
+</script>
+
+ <!-- 모달창(초기에 안보임) -->
+<div class="modal fade" id="modal-reply">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h4 class="modal-title">작성자이름</h4>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  <input type="text" class="form-control" id="modal_reply_text" placeholder="댓글내용수정">
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+		  <button type="button" class="btn btn-primary" id="btn_reply_update">수정</button>
+		  <button type="button" class="btn btn-danger" id="btn_reply_delete">삭제</button>
+		  <input type="hidden" id="rno" name="rno">
+		</div>
+	  </div>
+	  <!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+  </div>
+
+
+  <!-- 팝업창 내용 동적으로 변경 -->
+  <script>
+	  $(document).ready(function(){
+		  $(".timeline").on("click", ".div_template",function(){
+			  $("#rno").val($(this).attr("data-rno"));
+			  $(".modal-title").html($(this).find(".timeline-header").text());
+			  $("#modal_reply_text").val($(this).find(".timeline-body").text());
+		  })
+	  });
+  </script>
+   <!-- 댓글내용 출력 원본 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script id="template" type="text/x-handlebars-template">
+		{{#each .}}
+	<div class="div_template" data-rno="{{rno}}">
+		<i class="fas fa-envelope bg-blue"></i>
+		<div class="timeline-item">
+		<h3 class="timeline-header">{{replyer}}</h3>
+		<div class="timeline-body">{{reply_text}}</div>
+		<div class="timeline-footer">
+			<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-reply">수정</a>
+		</div>
+		</div>
+		</div>
+	</div>
+	{{/each}}
+	</script>

@@ -74,7 +74,7 @@ public class CommonUtil {
 		//FileSyste...은 스프링 코어에서 제공하는 전용 파일처리 클래스
 		File file = new File(uploadPath+"/"+save_file_name);
 		response.setContentType("application/download; utf-8");//한글 깨지는 것 방지.
-		real_file_name = URLEncoder.encode(real_file_name);//ie에서 URL한글일때 에러 방지 코드
+		real_file_name = URLEncoder.encode(real_file_name,"UTF-8");//ie에서 URL한글일때 에러 방지 코드
 		response.setHeader("Content-Disposition", "attachment; filename="+real_file_name);
 		
 		

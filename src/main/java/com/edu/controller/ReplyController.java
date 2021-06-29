@@ -1,13 +1,10 @@
 package com.edu.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,10 +30,20 @@ public class ReplyController {
 	private IF_ReplyService replyService;
 	
 	//댓글 삭제
-	@RequestMapping(value = "reply/reply_delete", method = RequestMethod.DELETE)
-	public ResponseEntity<String> reply_delete(){
+	@RequestMapping(value = "reply/reply_delete/{bno}/{rno}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> reply_delete(@PathVariable("bno")Integer bno,@PathVariable("rno")Integer rno){
 		ResponseEntity<String> result = null;
-		
+		ReplyVO replyVO = new ReplyVO();
+		replyVO.setBno(bno);
+		replyVO.setRno(rno);
+		try {
+		replyService.deleteReply(replyVO);
+		result = new ResponseEntity<String>("success",HttpStatus.OK);
+		}catch(Exception e)
+		{
+			result = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
+		}
 		return result;
 	}
 	
