@@ -18,14 +18,12 @@
 	<!-- 특정 url 패턴에 해당하는 권한 부여(아래)
 		밑에서 위로 해석된다.
 	-->
-		<security:intercept-url pattern="/**" access="permitAll"/>
-	<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/**/*_write" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" method="GET"/>
 	<security:intercept-url pattern="/**/*_update" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/**/*_delete" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/**/member/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')"/>
-
+	<security:intercept-url pattern="/**" access="permitAll"/>
 	<security:csrf disabled="true"/>
 	<!-- 접근허용이 안된 사용자들을 체크해서 로그인 폼으로 이동하게 설정 
 		login-processing처리는 jsp로그인폼의 POST방식 /login처리(컨트롤러에서 필요 없음)
