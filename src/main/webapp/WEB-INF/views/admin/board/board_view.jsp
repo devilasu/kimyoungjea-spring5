@@ -264,11 +264,12 @@ $(document).ready(function(){
 				"Content-Type":"application/json",
 				"X-HTTP-Method-Override":"POST"
 			},
-			success:function(){//댓글 입력이 성공했을 때.
+			success:function(result){//댓글 입력이 성공했을 때.
 				var reply_count = $("#reply_count").text();
-				$("#reply_count").text(parsInt(reply_count)+1);
+				$("#reply_count").text(parseInt(reply_count)+1);
 				//댓글 신규등록 후 1페이지로 이동
 				$("#reply_page").val("1");
+				replyList();
 			},
 			error:function(){
 				alert("서버 에러");
@@ -280,9 +281,30 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function(){
-	$("#btn_reply_delete").click(function(){});
+	$("#btn_reply_delete").click(function(){
+			var rno = $("#rno").val();
+			var bno = "${boardVO.bno}";
+		$.ajax({
+			type:'delete',
+			url:"/reply/reply_delete/"+bno+"/"+rno,
+			dataType:'text',
+			success:function(result){
+				if(result=='success'){
+					alert("삭제가 성공하였습니다.");
+					var reply_count = $("#reply_count").text();
+					$("#reply_count").text(parseInt(reply_count)-1);
+					replyList();
+					$("#modal-reply").modal("hide");
+				}
+			},
+			error:function(){
+				alert("서버에러");
+			}
+		});
+	});
 	$("#btn_reply_update").click(function(){
 		var rno = $("#rno").val();
+		var bno = "${boardVO.bno}";
 		var reply_text = $("#modal_reply_text").val();
 		if(reply_text == ''||rno==''){
 			alert("댓글내용이 비었습니다.");
@@ -438,20 +460,3 @@ var replyList = function(){
 		  })
 	  });
   </script>
-   <!-- 댓글내용 출력 원본 -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
-	<script id="template" type="text/x-handlebars-template">
-		{{#each .}}
-	<div class="div_template" data-rno="{{rno}}">
-		<i class="fas fa-envelope bg-blue"></i>
-		<div class="timeline-item">
-		<h3 class="timeline-header">{{replyer}}</h3>
-		<div class="timeline-body">{{reply_text}}</div>
-		<div class="timeline-footer">
-			<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-reply">수정</a>
-		</div>
-		</div>
-		</div>
-	</div>
-	{{/each}}
-	</script>

@@ -44,4 +44,25 @@
 <!-- <script src="/resources/admin/dist/js/pages/dashboard.js"></script> -->
 </body>
 </html>
-    
+<script>
+//왼쪽메뉴 선택시 active 부트스트랩 클래스를 동적 추가.
+$(document).ready(function(){
+	//현재 선택한 url값을 기준으로 지정
+	var current = location.pathname;//현재  url경로 추출
+	var current2 = current.split("/")[2];
+	$(".nav-treeview li a").each(function(){
+		if($(this).attr("href").indexOf(current2) != -1){
+			if(current2 != "board")
+				$(this).addClass("active");
+		}else{
+			$(this).removeClass("active");
+		}
+	});
+});
+</script>
+<style>
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active{
+	background-color:#fff;
+	color:#000;
+}
+</style>

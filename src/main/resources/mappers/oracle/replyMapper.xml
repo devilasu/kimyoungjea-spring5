@@ -40,6 +40,7 @@
 </insert>
 <select id="countReply" resultType="int">
 	select count(*) from tbl_reply
+	where bno=#{bno}
 </select>
 <select id="selectReply" resultType="com.edu.vo.ReplyVO">
 	select * from
@@ -51,9 +52,9 @@
 		order by rno desc
 	)tableA
 	<![CDATA[
-	where rownum < #{pageVO.queryStartNum}+#{pageVO.queryPerPageNum}
+	where rownum <= #{pageVO.queryStartNum}+#{pageVO.queryPerPageNum}
 	)tableB
-	where rnum >= #{pageVO.queryStartNum}
+	where rnum > #{pageVO.queryStartNum}
 	]]>
 </select>
 </mapper>
