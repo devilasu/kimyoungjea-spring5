@@ -27,7 +27,7 @@ import com.edu.vo.MemberVO;
 public class LoginController {
 	@Inject
 	IF_MemberService memberService;
-	@RequestMapping(value = "/login_success",method = RequestMethod.POST)
+	@RequestMapping(value = "/login_success",method = RequestMethod.GET)
 	public String login_success(HttpServletRequest request, RedirectAttributes rdat) throws Exception{
 		//request: 세션객체를 만들기 위해서
 		//rdat: model객체로 값을 전달 할 수 없을때.
@@ -63,7 +63,7 @@ public class LoginController {
 			MemberVO memberVO = memberService.readMember(userid);
 			session.setAttribute("session_username",memberVO.getUser_name());
 		}
-		rdat.addFlashAttribute("mag","로그인");
+		rdat.addFlashAttribute("msg","로그인");
 		return "redirect:";
 	}
 	

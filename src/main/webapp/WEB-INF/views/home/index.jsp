@@ -100,4 +100,43 @@
 	<!-- //메인컨텐츠영역 -->
 	
 	<%@ include file="./include/footer.jsp" %>
-	
+<script>
+$(document).ready(function() {
+	//슬라이드 실행부분.
+	slideAuto = setTimeout("play_w('right')",3000);
+	//play_w함수 실행(3초가 되기 전에 미리 누르면 버튼이 다 사라지는 버그 발생.)
+	// var slidePlay_hide = setTimeout(function(){
+	// 	$(".rollPlay").css("display","none");
+	// },3000);
+
+	//초기설정: play상태로 play버튼을 감추는 부분
+	$(".rollPlay").css("display","none");
+
+	// 정지버튼을 클릭했을 때
+	$(".rollStop a").click(function(){
+		$(this).parent().hide();
+		$(".rollPlay").css("display","inline-block");
+		//진행버튼을 클릭했을때, setTimeeout로 실행시킨 함수 실행취소
+		if(slideAuto){clearTimeout(slideAuto);}
+	});
+
+	// 진행버튼을 클릭했을 때
+	$(".rollPlay a").click(function(){
+		$(this).parent().hide();
+		$(".rollStop").css("display","inline-block");
+		//슬라이드 함수 실행
+		play_w("right");
+	});
+
+	//슬라이드의 3가지 버튼
+	$(".rollingBtn li.seq a").each(function(index){
+		$(this).click(function(){
+			$(".rollPlay").hide();
+			$(".rollStop").css("display","inline-block");
+			if(slideAuto){clearTimeout(slideAuto);}
+			play_w(index);
+		});
+	});
+
+});
+</script>

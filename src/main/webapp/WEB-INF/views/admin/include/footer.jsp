@@ -14,7 +14,7 @@
     <!-- Control sidebar content goes here -->
     <div class="text-center">
         <h5>로그아웃</h5><hr class="mb-2"/>
-        <button class="btn btn-primary">로그아웃</button>
+        <button class="btn btn-primary" id="btn_logout">로그아웃</button>
     </div>
   </aside>
   <!-- /.control-sidebar -->
@@ -60,6 +60,13 @@ $(document).ready(function(){
 	});
 });
 </script>
+<script>
+//로그아웃 버튼 처리
+$("#btn_logout").click(function(){
+	location.replace('/logout');//security-context의 /logout호출
+});
+</script>
+
 <style>
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active{
 	background-color:#fff;

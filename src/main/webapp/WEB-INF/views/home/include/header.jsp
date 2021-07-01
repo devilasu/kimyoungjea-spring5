@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -31,47 +32,10 @@
 	}
 </style>
 <script>
-	
-
-
-$(document).ready(function() {
-	//슬라이드 실행부분.
-	slideAuto = setTimeout("play_w('right')",3000);
-	//play_w함수 실행(3초가 되기 전에 미리 누르면 버튼이 다 사라지는 버그 발생.)
-	// var slidePlay_hide = setTimeout(function(){
-	// 	$(".rollPlay").css("display","none");
-	// },3000);
-
-	//초기설정: play상태로 play버튼을 감추는 부분
-	$(".rollPlay").css("display","none");
-
-	// 정지버튼을 클릭했을 때
-	$(".rollStop a").click(function(){
-		$(this).parent().hide();
-		$(".rollPlay").css("display","inline-block");
-		//진행버튼을 클릭했을때, setTimeeout로 실행시킨 함수 실행취소
-		if(slideAuto){clearTimeout(slideAuto);}
-	});
-
-	// 진행버튼을 클릭했을 때
-	$(".rollPlay a").click(function(){
-		$(this).parent().hide();
-		$(".rollStop").css("display","inline-block");
-		//슬라이드 함수 실행
-		play_w("right");
-	});
-
-	//슬라이드의 3가지 버튼
-	$(".rollingBtn li.seq a").each(function(index){
-		$(this).click(function(){
-			$(".rollPlay").hide();
-			$(".rollStop").css("display","inline-block");
-			if(slideAuto){clearTimeout(slideAuto);}
-			play_w(index);
-		});
-	});
-
-});
+//공통으로 사용하는 변수
+	if("${msg}" != ""){
+		alert("${msg} 가(이) 성공하였습니다.");
+	}
 </script>
 </head>
 <body>
@@ -88,12 +52,19 @@ $(document).ready(function() {
 			<p class="openMOgnb"><a href="#"><b class="hdd">메뉴열기</b> <span></span><span></span><span></span></a></p>
 			<div class="header_cont">
 				<ul class="util clear">
-					<li><a href="/login_form">로그인</a></li>
-					<li><a href="/join_form">회원가입</a></li>
-					<!-- 로그인 후 보이는 메뉴(아래) -->
-					<li><a href="#">OOO님 환영합니다.</a></li>
-					<li><a href="mypage.html">마이페이지</a></li>
-					<li><a href="/admin">AdminLTE</a></li>
+				<c:choose>
+					<c:when test="${session_enabled eq 'true'}">
+						<!-- 로그인 후 보이는 메뉴(아래) -->
+						<li><a href="#">${session_username}님 환영합니다.</a></li>
+						<li><a href="logout">로그아웃</a>
+						<li><a href="mypage.html">마이페이지</a></li>
+						<li><a href="/admin">AdminLTE</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="/login_form">로그인</a></li>
+						<li><a href="/join_form">회원가입</a></li>
+					</c:otherwise>
+				</c:choose>
 				</ul>	
 				<nav>
 				<ul class="gnb clear">
