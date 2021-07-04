@@ -1,9 +1,4 @@
 package com.edu.controller;
-/**
- * 이 클래스는 Admin관리자단 접근하는 클래스입니다.
- * 변수 Object를 만들어서 jsp로 전송 + jsp 값을 받아서 Object로 처리
- * @author 김영제
- */
 
 import java.io.File;
 import java.util.List;
@@ -25,12 +20,21 @@ import com.edu.dao.IF_BoardDAO;
 import com.edu.service.IF_BoardService;
 import com.edu.service.IF_BoardTypeService;
 import com.edu.service.IF_MemberService;
-import com.edu.utill.CommonUtil;
+import com.edu.util.CommonUtil;
 import com.edu.vo.AttachVO;
 import com.edu.vo.BoardTypeVO;
 import com.edu.vo.BoardVO;
 import com.edu.vo.MemberVO;
 import com.edu.vo.PageVO;
+
+/**
+ * 이 클래스는 Admin관리자단을 접근하는 컨트롤러 클래스 <- 디스패처 서블렛(게이트웨이) 기능을 합니다.
+ * 디스페처 서블렛 클래스는 톰캣이 실행(web.xml)될때 제일 먼저 실행되는 클래스, 그래서, 게이트웨이라고 합니다.
+ * 디스페처 서블릿 실행될때, 컨트롤러의 Request매핑경로를 재 등록합니다.
+ * 변수 Object를 만들어서 jsp로 전송 <-> jsp 폼값을 받아서 Object로 처리
+ * @author 김일국
+ *
+ */
 @Controller
 public class AdminController {
 	//컨트롤러수정하면 자동로딩(auto컴파일)
@@ -48,102 +52,112 @@ public class AdminController {
 	@Inject
 	private IF_BoardDAO boardDAO;
 	
-	@RequestMapping(value="/admin/board/board_insert",method=RequestMethod.POST)
-	public String board_insert(@RequestParam("file")MultipartFile[] files, BoardVO boardVO) throws Exception{
-		//신규 등록이기 때문에 기존 파일 불러오는 로직이 필요 없다.
-		String[] save_file_names=new String[files.length];
-		String[] real_file_names=new String[files.length];
-		int idx = 0;
+	//게시물 등록을 POST로 처리 합니다.
+	@RequestMapping(value="/admin/board/board_insert", method=RequestMethod.POST)
+	public String board_insert(@RequestParam("file")MultipartFile[] files,BoardVO boardVO) throws Exception {
+		//위 메서드의 BoardVO boardVO 파싱=>내부작동은 다음처럼 됨 @RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("writer") String writer ...
+		//신규 등록이라서 기존 첨부파일 불러오는 로직은 필요없음.
+		//AttachVO테이블에 가로데이터를 세로데이터로 입력하기 위해서...
+		//save_file_names[] = ["uuid1.jpg","uuid2.jpg"]
+		//real_file_names[] = ["슬라이드1.jpg","슬라이드2.jpg"]
+		String[] save_file_names = new String[files.length];
+		String[] real_file_names = new String[files.length];
+		int index = 0;//첨부파일이 1개이상일때 반복변수로 사용
 		for(MultipartFile file:files) {
-			if(file.getOriginalFilename() != "") {//첨부파일이 있다면
-				save_file_names[idx] = commonUtil.fileUpload(file);
-				real_file_names[idx] = file.getOriginalFilename();
+			if(file.getOriginalFilename() != "") {//첨부파일이 있으면 실행
+				save_file_names[index] = commonUtil.fileUpload(file);//물리적인파일저장
+				real_file_names[index] = file.getOriginalFilename();//UI용 파일이름
 			}
-			idx++;
+			index = index + 1;//index++
 		}
+		//신규등록 jsp폼에서 보낸 boardVO값에 아래 file에 대한 임시 변수값을 저장하는 로직
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
-		boardService.insertBoard(boardVO);
-		return "redirect:/admin/board/board_list";//redirect를 사용하지 않으면, 새로고침시 무한등록
+		boardService.insertBoard(boardVO);//DB에 저장하는 서비스 호출(실행)
+		return "redirect:/admin/board/board_list";//게시판 테러방지용 redirect사용(새로고침시 무한등록을 방지)
+		//게시판 신규등록시 자동으로 page가 1로 이동됩니다. 
 	}
-	
-	@RequestMapping(value="/admin/board/board_insert_form",method=RequestMethod.GET)
-	public String board_insert_form(@ModelAttribute("pageVO")PageVO pageVO) throws Exception{
-		
-		return "admin/board/board_insert";
+	//게시물 등록 폼을 Get으로 호출합니다.
+	@RequestMapping(value="/admin/board/board_insert_form", method=RequestMethod.GET)
+	public String board_insert_form(@ModelAttribute("pageVO")PageVO pageVO) throws Exception {
+		if(pageVO.getPage() == null) {
+			pageVO.setPage(1);
+		}
+		return "admin/board/board_insert";//.jsp생략
 	}
-	
 	//게시물 수정처리는 POST로만 접근가능
-	@RequestMapping(value="admin/board/board_update", method=RequestMethod.POST)
-	public String board_update(@RequestParam("file")MultipartFile[] files,BoardVO boardVO,PageVO pageVO) throws Exception{
-		//기존 등록된 첨부파일 목록 구하기
+	@RequestMapping(value="/admin/board/board_update", method=RequestMethod.POST)
+	public String board_update(@RequestParam("file")MultipartFile[] files,BoardVO boardVO, PageVO pageVO) throws Exception {
+		//기존 등록된 첨부파일 목록 구하기 List(2차원배열)객체의 크기는 .size() 구함. 기존파일이 있을때사용
 		List<AttachVO> delFiles = boardService.readAttach(boardVO.getBno());
-		
-		String[] save_file_names=new String[files.length];
-		String[] real_file_names=new String[files.length];
-		int idx=0;//jsp폼에서 보내온 파일에 대한 인덱스 초기값 변수
-		
-		for(MultipartFile file:files) {
-			if(file.getOriginalFilename() !="") {
-				int sun = 0;//DB테이블에 저장된 순서에대한 인덱스 초기값 변수.
-				for(AttachVO file_name:delFiles) {//jsp폼에서 1번위치에 기존파일이 있으면, 1번 위치 지우고 새 파일 저장.
-					if(idx==sun) {
+		//1차원 배열의 크기는 .length 
+		String[] save_file_names = new String[files.length];
+		String[] real_file_names = new String[files.length];
+		int index = 0;//jsp폼에서 보내온 파일에 대한 인덱스 초기값 변수.
+		for(MultipartFile file:files) {//files[0]=file, files[1]
+			if(file.getOriginalFilename() != "") {//전송된 첨부파일명이 있다면 실행
+				int sun = 0;//DB테이블에 저장된 순서에 대한 인덱스 초기값 변수.
+				//아래 for목적: jsp폼에서 기존에 1번위치에 기존파일이 있으면, 기존파일을 지우고, 신규파일 덮어쓰는 로직.
+				for(AttachVO file_name:delFiles) {//기존파일을 가져와서 반복하면서 지우기로직
+					if(index == sun) {//jsp폼의 파일의 순서와 DB에저장된 파일의 순서가 일치할때
 						File target = new File(commonUtil.getUploadPath(),file_name.getSave_file_name());
 						if(target.exists()) {
 							target.delete();//물리적인 파일 지우는 명령
+							//DB지우는 부분  추가
 							boardDAO.deleteAttach(file_name.getSave_file_name());
-						}
-					}
-						sun = sun+1;
-				}
-				save_file_names[idx] = commonUtil.fileUpload(file); //jsp폼에서 전송파일
-				real_file_names[idx] = file.getOriginalFilename();//UI용 임시저장
-			}else {
-				save_file_names[idx] = null;
-				real_file_names[idx] = null;
+						}//if(target.exists())
+					}//if(idx == sun)
+					sun = sun + 1;//sun++
+				}//for(AttachVO file_name:delFiles)
+				//신규파일 업로드
+				save_file_names[index] = commonUtil.fileUpload(file);//jsp폼에서전송파일
+				real_file_names[index] = file.getOriginalFilename();//UI용 이름임시저장
+			}else{//if(file.getOriginalFilename() != "")
+				save_file_names[index] = null;
+				real_file_names[index] = null;
 			}
-			idx++;
-		}
+			index = index + 1;//index++
+		}//for(MultipartFile file:files)
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
-
-		String rawData = boardVO.getContent();
-		String secData = commonUtil.unScript(rawData);
-		boardVO.setContent(secData);
+		//시큐어코딩 추가(아래)
+		String rawContent = boardVO.getContent();
+		String secContent = commonUtil.unScript(rawContent);
+		boardVO.setContent(secContent);
 		String rawTitle = boardVO.getTitle();
 		String secTitle = commonUtil.unScript(rawTitle);
 		boardVO.setTitle(secTitle);
-		boardService.updateBoard(boardVO);
-		//첨부파일 작업전, 시큐어 코딩: 입력,수정시 시큐어코딩 적용
-		
+		//시큐어코딩 끝
+		boardService.updateBoard(boardVO);//게시물수정
+		//첨부파일 작업전, 시큐어코딩 : 입력/수정시 시큐어코딩적용O , 뷰화면 에서 시큐어X 
+				
 		String queryString = "bno="+boardVO.getBno()+"&page="+pageVO.getPage()+"&search_type="+pageVO.getSearch_type();
-		return "redirect:/admin/board/board_view?"+queryString;//새로고침 방지 위해서 redirect사용
+		return "redirect:/admin/board/board_view?"+queryString;//수정한 이후에는 board_view페이지로 이동:새로고침방지하기 위해서 redirect사용
 	}
-	
 	//게시물 수정폼은 URL쿼리스트링으로 접근
 	@RequestMapping(value="/admin/board/board_update_form", method=RequestMethod.GET)
-	public String board_update_form(Model model,@RequestParam("bno")Integer bno,@ModelAttribute("pageVO")PageVO pageVO) throws Exception{
-		//첨부파일용 save_file_names, real_file_names
+	public String board_update_form(Model model, @RequestParam("bno")Integer bno, @ModelAttribute("pageVO") PageVO pageVO) throws Exception {
+		//첨부파일용 save_file_names, real_file_names 2개 배열값을 구해서 boardVO입력이 필요
 		BoardVO boardVO = new BoardVO();
 		boardVO = boardService.readBoard(bno);
+		//여기서 첨부파일 배열을 추가(아래)
 		
 		List<AttachVO> listAttachVO = boardService.readAttach(bno);
 		String[] save_file_names=new String[listAttachVO.size()];
 		String[] real_file_names=new String[listAttachVO.size()];
-		int idx = 0;
-		for(AttachVO file_name:listAttachVO) {
+		int idx=0;
+		//향상된 for문 사용
+		for(AttachVO file_name:listAttachVO) {//세로데이터를 가로데이터로 변경하는 로직
 			save_file_names[idx] = file_name.getSave_file_name();
 			real_file_names[idx] = file_name.getReal_file_name();
-			idx++;
+			idx = idx + 1;//idx++
 		}
-		
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
+		model.addAttribute("boardVO", boardVO);//1개코드 저장
 		
-		model.addAttribute("boardVO",boardVO);
-		return "admin/board/board_update";
+		return "admin/board/board_update";//.jsp생략
 	}
-	
 	//게시물 삭제는 URL쿼리스트링으로 접근하지 않고, post방식으로 처리.
 	@RequestMapping(value="/admin/board/board_delete", method=RequestMethod.POST)
 	public String board_delete(@RequestParam("bno")Integer bno,PageVO pageVO) throws Exception {
@@ -278,6 +292,8 @@ public class AdminController {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			String encPassword = passwordEncoder.encode(rawPassword);
 			memberVO.setUser_pw(encPassword);
+			//스프링시큐리티 내장클래스에서 user_pw(admin1234)와 password(해시값)비교함수
+			//passwordEncoder.matches("admin1234", password);
 		}
 		memberService.updateMember(memberVO);//반환값이 없습니다.
 		//redirect로 페이지를 이동하면, model로 담아서 보낼수 없습니다. 쿼리스트링(URL?)으로 보냅니다.

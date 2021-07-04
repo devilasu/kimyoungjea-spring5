@@ -56,8 +56,8 @@
 					<c:when test="${session_enabled eq 'true'}">
 						<!-- 로그인 후 보이는 메뉴(아래) -->
 						<li><a href="#">${session_username}님 환영합니다.</a></li>
-						<li><a href="logout">로그아웃</a>
-						<li><a href="mypage.html">마이페이지</a></li>
+						<li><a href="/logout">로그아웃</a>
+						<li><a href="/member/mypage_form">마이페이지</a></li>
 						<li><a href="/admin">AdminLTE</a></li>
 					</c:when>
 					<c:otherwise>
