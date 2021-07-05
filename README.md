@@ -32,6 +32,11 @@
 - Deploy 에러: No web processes running
 - 현재 프로젝트에 클라우드용 설정파일 필요 = 헤로쿠-Procfile 
 - 위 Procfile에서 web processes running 라인 추가필요.
+- 스프링에서 작업해서 배포한다는 의미: ALL or Not ALL
+- PHP 작업한 개별파일 1개씩 수정해서 올리는 방식 (워드프레스, 그누보드 등등)
+- 스프링은 작업한 파일이 1개라도 1개만 올리는 것이 아니고, 모든 파일을 컴파일해서 패키징한 후 업로드 합니다.
+- 우리프로젝트에 HsqlDB를 생성(메이븐에서 Hsql모듈을 업데이트하면, 사용가능)
+- 오라클은 로컬에서 개발, HsqlDB는 헤로쿠 클라우드용을 개발할 수 있도록 root-context
 - HsqlDB생성.
 
 #### 20210702(금) 작업.
