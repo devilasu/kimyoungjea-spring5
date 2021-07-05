@@ -16,7 +16,10 @@
 			<!-- 
 				<value>classpath:/properties/oracle.properties</value>
 				 -->
+				 <value>classpath:/properties/cloude.properties</value>
+				<!-- 
 				<value>classpath:/properties/hsql.properties</value>
+				 -->
 			</list>
 		</property>
 	</bean>
@@ -43,22 +46,22 @@
 
 	
 	<!-- Hsql데이터베이스 매니저 실행 /embeded/hsql_file.db 자동으로 생성됨-->
-	<bean depends-on="dataSource-hsql_local"
+<!-- 	<bean depends-on="dataSource-hsql_local"
 	class="org.springframework.beans.factory.config.MethodInvokingBean">
 	<property name="targetClass" value="org.hsqldb.util.DatabaseManagerSwing" />
 	<property name="targetMethod" value="main" />
 	<property name="arguments">
 		<list>
-			<value>--url</value>
+			<value>- -url</value>
 			<value>${DbUrl}</value>
-			<value>--user</value>
+			<value>- -user</value>
 			<value>${DbUserName}</value>
-			<value>--password</value>
+			<value>- -password</value>
 			<value>${DbUserPw}</value>
 		</list>
 	</property>
 	</bean>
-
+ -->
 	
 	<!-- 로컬 oracle log4jdbc드라이버 설정 
 	<bean id="dataSource-oracle_local" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
