@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!-- 헤더, 푸터가 필요없음 ajax로 내용갱신에 사용-->
 <div class="card">
   <div class="card-header border-transparent">
-    <h3 class="card-title">최근공지사항</h3>
+    <h3 class="card-title">최근 ${board_name}</h3>
 
     <div class="card-tools">
       <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -20,21 +22,27 @@
       <table class="table m-0">
         <thead>
         <tr>
-          <th>Order ID</th>
-          <th>Item</th>
-          <th>Status</th>
-          <th>Popularity</th>
+          <th>제목[댓글수]</th>
+          <th>작성자</th>
+          <th>조회수</th>
+          <th>작성일</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td><a href="pages/examples/invoice.html">OR9842</a></td>
-          <td>Call of Duty IV</td>
-          <td><span class="badge badge-success">Shipped</span></td>
-          <td>
-            <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-          </td>
-        </tr>
+        <c:forEach var="boardVO" items="${latestBoard}">
+        	<tr>
+	          <td><a href="/admin/board/board_view?bno=${boardVO.bno}&page=1">
+	          ${boardVO.title}[${boardVO.reply_count}]
+	          </a></td>
+	          <td>${boardVO.writer}</td>
+	          <td><span class="badge badge-success">${boardVO.view_count}</span></td>
+	          <td>
+	            <div class="sparkbar" data-color="#00a65a" data-height="20">
+	            <fmt:formatDate pattern="yyyy-MM-dd hh:MM:ss" value="${boardVO.reg_date}"/> 
+	            </div>
+	          </td>
+	        </tr>
+        </c:forEach>       
         
         </tbody>
       </table>

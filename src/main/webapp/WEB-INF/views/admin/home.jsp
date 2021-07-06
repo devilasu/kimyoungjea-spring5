@@ -69,7 +69,7 @@
         <!-- //최근 등록한 회원목록 -->
         <!-- 최근게시물리스트(공지사항+겔러리+QnA게시판) -->
         <c:forEach var="boardTypeVO" items="${listBoardTypeVO}">
-        <c:import url="/admin/latest/latest_board" />
+        <c:import url="/admin/latest/latest_board?board_type=${boardTypeVO.board_type}&board_name=${boardTypeVO.board_name}" />
         </c:forEach>
         </div>
         <!-- //최근게시물리스트 -->
