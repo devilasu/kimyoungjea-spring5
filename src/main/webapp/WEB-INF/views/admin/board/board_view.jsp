@@ -3,12 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="../include/header.jsp" %>
-<!--IE10,IE11에서 지원하는 전용CSS 
 <style>
+/* 아래 미디어쿼리는 IE10,11에서 지원하는 전용CSS 적용시 사용 */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
- .ie_only{max-height:500px;overflow:hidden}
+ .ie_only {max-height:500px;overflow:auto;}
 }
-</style> -->
+</style>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -69,18 +70,21 @@
               </div>
               <div class="form-group">
                 <label for="exampleInputFile">첨부파일</label>
+                <div class="input-group">
                 <c:forEach begin="0" end="1" var="idx">
 	                <c:if test="${boardVO.save_file_names[idx] != null}">
-	                <div class="file-view">
-	                  	<!-- c:url을 사용하면 한글 인코딩 가능-->
-	                  	<!-- 첨부파일을 URL로 직접접근하지 못하기 때문에 컨트롤러로만 접근이 가능(다운로드전용 메서드생성) -->
-	                  	<c:url value="/download" var="url">
-	                  		<c:param name="save_file_name" value="${boardVO.save_file_names[idx]}" />
-	                  		<c:param name="real_file_name" value="${boardVO.real_file_names[idx]}" />
-	                  	</c:url>
-	                    <a href="${url}">
+	                
+	                  <div class="ie_only" style="">
+	                  	<!-- JSTL의 c:url 태그로 URL감싸주면 인코딩처리됩니다.(한글이 인코딩이됩니다) -->
+	                  	<c:url value="/download" var="url"> 
+						   <c:param name="save_file_name" value="${boardVO.save_file_names[idx]}" />
+						   <c:param name="real_file_name" value="${boardVO.real_file_names[idx]}" /> 
+						</c:url>
+						<a href="${url}">
+	                  	<!-- 첨부파일을 URL로 직접접근하지 못하기 때문에 컨트롤러로만 접근이 가능(다운로드전용 메서드생성)IE에서 한글쿼리스트링문제때문에 사용X -->
+	                    <%-- <a href="/download?save_file_name=${boardVO.save_file_names[idx]}&real_file_name=${boardVO.real_file_names[idx]}"> --%>
 	                    ${boardVO.real_file_names[idx]}
-	                    
+	                    </a>
 	                    <!-- jstl에서 변수사용하기 fn.split('데이터','분할기준값') 목적: 확장자를 이용해서 이미지 미리보기를 할 건지 결정 img태그사용
 	                    	String[] fileNameArray = String.split('변수값','분할기준값');
 	                    -->
@@ -92,17 +96,18 @@
 	                    <!-- containsIgnoreCase('찾을값의문장','비교기준값') -->
 	                    <c:choose>
 	                    	<c:when test="${fn:containsIgnoreCase(checkImgArray,extName)}">
-	                    			<img src="/image_preview?save_file_name=${boardVO.save_file_names[idx]}" style="display:block;max-width:100%;max-height:100vh;">
+	                    		<img src="/image_preview?save_file_name=${boardVO.save_file_names[idx]}" style="width:100%;">
 	                    	</c:when>
 	                    	<c:otherwise>
 	                    		<!-- 아무의미 없이 개발연습용으로  -->
 	                    		<c:out value="${checkImgArray}" /> 이미지가 아님.
 	                    	</c:otherwise>
 	                    </c:choose>
-	                    </a>
-	                </div>
+	                  </div>
+	                
 	                </c:if>
-                </c:forEach>                
+                </c:forEach> 
+                </div>              
               </div>
             </div>
             <!-- /.card-body -->
@@ -164,7 +169,7 @@
           <div class="time-label">
             <span class="bg-red" data-toggle="collapse" href="#collapseReply" role="button" id="btn_reply_list">
               댓글리스트
-              [<span id="reply_count">${boardVO.reply_count}</span>]
+              [<span id="reply_count">${empty boardVO.reply_count?'0':boardVO.reply_count}</span>]
             </span>
           </div>
           <!-- 콜랩스 시작 -->
@@ -236,138 +241,40 @@
   <!-- /.content-wrapper -->
 
 <%@ include file="../include/footer.jsp" %>
+<!-- 모달창(초기엔 숨긴상태-수정버튼을 클릭하면 나타나는 창) -->
+<div class="modal fade" id="modal-reply">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">작성자명</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<input class="form-control" type="text" name="modal_reply_text" id="modal_reply_text" value="댓글내용 출력">
+		</div>
+		<div class="modal-footer"><!-- justify-content-between:양쪽배분정렬 -->
+			<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			<button id="btn_reply_update" type="button" class="btn btn-primary">수정</button>
+			<button id="btn_reply_delete" type="button" class="btn btn-danger">삭제</button>
+			<input type="hidden" id="rno" name="rno">
+		</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <script>
-$(document).ready(function(){
-	var form_view = $("form[name='form_view']");//전역변수
-	$("#btn_reply_list").click(function(){
-		replyList()
-	});
-	$("#btn_reply_write").click(function(){
-		//RestAPI서버로 보낼 값 지정
-		var bno = "${boardVO.bno}";	//자바 변수값
-		var reply_text =$("#reply_text").val();
-		var replyer = $("#replyer").val();
-		if(reply_text =="" || replyer==""){
-			alert("필수 입력값을 입력하지 않았습니다.");
-			return false;
-		}
-		$.ajax({
-			url:"/reply/reply_insert",
-			type:"post",
-			dataType:"text",	//전송받는 데이터 타입
-			data:JSON.stringify({//전송하는 데이터 타입
-				bno:bno,
-				reply_text:reply_text,
-				replyer:replyer
-			}),	//JSON을 텍스트로 변경
-			headers:{//JSON데이터 형식으로 브라우저에 내장된 헤더값 지정
-				"Content-Type":"application/json",
-				"X-HTTP-Method-Override":"POST"
-			},
-			success:function(result){//댓글 입력이 성공했을 때.
-				var reply_count = $("#reply_count").text();
-				$("#reply_count").text(parseInt(reply_count)+1);
-				//댓글 신규등록 후 1페이지로 이동
-				$("#reply_page").val("1");
-				replyList();
-			},
-			error:function(){
-				alert("서버 에러");
-			}
-		});
-	});
-});
-</script>
-
-<script>
-$(document).ready(function(){
-	$("#btn_reply_delete").click(function(){
-			var rno = $("#rno").val();
-			var bno = "${boardVO.bno}";
-		$.ajax({
-			type:'delete',
-			url:"/reply/reply_delete/"+bno+"/"+rno,
-			dataType:'text',
-			success:function(result){
-				if(result=='success'){
-					alert("삭제가 성공하였습니다.");
-					var reply_count = $("#reply_count").text();
-					$("#reply_count").text(parseInt(reply_count)-1);
-					replyList();
-					$("#modal-reply").modal("hide");
-				}
-			},
-			error:function(){
-				alert("서버에러");
-			}
-		});
-	});
-	$("#btn_reply_update").click(function(){
-		var rno = $("#rno").val();
-		var bno = "${boardVO.bno}";
-		var reply_text = $("#modal_reply_text").val();
-		if(reply_text == ''||rno==''){
-			alert("댓글내용이 비었습니다.");
-			return false;
-		}
-		$.ajax({
-			type:'patch',
-			url:'/reply/reply_update',
-			dataType:'text',
-			data:JSON.stringify({
-				rno:rno,
-				reply_text:reply_text
-			}),
-			headers:{
-				"Content-Type":"application/json",
-				"X-HTTP-Method-Override":"PATH"
-			},
-			success:function(result){
-				if(result=="success"){
-					alert("수정에 성공했습니다.");
-					$("#modal-reply").modal("hide");
-					replyList();
-				}
-				
-			},
-			error:function(){
-				alert("서버에러");
-			}
-		})
-	});
-	
-	//하단 페이징 링크의 링크 속성처리
-	$(".pagination").on("click","li a",function(event){
-		event.preventDefault();//a태그의 링크속성을 사용하지 않겠다.
-		$("#reply_page").val($(this).attr("href"));
-		replyList();
-	});
-	//댓글리스트 버튼 
-	$("#btn_list").click(function(){
-		//여기서는 함수내 변수
-		form_view.attr("action","/admin/board/board_list");
-		form_view.submit();
-	});
-	$("#btn_delete").click(function(){
-		if(confirm('정말로 삭제 하시겠습니까?')) {//Yes를 클릭하면 아래내용 실행
-			form_view.attr("action","/admin/board/board_delete");
-			form_view.attr("method","post");//get을 post로 수정
-			form_view.submit();
-		}
-	});
-});
-
-</script>
-
-<script>
-//화면을 재구현하는 함수
-var printReplyList = function(data, templateData, target){
-	  var template = Handlebars.compile(templateData.html()); //html태그로 변환
-	  var html = template(data); //빅데이터를 리스트템플릿에 바인딩 결합시켜주는 역할
-	  $(".div_template").remove();//화면에 보이는 댓글리스트만 지우기
-	  target.prepend(html);
+//댓글 리스트 출력 함수
+var printReplyList = function(data, templateData, target) {
+  //result json데이터를 templateData에 파싱(아래)
+  var template = Handlebars.compile(templateData.html());//템플릿을 태그로 변환
+	var html = template(data);//파싱처리
+	$('.div_template').remove();//기존 댓글데이터 누적을 방지 target안쪽의 자식만지움
+	target.prepend(html);
 };
-//페이징을 재구현하는 함수
 //댓글 하단 페이징을 출력 함수
 var printPagingList = function(pageVO, target) {
   //스프링RestAPI서버에서 받은 pageVO 오브젝트 target에 파싱합니다(아래)
@@ -384,7 +291,7 @@ var printPagingList = function(pageVO, target) {
 	for(var i=pageVO.startPage; i<=pageVO.endPage; i++) {
 		if(i==pageVO.page) { active = 'active'; } else { active = ''; }
 		pagination += '<li class="paginate_button page-item '+active+'">';
-		pagination += '<a href="'+i+'" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">'+i+'</a>';
+		pagination += '<a href="'+i+'" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">'+(i)+'</a>';
 		pagination += '</li>';
 	}
 	//Next 출력(아래)
@@ -394,69 +301,180 @@ var printPagingList = function(pageVO, target) {
 	pagination += '</li>';
 	$(target).append(pagination);
 };
-
-var replyList = function(){
-	var page=$("#reply_page").val();
+//함수형 변수로서 댓글 리스트를 RestApi에서 받아서 출력하는 변수
+var replyList = function() {
+	var page = $("#reply_page").val();
 	$.ajax({
-		type:"POST",
+		type:"post",
 		url:"/reply/reply_list/${boardVO.bno}/"+page,
-		dataType:"json",
-		success:function(result){
-			if(typeof result =="undefined" || result == "" ||result == null){
-				$("#collapseReply").empty(); //div태그를 삭제하기.
-				$("#collapseReply").html('<div class="pagination justify-content-center"><ul class="pagination pageVO">조회된 값이 없습니다.</ul></div>');	
+		dataType:"json",//전송받는 데이터형태 json
+		success:function(result) {
+			if(typeof result=="undefined" || result == "" || result == null ) {
+				$("#collapseReply").empty();//div태그 안의 내용만 삭제하기.
+				$("#collapseReply").html('<div class="pagination justify-content-center"><ul class="pagination pageVO">조회된 값이 없습니다.</ul></div>');//div태그 안의 html내용을 추가하기.
 			}else{
-				//json데이터를 화면에 파싱합니다.
-				//템플릿에 result데이터를 바인딩
-				//JSON.parse(문자열)->일반문자열을 json으로
-				//JSON.stringify(json데이터)->json데이터를 문자열로
-				//console.log("여기까지"+JSON.stringify(result.replyList));
-				printReplyList(result.replyList,$("#template"),$("#collapseReply"));
-				printPagingList(result.pageVO,".pagination");
-				
+				//json데이터를 화면에 파싱합니다.(구버전:xml복잡한 태그 데이터를 파싱)
+				//템플릿 빵틀에 result데이터를 바인딩해서 출력
+				//JSON.parse(문자열)->일반문자열을 json으로 변경하는 함수
+				//JSON.stringify(json데이터) -> json데이터를 일반문자열로 변경하는 함수
+				console.log("여기까지" + JSON.stringify(result.replyList));//크롬콘솔에서 확인
+				printReplyList(result.replyList, $("#template"), $("#collapseReply"));
+				printPagingList(result.pageVO, ".pagination");
 			}
 		},
-		error:function(){
-			alert("서버에러");
+		error:function(result) {
+			//console.log(result);//크롬에서 확인할 때,
+			//전체 json데이터를 출력할때 stringify함수로 형변환해서 출력
+			//만역 json데이터에서 키이름을 알게 되면, stringfy함수필요없이 result.responseText출력가능
+			alert(result.responseText);//이클립스에서 확인할 때, 관리자단에서만사용
+			//단, 관리자단에서만 디버그하고, 사용자단에서는 아래 항목만 유지
+			alert("RestAPI서버가 작동하지 않습니다. 다음에 이용해 주세요0.");
 		}
-		
 	});
 };
 </script>
+<script>
+//댓글 CRUD처리
+$(document).ready(function(){
+	//댓글 모달창 삭제버튼의 액션처리
+	$("#btn_reply_delete").click(function(){
+		//댓글을 삭제할때 필요한 변수확인 2개 rno(삭제쿼리사용), bno(게시물댓글카운트업데이트에사용)
+		var rno = $("#rno").val();//모달창의 input태그의 값을 가져오기
+		var bno = "${boardVO.bno}";//자바변수값. @Controller의 model에 담긴값을 사용
+		$.ajax({
+			type:"delete",//전송타입, 컨트롤러의 RequestMethod의 값과 동일
+			url:"/reply/reply_delete/"+bno+"/"+rno,//endpoint=@RestController의 @RequestMapping(value="")
+			dataType:"text",//결과값을 받는 데이터형식 text-String, json-Map<String,Object>
+			//data:"",//처리할 값을 보내는 데이터형식 -> json을 사용하지 않고 패스베리어블 보내기때문
+			//headers:"",//크롬의 개발자도구>네트워크항목의 오른쪽 창에서 확인가능, 전송방식때문에 필요
+			success:function(result) {
+				if(result=="success") {
+					alert("삭제 되었습니다.");
+					//삭제후 모달창 숨기고, 댓글카운트UI -1처리, 댓글 리스트 리프레시(렌더링)
+					$("#modal-reply").modal("hide");
+					var reply_count = $("#reply_count").text();//Get
+					$("#reply_count").text(parseInt(reply_count)-1);//Set
+					$("#reply_page").val("1");//댓글을 삭제한 후 1페이지로 이동
+					replyList();
+				}
+			},
+			error:function() {
+				alert("RestAPI서버가 작동하지 않습니다. 다음에 시도해 주세요1.");
+			}
+		});
+	});
+	//댓글 모달창 수정버튼의 액션처리
+	$("#btn_reply_update").click(function(){
+		//댓글을 수정할때 필요한 변수확인
+		var reply_text = $("#modal_reply_text").val();//modal내 태그로 변경
+		var rno = $("#rno").val();//modal내 input태그로 추가
+		if(reply_text == '' || rno == '') {//&& and, || or
+			//위 조건 2중에 1개라도 만족하면 아래 내용이 실행
+			alert("댓글내용은 공백이면 않됩니다.");
+			return false;//더이상 실행없이 콜백함수를 빠져 나갑니다.
+		}
+		$.ajax({
+			type:'patch',//컨트롤러의 method값과 같아야 함.
+			url:'/reply/reply_update',
+			dataType:'text',//RestAPI컨트롤러에서 받는 데이터형식
+			data:JSON.stringify({
+				rno:rno,
+				reply_text:reply_text
+			}),//보내는 데이터 자체는 텍스트로 변환됨 단, 구조는 json형식으로 구성.
+			headers:{//보내는 데이터 형식
+				"Content-Type":"application/json",
+				"X-HTTP-Method-Override":"PATCH"
+			},//json데이터 형식으로 브라우저에 내장된 헤더값을 지정.
+			success:function(result){//댓글 입력이 성공시 실행 
+				if(result=="success") {
+					alert("수정에 성공했습니다.");
+					//모달창 숨기기(아래)
+					$("#modal-reply").modal("hide");
+					//댓글 수정 후 화면에 댓글 목록 출력하는 함수실행
+					replyList();//화면의 일부분만 리프레시(재생)
+				}
+				
+			},
+			error:function() {
+				alert("RestAPI서버가 작동하지 않습니다. 잠시 후 이용해 주세요2.")
+			}
+		});
+	});
+	//하단 페이징 링크의 링크 속성처리
+	$(".pagination").on("click","li a",function(event){
+		event.preventDefault();//a태그의 링크속성을 사용하지 않겠다.
+		$("#reply_page").val($(this).attr("href"));
+		replyList();
+	});
+	//댓글 리스트 버튼(아래)
+	$("#btn_reply_list").click(function(){
+		replyList();//댓글 리스트 출력 Ajax호출
+	});
+	//댓글 등록 버튼(아래)
+	$("#btn_reply_write").click(function(){
+		//RestAPI엔드포인트로 보낼 값 지정
+		var bno = "${boardVO.bno}";//자바변수값:게시물번호
+		var reply_text = $("#reply_text").val();
+		var replyer = $("#replyer").val();
+		if(reply_text == '' || replyer == '') {//&& and, || or
+			//위 조건 2중에 1개라도 만족하면 아래 내용이 실행
+			alert("작성자ID와 댓글내용은 공백이면 않됩니다.");
+			return false;//더이상 실행없이 콜백함수를 빠져 나갑니다.
+		}
+		$.ajax({
+			type:'post',//컨트롤러의 method값과 같아야 함.
+			url:'/reply/reply_insert',
+			dataType:'text',//RestAPI컨트롤러에서 받는 데이터형식
+			data:JSON.stringify({
+				bno:bno,
+				reply_text:reply_text,
+				replyer:replyer
+			}),//보내는 데이터 자체는 텍스트로 변환됨 단, 구조는 json형식으로 구성.
+			headers:{//보내는 데이터 형식
+				"Content-Type":"application/json",
+				"X-HTTP-Method-Override":"POST"
+			},//json데이터 형식으로 브라우저에 내장된 헤더값을 지정.
+			success:function(result){//댓글 입력이 성공시 실행 
+				var reply_count = $("#reply_count").text();//EL에서 초기0
+				$("#reply_count").text(parseInt(reply_count)+1);//011이런식 더해집니다.
+				//댓글을 신규등록 후 댓글 페이징의 1페이지로 이동하기 위해서
+				$("#reply_page").val("1");//val()로 값을 입력, input태그라는 말.
+				//댓글 입력 후 화면에 댓글 목록 출력하는 함수실행
+				replyList();
+			},
+			error:function() {
+				alert("RestAPI서버가 작동하지 않습니다. 잠시 후 이용해 주세요3.")
+			}
+		});
+	});
+});
+</script>
 
- <!-- 모달창(초기에 안보임) -->
-<div class="modal fade" id="modal-reply">
-	<div class="modal-dialog">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h4 class="modal-title">작성자이름</h4>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">×</span>
-		  </button>
-		</div>
-		<div class="modal-body">
-		  <input type="text" class="form-control" id="modal_reply_text" placeholder="댓글내용수정">
-		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-		  <button type="button" class="btn btn-primary" id="btn_reply_update">수정</button>
-		  <button type="button" class="btn btn-danger" id="btn_reply_delete">삭제</button>
-		  <input type="hidden" id="rno" name="rno">
-		</div>
-	  </div>
-	  <!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-  </div>
-
-
-  <!-- 팝업창 내용 동적으로 변경 -->
-  <script>
-	  $(document).ready(function(){
-		  $(".timeline").on("click", ".div_template",function(){
-			  $("#rno").val($(this).attr("data-rno"));
-			  $(".modal-title").html($(this).find(".timeline-header").text());
-			  $("#modal_reply_text").val($(this).find(".timeline-body").text());
-		  })
-	  });
-  </script>
+<script>
+//게시물 목록버튼과 게시물 삭제버튼 처리
+$(document).ready(function(){
+	var form_view = $("form[name='form_view']");//전역변수
+	$("#btn_list").click(function(){
+		//여기서는 함수내 변수
+		form_view.attr("action","/admin/board/board_list");
+		form_view.submit();
+	});
+	$("#btn_delete").click(function(){
+		if(confirm('정말로 삭제 하시겠습니까?')) {//Yes를 클릭하면 아래내용 실행
+			form_view.attr("action","/admin/board/board_delete");
+			form_view.attr("method", "post");
+			form_view.submit();
+		}
+	});
+});
+</script>
+<script>
+// 댓글 리스트에서 수정 버튼클릭시 현재 선택한 값을 모달창에 보여주는 것을 구현(아래)
+$(document).ready(function(){
+  $('.timeline').on("click", '.div_template',function(){
+    $('#rno').val($(this).attr('data-rno'));
+    $('#modal_reply_text').val($(this).find('.timeline-body').text());
+    $('.modal-title').html($(this).find('.timeline-header').text());
+  });
+});
+</script>
