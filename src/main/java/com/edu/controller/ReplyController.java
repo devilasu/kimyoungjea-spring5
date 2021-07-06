@@ -129,7 +129,8 @@ public class ReplyController {
 			}
 			//======================================================
 			} catch(Exception e) {
-				result = new ResponseEntity<Map<String,Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
+				resultMap.put("errorMsg", e.getMessage());
+				result = new ResponseEntity<Map<String,Object>>(resultMap,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			return result;
 	}
