@@ -15,7 +15,7 @@
 				<value>classpath:/properties/oracle.properties</value>
 				-->
 				 
-				 <value>classpath:/properties/cloud.properties</value>
+				 <value>classpath:/properties/cloude.properties</value>
 				
 				<!-- 
 				<value>classpath:/properties/hsql.properties</value>
@@ -34,16 +34,16 @@
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
 		<property name="url" value="${DbUrl}" />
 		<property name="username" value="${DbUserName}" />
-		<property name="password" value="${DbUserPw}" />
+		<property name="password" value="${DbPassword}" />
 	</bean>
 	
 	<!-- 위 생성DB파일에 더미데이터 생성시키는 스크립트문장(아래) 최초1회만 실행 -->
 	<!-- hsql이 아닌 다른 DB일때는 주석처리 필수 -->
-	<!-- 
+	
 	<jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS"> 
 		<jdbc:script location="classpath:/db_script/hsql_file.sql" /> 
 	</jdbc:initialize-database>
-	 -->
+	
 	<!-- hsql데이터베이스 매니저실행 /embeded/hsql_file.db를 매니저에서 불러옴 
 		배포시는 항상 주석처리 합니다.
 	-->
@@ -83,7 +83,7 @@
 		<property name="url" 
 				  value="${DbUrl}"></property>
 		<property name="username" value="${DbUserName}"></property>
-		<property name="password" value="${DbUserPw}"></property>
+		<property name="password" value="${DbPassword}"></property>
 	</bean>
 	
 	<!-- 위 오라클 jdbc빈을 스프링-마이바티스 에서 사용(아래) -->
