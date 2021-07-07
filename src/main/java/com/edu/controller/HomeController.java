@@ -55,7 +55,7 @@ public class HomeController {
 	@Autowired
 	private IF_BoardService boardService;
 	@Inject
-	private CommonUtil commonutil;
+	private CommonUtil commonUtil;
 	//게시물 상세보기 호출 GET 추가
 	@RequestMapping(value = "/home/board/board_view",method = RequestMethod.GET)
 	public String board_view(@RequestParam("bno")Integer bno, @ModelAttribute("pageVO")PageVO pageVO, Model model) throws Exception{
@@ -73,6 +73,7 @@ public class HomeController {
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
 		//db테이블 데이터 가져오기
+		model.addAttribute("checkImgArray", commonUtil.getCheckImgArray());
 		model.addAttribute("boardVO",boardVO);
 		return "home/board/board_view";
 	}
@@ -86,7 +87,7 @@ public class HomeController {
 		for(MultipartFile file:files) {
 			if(file.getOriginalFilename()!="") {
 				real_file_names[index] = file.getOriginalFilename();
-				save_file_names[index] = commonutil.fileUpload(file);//UUID를 반환
+				save_file_names[index] = commonUtil.fileUpload(file);//UUID를 반환
 			}
 			index+=1;
 		}
@@ -96,8 +97,8 @@ public class HomeController {
 		//타이틀, content 내용 시큐어코딩 처리
 		String rawTitle = boardVO.getTitle();
 		String rawContent = boardVO.getContent();
-		boardVO.setTitle(commonutil.unScript(rawTitle));
-		boardVO.setContent(commonutil.unScript(rawContent));
+		boardVO.setTitle(commonUtil.unScript(rawTitle));
+		boardVO.setContent(commonUtil.unScript(rawContent));
 		//DB테이블 처리
 		boardService.insertBoard(boardVO);
 		rdat.addFlashAttribute("msg","게시물 등록");
