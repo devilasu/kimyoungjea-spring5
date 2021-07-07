@@ -1,5 +1,6 @@
 package com.edu.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,6 +57,21 @@ public class HomeController {
 	private IF_BoardService boardService;
 	@Inject
 	private CommonUtil commonUtil;
+	
+	//게시물 삭제처리 호출 POST 추가
+	@RequestMapping(value = "/home/board/board_delete",method = RequestMethod.POST)
+	public String board_delete(@RequestParam("bno")Integer bno, RedirectAttributes rdat) throws Exception{
+		//DB삭제 전 파일들 변수로 저장
+		List<AttachVO> delFiles = boardService.readAttach(bno);
+		//DB삭제
+		boardService.deleteBoard(bno);
+		//첨부파일 있으면 삭제
+		for(AttachVO file:delFiles) {
+			File target = null;
+		}
+		rdat.addFlashAttribute("msg","게시물 삭제");
+		return"redirect:/home/board/board_list";
+	}
 	//게시물 상세보기 호출 GET 추가
 	@RequestMapping(value = "/home/board/board_view",method = RequestMethod.GET)
 	public String board_view(@RequestParam("bno")Integer bno, @ModelAttribute("pageVO")PageVO pageVO, Model model) throws Exception{
