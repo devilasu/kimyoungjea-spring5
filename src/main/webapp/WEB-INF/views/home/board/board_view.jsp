@@ -52,9 +52,23 @@
 				</li>
 			</ul>
 			<p class="btn_line txt_right">
-				<a href="/home/board/board_list?page=${pageVO.page}&search_type=${pageVO.search_type}" class="btn_bbs">목록</a>
+				<a href="/home/board/board_list?page=${pageVO.page}&search_type=${pageVO.search_type}" class="btn btn-default" id="btn_list">목록</a>
+				<button type="button" class="btn btn-danger" id="btn_delete">삭제</button>
+				<button type="button" class="btn btn-warning" id="btn_update">수정</button>
 			</p>
-			
+		<script>
+		$(document).ready(function(){
+			$("#btn_list").click(function(){
+				
+			});
+			$("#btn_delete").click(function(){
+				alert("삭제 준비중입니다.");
+			});
+			$("#btn_update").click(function(){
+				alert("수정 준비중입니다.");
+			});
+		});
+		</script>
 		</div>
 		<!-- //메인본문영역 -->
 
