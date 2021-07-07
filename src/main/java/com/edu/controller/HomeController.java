@@ -16,10 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edu.service.IF_BoardService;
 import com.edu.service.IF_MemberService;
+import com.edu.util.CommonUtil;
+import com.edu.vo.AttachVO;
 import com.edu.vo.BoardVO;
 import com.edu.vo.MemberVO;
 import com.edu.vo.PageVO;
@@ -50,6 +54,56 @@ public class HomeController {
 	private IF_MemberService memberService;
 	@Autowired
 	private IF_BoardService boardService;
+	@Inject
+	private CommonUtil commonutil;
+	//게시물 상세보기 호출 GET 추가
+	@RequestMapping(value = "/home/board/board_view",method = RequestMethod.GET)
+	public String board_view(@RequestParam("bno")Integer bno, @ModelAttribute("pageVO")PageVO pageVO, Model model) throws Exception{
+		//첨부파일 가져오기
+		List<AttachVO> listAttachVO = boardService.readAttach(bno);
+		String[] save_file_names = new String[listAttachVO.size()];
+		String[] real_file_names = new String[listAttachVO.size()];
+		for(AttachVO file:listAttachVO) {
+			
+		}
+		
+		//db테이블 데이터 가져오기
+		model.addAttribute("boardVO",boardService.readBoard(bno));
+		return "";
+	}
+	//게시물 등록 처리 POST 추가
+	@RequestMapping(value = "/home/board/board_insert",method = RequestMethod.POST)
+	public String board_insert(RedirectAttributes rdat, @RequestParam("file")MultipartFile[] files, BoardVO boardVO) throws Exception{
+		//첨부파일 처리
+		String[] save_file_names = new String[files.length];
+		String[] real_file_names = new String[files.length];
+		int index = 0;//위 String[] 배열의 인덱스 값
+		for(MultipartFile file:files) {
+			if(file.getOriginalFilename()!="") {
+				real_file_names[index] = file.getOriginalFilename();
+				save_file_names[index] = commonutil.fileUpload(file);//UUID를 반환
+			}
+			index+=1;
+		}
+		//Attach테이블에 insert할 첨부파일 가상변수값을 입력
+		boardVO.setSave_file_names(save_file_names);
+		boardVO.setReal_file_names(real_file_names);
+		//타이틀, content 내용 시큐어코딩 처리
+		String rawTitle = boardVO.getTitle();
+		String rawContent = boardVO.getContent();
+		boardVO.setTitle(commonutil.unScript(rawTitle));
+		boardVO.setContent(commonutil.unScript(rawContent));
+		//DB테이블 처리
+		boardService.insertBoard(boardVO);
+		rdat.addFlashAttribute("msg","게시물 등록");
+		return "redirect:/home/board/board_list";
+	}
+	//게시물 등록 폼 호출 GET 추가
+	@RequestMapping(value = "/home/board/board_insert_form",method = RequestMethod.GET)
+	public String board_insert_form() throws Exception{
+		
+		return "/home/board/board_insert";
+	}
 	
 	//게시물 리스트 페이지 호출 GET 추가
 	@RequestMapping(value="/home/board/board_list",method=RequestMethod.GET)
@@ -78,7 +132,8 @@ public class HomeController {
 		String rawPassword = memberVO.getUser_pw();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberVO.setUser_pw(passwordEncoder.encode(rawPassword));//암호화 실행.
-		
+		//사용자레벨은 UI단에서 입력되지만, 보안을 위해 무시하고 강제입력.
+		memberVO.setLevels("ROLE_USER");
 		memberService.insertMember(memberVO);
 		rdat.addFlashAttribute("msg", "회원가입");//회원가입 가(이) 성공했습니다. 출력
 		return "redirect:/login_form";//페이지 리다이렉트로 이동

@@ -165,7 +165,7 @@ public class CommonUtil {
 	}
 	
 	//RestAPI서버 맛보기ID중복체크(제대로 만들면 @RestController 사용)
-	@RequestMapping(value="/id_check", method=RequestMethod.GET)
+	@RequestMapping(value="/util/id_check", method=RequestMethod.GET)
 	@ResponseBody //반환받은 값의 헤더값을 제외하고, 내용(body)만 반환하겠다는 명시
 	public String id_check(@RequestParam("user_id")String user_id) throws Exception {
 		//중복아이디를 체크로지(아래)
