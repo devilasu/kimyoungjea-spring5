@@ -34,9 +34,16 @@
 						<a href="${url}">다운로드
 						${boardVO.real_file_names[idx]}
 						</a>
+						
 						<!-- 이미지 미리보기 처리 -->
-						<c:choose>
-							<c:when test="">
+						<c:set var="fileNameArray" value="${fn:split(boardVO.save_file_names[idx],'.')}" />
+	                    <!-- 그림판.얼굴.코.JPG = 3개배열, 그림판.jpg = 2개배열 -->
+	                    <c:set var="extName" value="${fileNameArray[fn:length(fileNameArray)-1]}" />
+	                    <!-- 그림판.얼굴.jpg 파일을 위 변수로 처리시 extName = fineNameArray[2] = jpg -->
+	                    <!-- 자바언어로는 switch ~ case문 ~ default -->
+	                    <!-- containsIgnoreCase('찾을값의문장','비교기준값') -->
+	                    <c:choose>
+	                    	<c:when test="${fn:containsIgnoreCase(checkImgArray,extName)}">
 								<img style="width:100%;display:block;" alt="다운로드 이미지" src="/image_preview?save_file_name=${boardVO.save_file_names[idx]}">	
 							</c:when>
 						</c:choose>						
