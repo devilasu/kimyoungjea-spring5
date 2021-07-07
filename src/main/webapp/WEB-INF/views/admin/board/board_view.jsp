@@ -5,9 +5,9 @@
 <%@ include file="../include/header.jsp" %>
 <style>
 /* 아래 미디어쿼리는 IE10,11에서 지원하는 전용CSS 적용시 사용 */
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+/*@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
  .ie_only {max-height:500px;overflow:auto;}
-}
+}*/
 </style>
 
   <!-- Content Wrapper. Contains page content -->
@@ -96,7 +96,7 @@
 	                    <!-- containsIgnoreCase('찾을값의문장','비교기준값') -->
 	                    <c:choose>
 	                    	<c:when test="${fn:containsIgnoreCase(checkImgArray,extName)}">
-	                    		<img src="/image_preview?save_file_name=${boardVO.save_file_names[idx]}" style="width:100%;">
+	                    		<img src="/image_preview?save_file_name=${boardVO.save_file_names[idx]}" style="width:100%;display:block;">
 	                    	</c:when>
 	                    	<c:otherwise>
 	                    		<!-- 아무의미 없이 개발연습용으로  -->

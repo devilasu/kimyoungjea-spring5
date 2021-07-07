@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!-- fontawesome CSS import -->
+<link rel="stylesheet" href="/resources/admin/plugins/fontawesome-free/css/all.min.css">
 <!-- 게시판용 CSS 임포트 -->
 <link rel="stylesheet" href="/resources/home/css/board.css">
 <!-- 부트스트랩CSS코어 import -->
@@ -58,6 +60,16 @@ $(document).ready(function() {
 });
 // 노트 폰트 수정.note-editable {font-family:Nanum Gothic} 
 </script>
+<style>
+
+.timeline, .card-default{
+	text-align: left;
+}
+
+.bs-stepper-content{
+	margin: 20px 10px;
+}
+</style>
 <!-- 메인상단위치표시영역 -->
 <div class="location_area customer">
 	<div class="box_inner">

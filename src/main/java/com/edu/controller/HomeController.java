@@ -63,13 +63,18 @@ public class HomeController {
 		List<AttachVO> listAttachVO = boardService.readAttach(bno);
 		String[] save_file_names = new String[listAttachVO.size()];
 		String[] real_file_names = new String[listAttachVO.size()];
+		int index = 0;
 		for(AttachVO file:listAttachVO) {
-			
+			save_file_names[index] = file.getSave_file_name();
+			real_file_names[index] = file.getReal_file_name();
+			index+=1;
 		}
-		
+		BoardVO boardVO = boardService.readBoard(bno);
+		boardVO.setSave_file_names(save_file_names);
+		boardVO.setReal_file_names(real_file_names);
 		//db테이블 데이터 가져오기
-		model.addAttribute("boardVO",boardService.readBoard(bno));
-		return "";
+		model.addAttribute("boardVO",boardVO);
+		return "home/board/board_view";
 	}
 	//게시물 등록 처리 POST 추가
 	@RequestMapping(value = "/home/board/board_insert",method = RequestMethod.POST)
