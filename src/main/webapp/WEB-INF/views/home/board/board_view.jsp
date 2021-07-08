@@ -65,13 +65,15 @@
 			var form = $("#hide_form");
 			$("#btn_delete").click(function(){
 				if(confirm("정말로 삭제하시겠습니까?")){
-					alert("삭제 준비중입니다.");
-					//form.attr("action","/home/board/board_delete");
-					//form.submit();
+					form.attr("action","/home/board/board_delete");
+					form.submit();
 				}
 			});
 			$("#btn_update").click(function(){
-				alert("수정 준비중입니다.");
+				//alert("수정 준비중입니다.");
+				form.attr("action","/home/board/board_update_form")
+				form.attr("method","get");
+				form.submit();
 			});
 		});
 		</script>

@@ -58,16 +58,44 @@ public class HomeController {
 	@Inject
 	private CommonUtil commonUtil;
 	
+	//게시물 수정 호출 POST
+	
+	//게시물 수정폼 호출  GET 추가
+	@RequestMapping(value = "/home/board/board_update_form",method = RequestMethod.GET)
+	public String board_update_form(@RequestParam("bno")Integer bno, @ModelAttribute("page")Integer page,Model model) throws Exception{
+		
+		BoardVO boardVO = new BoardVO();
+		boardVO = boardService.readBoard(bno);
+		//첨부파일 처리
+		List<AttachVO> fileList = boardService.readAttach(bno);
+		int index = 0;
+		String[] save_file_names = new String[fileList.size()];
+		String[] real_file_names = new String[fileList.size()];
+		for(AttachVO file:fileList) {	//리스트를 배열로 변경.
+			save_file_names[index] = file.getSave_file_name();
+			real_file_names[index] = file.getReal_file_name();
+			index++;
+		}
+		boardVO.setReal_file_names(real_file_names);
+		boardVO.setSave_file_names(save_file_names);
+		
+		model.addAttribute("boardVO",boardVO);
+		return "/home/board/board_update";
+	}
 	//게시물 삭제처리 호출 POST 추가
 	@RequestMapping(value = "/home/board/board_delete",method = RequestMethod.POST)
 	public String board_delete(@RequestParam("bno")Integer bno, RedirectAttributes rdat) throws Exception{
 		//DB삭제 전 파일들 변수로 저장
 		List<AttachVO> delFiles = boardService.readAttach(bno);
-		//DB삭제
+		//첨부파일 DB삭제
 		boardService.deleteBoard(bno);
-		//첨부파일 있으면 삭제
+		//첨부파일 데이터 삭제 
 		for(AttachVO file:delFiles) {
-			File target = null;
+			//File 클래스는 생성자 메서드의 매개변수(경로,파일명)
+			File target = new File(commonUtil.getUploadPath(),file.getSave_file_name());
+			if(target.exists()) {
+				target.delete();
+			}
 		}
 		rdat.addFlashAttribute("msg","게시물 삭제");
 		return"redirect:/home/board/board_list";
@@ -83,7 +111,7 @@ public class HomeController {
 		for(AttachVO file:listAttachVO) {
 			save_file_names[index] = file.getSave_file_name();
 			real_file_names[index] = file.getReal_file_name();
-			index+=1;
+			index++;
 		}
 		BoardVO boardVO = boardService.readBoard(bno);
 		boardVO.setSave_file_names(save_file_names);
