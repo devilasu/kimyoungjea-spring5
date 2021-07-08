@@ -61,9 +61,15 @@ public class HomeController {
 	@Inject
 	private IF_BoardDAO boardDAO;
 	
-	//게시물 수정 호출 POST
+	//게시물 수정 처리 POST
 	@RequestMapping(value = "home/board/board_update",method = RequestMethod.POST)
-	public String board_update(@RequestParam("file")MultipartFile[] files, PageVO pageVO ,BoardVO boardVO, RedirectAttributes rdat)throws Exception{
+	public String board_update(HttpServletRequest request, @RequestParam("file")MultipartFile[] files, PageVO pageVO ,BoardVO boardVO, RedirectAttributes rdat)throws Exception{
+		HttpSession session = request.getSession();
+		//id 체크
+		if(!boardVO.getWriter().equals(session.getAttribute("session_userid"))) {
+			rdat.addFlashAttribute("msgError","게시물은 본인만 수정가능합니다");
+			return "redirect:/home/board/board_view?bno="+boardVO.getBno()+"&page="+pageVO.getPage();
+		}
 		//첨부파일 처리, delFiles만드는 이유는 첨부파일 수정시, 기존파일 삭제후 입력해야하므로
 		List<AttachVO> delFiles = boardService.readAttach(boardVO.getBno()); 
 		String[] save_file_names = new String[files.length];

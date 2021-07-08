@@ -13,7 +13,7 @@
 		<!-- 메인본문영역 -->
 		<div class="bodytext_area box_inner">			
 			<ul class="bbsview_list">
-				<li class="bbs_title">박물관 미션 투어 응모 당첨자 발표</li>
+				<li class="bbs_title">${boardVO.title}</li>
 				<li class="bbs_date">작성일 : 
 				<span><fmt:formatDate pattern="yyyy.MM.dd hh:mm:ss" value="${boardVO.reg_date}"/></span>
 				</li>
