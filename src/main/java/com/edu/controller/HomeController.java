@@ -137,7 +137,17 @@ public class HomeController {
 	}
 	//게시물 삭제처리 호출 POST 추가
 	@RequestMapping(value = "/home/board/board_delete",method = RequestMethod.POST)
-	public String board_delete(@RequestParam("bno")Integer bno, RedirectAttributes rdat) throws Exception{
+	public String board_delete(PageVO pageVO, HttpServletRequest request, @RequestParam("bno")Integer bno, RedirectAttributes rdat) throws Exception{
+		BoardVO boardVO = new BoardVO();
+		boardVO = boardService.readBoard(bno);
+		
+		HttpSession session = request.getSession();
+		//id 체크
+		if(!boardVO.getWriter().equals(session.getAttribute("session_userid"))) {
+			rdat.addFlashAttribute("msgError","게시물은 본인만 수정가능합니다");
+			return "redirect:/home/board/board_view?bno="+boardVO.getBno()+"&page="+pageVO.getPage();
+		}
+		
 		//DB삭제 전 파일들 변수로 저장
 		List<AttachVO> delFiles = boardService.readAttach(bno);
 		//첨부파일 DB삭제
