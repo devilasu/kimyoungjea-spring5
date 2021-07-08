@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.edu.dao.IF_BoardDAO;
 import com.edu.service.IF_BoardService;
 import com.edu.service.IF_MemberService;
 import com.edu.util.CommonUtil;
@@ -57,9 +58,53 @@ public class HomeController {
 	private IF_BoardService boardService;
 	@Inject
 	private CommonUtil commonUtil;
+	@Inject
+	private IF_BoardDAO boardDAO;
 	
 	//게시물 수정 호출 POST
-	
+	@RequestMapping(value = "home/board/board_update",method = RequestMethod.POST)
+	public String board_update(@RequestParam("file")MultipartFile[] files, PageVO pageVO ,BoardVO boardVO, RedirectAttributes rdat)throws Exception{
+		//첨부파일 처리, delFiles만드는 이유는 첨부파일 수정시, 기존파일 삭제후 입력해야하므로
+		List<AttachVO> delFiles = boardService.readAttach(boardVO.getBno()); 
+		String[] save_file_names = new String[files.length];
+		String[] real_file_names = new String[files.length];
+		int index = 0;
+		//배열 인덱스 위치에 따라서 전송받은 파일과 기존파일과 인덱스 비교해서 삭제
+		for(MultipartFile file:files) { 
+			if(file.getOriginalFilename()!="") {
+				int sun = 0;
+				for(AttachVO delFile:delFiles) {
+					if(index==sun) {
+						File target = new File(commonUtil.getUploadPath(),delFile.getSave_file_name());
+						if(target.exists()) {
+							target.delete();
+							boardDAO.deleteAttach(delFile.getSave_file_name());
+						}
+					}
+					sun++;
+				}
+				//신규파일 저장처리, 물리적으로 저장소 저장
+				save_file_names[index] = commonUtil.fileUpload(file);//저장 후 UUID파일명 반환
+				real_file_names[index] = file.getOriginalFilename();
+			} else {
+				save_file_names[index] = null;
+				real_file_names[index] = null;
+			}
+			index++;
+		}
+		boardVO.setSave_file_names(save_file_names);
+		boardVO.setReal_file_names(real_file_names);
+		//시큐어코딩처리
+		String rawTitle = boardVO.getTitle();
+		String rawContent = boardVO.getContent();
+		boardVO.setTitle(commonUtil.unScript(rawTitle));
+		boardVO.setContent(commonUtil.unScript(rawContent));
+		//게시판 테이블 처리
+		boardService.updateBoard(boardVO);
+		
+		rdat.addFlashAttribute("msg","게시물 수정");
+		return "redirect:/home/board/board_list?bno="+boardVO.getBno()+"$page="+pageVO.getPage();
+	}
 	//게시물 수정폼 호출  GET 추가
 	@RequestMapping(value = "/home/board/board_update_form",method = RequestMethod.GET)
 	public String board_update_form(@RequestParam("bno")Integer bno, @ModelAttribute("page")Integer page,Model model) throws Exception{
