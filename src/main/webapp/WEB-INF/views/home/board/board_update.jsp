@@ -44,7 +44,6 @@
 											<a href="${url}"> ${boardVO.real_file_names[idx]}</a>
 											<button type="button" class="btn btn-info btn_file_delete">삭제</button>
 											<input type="hidden" name="save_file_name" value="${boardVO.save_file_names[idx]}">
-											<input type="hidden" name="page" value="${page}">
 										</div>
 									</c:if>
 								</div>
@@ -58,6 +57,8 @@
 					</p>	
 				</fieldset>
 				<input name="board_type" value="${session_board_type}" type="hidden">
+				<input type="hidden" name="page" value="${page}">
+				<input type="hidden" name="bno" value="${boardVO.bno}">
 			</form>
 			<!-- //폼영역 -->
 		</div>
