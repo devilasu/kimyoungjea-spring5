@@ -11,14 +11,17 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.FlashMapManager;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.edu.service.IF_BoardService;
 import com.edu.service.IF_BoardTypeService;
 import com.edu.vo.BoardTypeVO;
 import com.edu.vo.BoardVO;
@@ -35,6 +38,8 @@ public class AspectAdvice {
 	private Logger logger = LoggerFactory.getLogger(AspectAdvice.class);
 	@Inject
 	private IF_BoardTypeService boardTypeService;
+	@Inject
+	private IF_BoardService boardService;
 	
 	//나중엑 게시물관리 기능 만들때 @Aspect로 AOP기능 추가 = 목적:board_type값을 항상 가져 가도록 처리(세션)
 	//세션? 서버-PC 구조상에서 클라이언트가 서버에 접속할때 [서버에 발생되는 정보를 세션이라고 함(서버에 저장됨)]
@@ -43,6 +48,40 @@ public class AspectAdvice {
 	//Aspect로 AOP를 구현할때는 포인트컷(Advice참견이 실행될 위치)이 필요합니다.
 	//@Around=@Before+@After = @Around(포인트컷 전+후.*(...)모든 메서드)
 	//@Around는 콜백함수 매개변수로 조인포인트객체(포인트컷에서 실해되는 메서드들) 를 필수로 받습니다.
+	//board_delete, board_update* 실행시 본인이 작성한 글인지 확인하는 기능
+	@Around("execution(* com.edu.controller.HomeController.board_delete(..)) || execution(* com.edu.controller.HomeController.board_update(..)) ")
+	public Object check_board_crud(ProceedingJoinPoint pjp) throws Throwable{
+		//request객체는 이전페이지 URL+session_userid값을 가져오기 위해 필요
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		//사용할 변수 초기화
+		String user_id=null;
+		for(Object object:pjp.getArgs()) {
+			//메서드의 매개변수가 BoardVO, bno일때만 로직 실행하기 위해서
+			if(object instanceof BoardVO) {
+				user_id = ((BoardVO) object).getWriter();
+			}
+			if(object instanceof Integer) {
+				user_id = boardService.readBoard((int) object).getWriter();
+			}
+		}
+		if(request != null) {
+			HttpSession session = request.getSession();
+			if(!session.getAttribute("session_userid").equals(user_id) && "ROLE_USER".equals(session.getAttribute("session_levels"))) {
+				//redirectAttribute를 사용할 수 없음. 대신 Flash클래스 사용
+				//메시지를 보내기 위해 사용.
+				FlashMap flashMap = new FlashMap();
+                flashMap.put("msgError", "게시물은 본인글만 수정/삭제 가능합니다.");
+                FlashMapManager flashMapManager = RequestContextUtils.getFlashMapManager(request);
+                flashMapManager.saveOutputFlashMap(flashMap, request, null);
+
+				return "redirect:"+request.getHeader("referer");
+			}
+		}
+		
+		return pjp.proceed();
+	}
+	
+	
 	@Around("execution(* com.edu.controller.*Controller.*(..))")
 	public Object sessionManager(ProceedingJoinPoint pjp) throws Throwable {
 		//board_type변수값을 세션에 저장하려고 함. 클라이언트별 세션이 발생됨.
