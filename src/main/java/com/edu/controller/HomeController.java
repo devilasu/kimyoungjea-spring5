@@ -300,11 +300,21 @@ public class HomeController {
 		return "home/login";//.jsp생략
 	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String homepage(Model model) { //콜백메스드,자동실행됨.
-		String jspVar = "@서비스(DB)에서 처리한 결과";
-		model.addAttribute("jspObject", jspVar);
-		logger.info("디버그 스프링로고사용: " + jspVar);//System.out 대신 logger 객체를 사용
+	public String homepage(Model model) throws Exception{ //콜백메스드,자동실행됨.
+//		String jspVar = "@서비스(DB)에서 처리한 결과";
+//		model.addAttribute("jspObject", jspVar);
+		logger.info("메인페이지");//System.out 대신 logger 객체를 사용
 		//home.jsp파일로 자료를 전송(스프링)하는 기능= model인터페이스 객체(스프링이처리)에 내용만 채우면됨
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(1);
+		pageVO.setQueryPerPageNum(3);//갤러리는3개 
+		pageVO.setBoard_type("gallery");
+		model.addAttribute("latestGallery",boardService.selectBoard(pageVO));	//갤러리 최근 게시물
+		
+		pageVO.setQueryPerPageNum(5);//공지사항은 5개
+		pageVO.setBoard_type("notice");
+		model.addAttribute("latestNotice",boardService.selectBoard(pageVO));	//공지사항 최근 게시물
+		
 		return "home/index";//확장자가 생략 .jsp가 생략되어 있음.
 	}
 	
