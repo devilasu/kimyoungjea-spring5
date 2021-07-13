@@ -294,11 +294,11 @@ public class HomeController {
 		return "home/member/mypage";//.jsp생략
 	}
 	//사용자단 로그인 폼호출 GET, 로그인POST처리는 컨트롤러에서 하지않고 스프링시큐리티로 처리
-	@RequestMapping(value="/login_form", method=RequestMethod.GET)
-	public String login_form() throws Exception {
-		
-		return "home/login";//.jsp생략
-	}
+//	@RequestMapping(value="/login_form", method=RequestMethod.GET)
+//	public String login_form() throws Exception {
+//		
+//		return "home/login";//.jsp생략
+//	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String homepage(Model model) throws Exception{ //콜백메스드,자동실행됨.
 //		String jspVar = "@서비스(DB)에서 처리한 결과";
@@ -309,7 +309,17 @@ public class HomeController {
 		pageVO.setPage(1);
 		pageVO.setQueryPerPageNum(3);//갤러리는3개 
 		pageVO.setBoard_type("gallery");
-		model.addAttribute("latestGallery",boardService.selectBoard(pageVO));	//갤러리 최근 게시물
+		//첨부파일 save_file_names 배열 변수 값 지정
+		List<BoardVO> latestGallery = boardService.selectBoard(pageVO);
+		for(BoardVO boardVO:latestGallery) {
+			List<AttachVO> listAttachVO = boardService.readAttach(boardVO.getBno());
+			if(listAttachVO.size()>0) {
+				String[] save_file_names = new String[listAttachVO.size()];
+				save_file_names[0] = listAttachVO.get(0).getSave_file_name();
+				boardVO.setSave_file_names(save_file_names);	
+			}
+		}
+		model.addAttribute("latestGallery",latestGallery);	//갤러리 최근 게시물
 		
 		pageVO.setQueryPerPageNum(5);//공지사항은 5개
 		pageVO.setBoard_type("notice");

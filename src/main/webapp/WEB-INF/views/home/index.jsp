@@ -1,7 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="./include/header.jsp" %>
-	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<style>
+	.img_topplace{
+		overflow:hidden;
+		height:250px;
+		opacity: 0.7;
+	}
+	.img_topplace:hover{
+		opacity: 1.0;
+	}
+	.txt{
+		overflow:hidden;
+	}
+	/*갤러리, 공지사항 게시물 제목 자르기*/
+	.title_crop{
+		white-space:nowrap;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		
+	}
+</style>
 	<!-- 메인컨텐츠영역 -->
 	<div id="container">
 		<!-- 모바일+PC 공통슬라이드영역 -->
@@ -46,7 +66,7 @@
             </div>
         </div>
         <!-- //모바일+PC 공통슬라이드영역 -->
-	
+
 		<!-- 갤러리최근게시물영역 -->
 		<div class="about_area">
 			<h2><a href="/home/board/board_list?board_type=gallery&search_keyword=">
@@ -55,10 +75,28 @@
 				<ul class="place_list box_inner clear">
 					<c:forEach var="gallery" items="${latestGallery}">
 						<li><a href="/home/board/board_view?bno=${gallery.bno}&page=1&board_type=gallery">
-								<img class="img_topplace" src="/resources/home/img/no_image.png" alt="OOOO OOOOO" style="opacity:0.7;"/>
-								<h3>${gallery.title}</h3>
-								<p class="txt">${gallery.content}</p>
-								<span class="view">VIEW</span></a>
+							<c:choose>
+								<c:when test="${empty gallery.save_file_names[0]}">
+									<img class="img_topplace" src="/resources/home/img/no_image.png" alt="OOOO OOOOO" />
+								</c:when>
+								<c:otherwise>
+									<img class="img_topplace" src="/image_preview?save_file_name=${gallery.save_file_names[0]}" alt="OOOO OOOOO"/>
+								</c:otherwise>
+							</c:choose>
+							<h3 class="title_crop">
+								${gallery.title}
+							</h3>
+							<p class="txt">
+							<c:choose>
+									<c:when test="${fn:length(gallery.content) gt 40}">
+										${fn:substring(gallery.content,0,39)}...
+									</c:when>
+									<c:otherwise>
+										${gallery.content}
+									</c:otherwise>
+								</c:choose>
+							</p>
+							<span class="view">VIEW</span></a>
 						</li>
 					</c:forEach>
 				</ul>
