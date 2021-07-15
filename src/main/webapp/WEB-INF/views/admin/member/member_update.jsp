@@ -37,6 +37,19 @@
           <!-- 첨부파일을 전송할때 enctype=필수 없으면, 첨부파일이 전송X -->
           <form name="form_write" action="/admin/member/member_update" method="post" enctype="multipart/form-data">
             <div class="card-body">
+              <div class="form-group">
+	          		<img style="width:120px;height:120px;border-radius: 50%;" onerror="this.src='/resources/admin/dist/img/default-150x150.png'" src="/resources/profile/${memberVO.user_id}.png" alt="User Image">
+	          	</div>
+              <!-- 사용자 프로필 이미지 등록 태그 추가 -->
+              <div class="form-group">
+                      <label">사용자프로필</label>
+                      <div class="input-group">
+                        <div class="custom-file" style="width:100%;">
+                          <input accept=".png" name="file" type="file" class="custom-file-input" id="file0">
+                          <label class="custom-file-label" for="file0">파일선택</label>
+                        </div>
+                	</div>
+                </div>
               
               <div class="form-group">
                 <label for="user_id">사용자ID</label>
@@ -94,6 +107,8 @@
 
 <%@ include file="../include/footer.jsp" %>
 <!-- 관리자단은 jQuery코어가 하단 footer에 있기 때문에 여기에 위치합니다. -->
+<!-- 첨부파일 부트스트랩 디자인 JS -->
+<script src="/resources/admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script>
 $(document).ready(function(){
 	var form_update = $("form[name='form_write']");
@@ -112,5 +127,6 @@ $(document).ready(function(){
 
 		location.replace('/admin/member/member_list?'+queryString);
 	});
+	bsCustomFileInput.init();
 });
 </script>

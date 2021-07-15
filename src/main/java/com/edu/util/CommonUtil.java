@@ -50,6 +50,14 @@ public class CommonUtil {
 	@Inject
 	private IF_BoardDAO boardDAO;
 	
+	public void profile_delete(String user_id, HttpServletRequest request) throws Exception{
+		String folderPath = request.getServletContext().getRealPath("/resources/profile");
+		File target = new File(folderPath,user_id+".png");
+		if(target.exists()) {
+			target.delete();
+		}
+	}
+	
 	public void profile_upload(String user_id,HttpServletRequest request, MultipartFile file)throws Exception{
 		String folderPath = request.getServletContext().getRealPath("/resources/profile");
 		File makeFolder = new File(folderPath);
@@ -57,7 +65,7 @@ public class CommonUtil {
 			makeFolder.mkdir();
 		}
 		byte[] fileData = file.getBytes();
-		File target = new File(makeFolder,user_id);
+		File target = new File(folderPath,user_id+".png");
 		FileCopyUtils.copy(fileData, target);
 	}
 	
