@@ -37,7 +37,16 @@
           <!-- 첨부파일을 전송할때 enctype=필수 없으면, 첨부파일이 전송X -->
           <form name="form_write" action="/admin/member/member_insert" method="post" enctype="multipart/form-data">
             <div class="card-body">
-              
+              <!-- 사용자 프로필 이미지 등록 태그 추가 -->
+              <div class="form-group">
+                      <label">사용자프로필</label>
+                      <div class="input-group">
+                        <div class="custom-file" style="width:100%;">
+                          <input accept=".png" name="file" type="file" class="custom-file-input" id="file0">
+                          <label class="custom-file-label" for="file0">파일선택</label>
+                        </div>
+                	</div>
+                </div>
               <div class="form-group">
               <!-- 신규 등록시 ID중복 체크 필수: 버튼O, onChangeEventX-->
                 <label for="user_id">사용자ID
@@ -94,6 +103,9 @@
   <!-- /.content-wrapper -->
 
 <%@ include file="../include/footer.jsp" %>
+<!-- 첨부파일 부트스트랩 디자인 JS -->
+<script src="/resources/admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
 <!-- 관리자단은 jQuery코어가 하단 footer에 있기 때문에 여기에 위치합니다. -->
 <script>
 $(document).ready(function(){
@@ -105,7 +117,7 @@ $(document).ready(function(){
 		//alert(user_id);
 		$.ajax({
 			type:"get",
-			url:"/util/id_check?user_id="+user_id,//RestAPI서버(스프링 클래스)에 만들 예정.
+			url:"/id_check?user_id="+user_id,//RestAPI서버(스프링 클래스)에 만들 예정.
 			dataType:"text",
 			success:function(result){
 				//alert(result);
@@ -140,5 +152,6 @@ $(document).ready(function(){
 		form_write.attr("method","get");
 		form_write.submit();
 	});
+	bsCustomFileInput.init();
 });
 </script>

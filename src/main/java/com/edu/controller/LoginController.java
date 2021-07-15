@@ -75,7 +75,7 @@ public class LoginController {
 			//인증성공 이후 스프링시큐리티의 ROLE_USER권한을 받아야지만,
 			//insert, member, update, delete URL에 접근이 가능
 			//시작:여기서 부터 스프링시큐리티 코드가 시작됨.
-			List<SimpleGrantedAuthority> authorities = new ArrayList();//스프링시큐리티 권한을 강제로 만듭니다.
+			List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();//스프링시큐리티 권한을 강제로 만듭니다.
 			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));//ROLE_USER라는 권한을 강제로 추가.
 			//스프링 시큐리티 인증도 강제로 추가(아래)
 			Authentication authentication = new UsernamePasswordAuthenticationToken(useremail,null,authorities);//인증 토큰을 강제로 생성

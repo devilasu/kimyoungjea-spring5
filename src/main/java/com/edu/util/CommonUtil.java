@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
@@ -48,6 +49,17 @@ public class CommonUtil {
 	private IF_MemberService memberService;//스프링빈을 주입받아서(DI) 객체준비
 	@Inject
 	private IF_BoardDAO boardDAO;
+	
+	public void profile_upload(String user_id,HttpServletRequest request, MultipartFile file)throws Exception{
+		String folderPath = request.getServletContext().getRealPath("/resources/profile");
+		File makeFolder = new File(folderPath);
+		if(!makeFolder.exists()) {
+			makeFolder.mkdir();
+		}
+		byte[] fileData = file.getBytes();
+		File target = new File(makeFolder,user_id);
+		FileCopyUtils.copy(fileData, target);
+	}
 	
 	//첨부파일 업로드/다운로드/삭제/인서트/수정에 모두 사용될 저장경로를 1개지정해서 [전역]으로사용
 	@Resource(name="uploadPath")
