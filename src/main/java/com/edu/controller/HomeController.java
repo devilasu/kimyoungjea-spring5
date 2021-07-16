@@ -60,169 +60,177 @@ public class HomeController {
 	private CommonUtil commonUtil;
 	@Inject
 	private IF_BoardDAO boardDAO;
+	//MVC구조 기본서식
+	//@RequestMapping요청URL값
+	//public 뷰단jsp파일명리턴형식 콜백함수(자동실행)
+	//return "파일명";
 	
-	//게시물 수정 처리 POST
-	@RequestMapping(value = "home/board/board_update",method = RequestMethod.POST)
-	public String board_update(HttpServletRequest request, @RequestParam("file")MultipartFile[] files, PageVO pageVO ,BoardVO boardVO, RedirectAttributes rdat)throws Exception{
-//		HttpSession session = request.getSession();
-//		//id 체크
-//		if(!boardVO.getWriter().equals(session.getAttribute("session_userid"))) {
-//			rdat.addFlashAttribute("msgError","게시물은 본인만 수정가능합니다");
-//			return "redirect:"+request.getHeader("Referer");
-//		}
-		//첨부파일 처리, delFiles만드는 이유는 첨부파일 수정시, 기존파일 삭제후 입력해야하므로
-		List<AttachVO> delFiles = boardService.readAttach(boardVO.getBno()); 
+	//게시물 수정 처리 POST 추가
+	@RequestMapping(value="/home/board/board_update",method=RequestMethod.POST)
+	public String board_update(HttpServletRequest request, @RequestParam("file")MultipartFile[] files,PageVO pageVO,BoardVO boardVO,RedirectAttributes rdat) throws Exception {
+		/* 아래 기능을 AOP로 구현합니다.1
+		//로그인한 세션ID와 게시물의 boardVO.writer사용자와 비교해서 같으면 계속,틀리면 멈춤
+		HttpSession session = request.getSession();
+		if(!boardVO.getWriter().equals(session.getAttribute("session_userid"))) {
+			rdat.addFlashAttribute("msgError", "게시물은 본인글만 수정 가능합니다.");
+			//request객체에 이전페이지 URL("Referer")로 존재하고, 이URL을 이전페이지 이동으로 사용
+			return "redirect:"+request.getHeader("Referer");//본인ID의 글이 아닐때 뷰페이지로 이동
+		}//else로 묶을 필요가 없습니다.왜? 위 return을 만나면, 이후 실행이 않되고, 메서드가 종료됨.
+		*/
+		//첨부파일 처리, delFiles만드는 이유는 첨부파일은 수정시, 기존파일 삭제 후 입력해야 하기 때문에
+		List<AttachVO> delFiles = boardService.readAttach(boardVO.getBno());
+		//폼에서 전송받은 첨부파일 files 가로배치로 만들기 위해서 배열변수 생성
+		String[] real_file_names = new String[files.length];//전송된 files없다면 null이 들어감.
 		String[] save_file_names = new String[files.length];
-		String[] real_file_names = new String[files.length];
 		int index = 0;
-		//배열 인덱스 위치에 따라서 전송받은 파일과 기존파일과 인덱스 비교해서 삭제
-		for(MultipartFile file:files) { 
-			if(file.getOriginalFilename()!="") {
-				int sun = 0;
-				for(AttachVO delFile:delFiles) {
+		for(MultipartFile file:files) {
+			//배열 인덱스 위치에 따라서 전송받은 파일과 기존파일과 인덱스를 비교해서 삭제 후 저장 처리
+			if(file.getOriginalFilename() != "") {
+				int sun = 0;//아래 for문을 위한 초기변수 생성
+				for(AttachVO delfile:delFiles) {
 					if(index==sun) {
-						File target = new File(commonUtil.getUploadPath(),delFile.getSave_file_name());
+						File target = new File(commonUtil.getUploadPath(),delfile.getSave_file_name());//저장소에 저장된 UUID파일명을 타겟으로 지정.
 						if(target.exists()) {
-							target.delete();
-							boardDAO.deleteAttach(delFile.getSave_file_name());
+							target.delete();//실제 파일이 지워짐:신규파일을 덮어 쓰려고 지움.
+							boardDAO.deleteAttach(delfile.getSave_file_name());//save_file_name이 UUID로서 PK값임.
 						}
 					}
-					sun++;
+					sun = sun + 1;//기존파일 삭제할 인덱스 1씩 증가
 				}
 				//신규파일 저장처리, 물리적으로 저장소 저장
-				save_file_names[index] = commonUtil.fileUpload(file);//저장 후 UUID파일명 반환
-				real_file_names[index] = file.getOriginalFilename();
+				String save_file_name = commonUtil.fileUpload(file);//저장소에 저장후 UUID파일명을 반환
+				save_file_names[index] = save_file_name;
+				real_file_names[index] = file.getOriginalFilename();//UI용 파일명.
 			} else {
 				save_file_names[index] = null;
 				real_file_names[index] = null;
 			}
-			index++;
+			index = index + 1;//신규파일 등록 인덱스 1씩 증가
 		}
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
-		//시큐어코딩처리
+		//시큐어 코딩처리
 		String rawTitle = boardVO.getTitle();
 		String rawContent = boardVO.getContent();
 		boardVO.setTitle(commonUtil.unScript(rawTitle));
 		boardVO.setContent(commonUtil.unScript(rawContent));
-		//게시판 테이블 처리
+		//게시판테이블 처리
 		boardService.updateBoard(boardVO);
-		
-		rdat.addFlashAttribute("msg","게시물 수정");
-		return "redirect:/home/board/board_list?bno="+boardVO.getBno()+"$page="+pageVO.getPage();
+		rdat.addFlashAttribute("msg", "게시물 수정");//출력메세지: 게시물 수정 이(가) 성공~
+		return "redirect:/home/board/board_view?bno="+boardVO.getBno()+"&page="+pageVO.getPage();//수정하고 뷰페이지로 이동
 	}
-	//게시물 수정폼 호출  GET 추가
-	@RequestMapping(value = "/home/board/board_update_form",method = RequestMethod.GET)
-	public String board_update_form(@RequestParam("bno")Integer bno, @ModelAttribute("page")Integer page,Model model) throws Exception{
-		BoardVO boardVO = new BoardVO();
+	//게시물 수정 폼 호출 GET 추가
+	@RequestMapping(value="/home/board/board_update_form",method=RequestMethod.GET)
+	public String board_update_form(HttpServletRequest request,@RequestParam("bno")Integer bno,@ModelAttribute("pageVO")PageVO pageVO,Model model,RedirectAttributes rdat) throws Exception {
+		//1개의 레코드만 서비스로 호출 모델로 보내줌 첨부파일은 세로데이터를 가로데이터변경후 boardVO담아서전송 
+		BoardVO boardVO = new BoardVO(); 
 		boardVO = boardService.readBoard(bno);
-		
-//		HttpSession session = request.getSession();
-//		//id 체크
-//		if(!boardVO.getWriter().equals(session.getAttribute("session_userid"))) {
-//			rdat.addFlashAttribute("msgError","게시물은 본인만 수정가능합니다");
-//			return "redirect:"+request.getHeader("Referer");
-//		}
-		
-		//첨부파일 처리
-		List<AttachVO> fileList = boardService.readAttach(bno);
+		/* 아래 기능을 AOP로 구현합니다.2
+		//로그인한 세션ID와 게시물의 boardVO.writer사용자와 비교해서 같으면 계속,틀리면 멈춤
+		HttpSession session = request.getSession();
+		if(!boardVO.getWriter().equals(session.getAttribute("session_userid"))) {
+			rdat.addFlashAttribute("msgError", "게시물은 본인글만 수정 가능합니다.");
+			return "redirect:"+request.getHeader("Referer");//본인ID의 글이 아닐때 뷰페이지로 이동
+		}//else로 묶을 필요가 없습니다.왜? 위 return을 만나면, 이후 실행이 않되고, 메서드가 종료됨.
+		*/
+		//save_file_names, real_file_names 가상필드값을 채웁니다.
+		List<AttachVO> fileList = boardService.readAttach(bno);//세로데이터 생성
 		int index = 0;
 		String[] save_file_names = new String[fileList.size()];
 		String[] real_file_names = new String[fileList.size()];
-		for(AttachVO file:fileList) {	//리스트를 배열로 변경.
+		for(AttachVO file:fileList) {//가로데이터로 변경로직
 			save_file_names[index] = file.getSave_file_name();
 			real_file_names[index] = file.getReal_file_name();
-			index++;
+			index = index + 1;
 		}
 		boardVO.setReal_file_names(real_file_names);
 		boardVO.setSave_file_names(save_file_names);
-		
-		model.addAttribute("boardVO",boardVO);
-		return "/home/board/board_update";
+		model.addAttribute("boardVO", boardVO);
+		return "home/board/board_update";//.jsp 생략 반환값은 뷰로 보여줄 파일명
 	}
-	//게시물 삭제처리 호출 POST 추가
-	@RequestMapping(value = "/home/board/board_delete",method = RequestMethod.POST)
-	public String board_delete(PageVO pageVO, HttpServletRequest request, @RequestParam("bno")Integer bno, RedirectAttributes rdat) throws Exception{
-//		BoardVO boardVO = new BoardVO();
-//		boardVO = boardService.readBoard(bno);
-//		
-//		HttpSession session = request.getSession();
-//		//id 체크
-//		if(!boardVO.getWriter().equals(session.getAttribute("session_userid"))) {
-//			rdat.addFlashAttribute("msgError","게시물은 본인만 수정가능합니다");
-//			return "redirect:"+request.getHeader("Referer");
-//		}
-		
-		//DB삭제 전 파일들 변수로 저장
-		List<AttachVO> delFiles = boardService.readAttach(bno);
-		//첨부파일 DB삭제
+	//게시물 삭제 처리 호출 POST 추가
+	@RequestMapping(value="/home/board/board_delete",method=RequestMethod.POST)
+	public String board_delete(HttpServletRequest request, @RequestParam("bno")Integer bno,RedirectAttributes rdat,PageVO pageVO) throws Exception {
+		/*아래 기능을 AOP로 구현합니다.3
+		BoardVO boardVO = boardService.readBoard(bno);//아래 조건때문에 추가
+		//로그인한 세션ID와 게시물의 boardVO.writer사용자와 비교해서 같으면 계속,틀리면 멈춤
+		HttpSession session = request.getSession();
+		if(!boardVO.getWriter().equals(session.getAttribute("session_userid"))) {
+			rdat.addFlashAttribute("msgError", "게시물은 본인글만 삭제 가능합니다.");
+			return "redirect:"+request.getHeader("Referer");//본인ID의 글이 아닐때 뷰페이지로 이동
+		}//else로 묶을 필요가 없습니다.왜? 위 return을 만나면, 이후 실행이 않되고, 메서드가 종료됨.
+		*/
+		//부모테이블 삭제전 삭제할 파일들 변수로 임시저장(아래)
+		List<AttachVO> delFiles = boardService.readAttach(bno);//세로값
+		//테이블 1개 레코드 삭제처리
 		boardService.deleteBoard(bno);
-		//첨부파일 데이터 삭제 
-		for(AttachVO file:delFiles) {
-			//File 클래스는 생성자 메서드의 매개변수(경로,파일명)
+		//첨부파일 있으면 삭제
+		for(AttachVO file:delFiles) {//향상된 for문에서 실행조건이 필요없이
+			//File 클래스는 객체를 생성할때 생성자메서드의 매개변수(경로,파일명)가 필요함.
 			File target = new File(commonUtil.getUploadPath(),file.getSave_file_name());
-			if(target.exists()) {
-				target.delete();
+			if(target.exists()) {//타켓폴더의 파일이 존재하면 삭제 구현(아래)
+				target.delete();//물리적인 UUID파일명의 파일 삭제처리.
 			}
 		}
-		rdat.addFlashAttribute("msg","게시물 삭제");
-		return"redirect:/home/board/board_list";
+		rdat.addFlashAttribute("msg", "게시물 삭제");//성공시 메세지 출력용 변수
+		return "redirect:/home/board/board_list";//성공시 이동할 주소
 	}
 	//게시물 상세보기 호출 GET 추가
-	@RequestMapping(value = "/home/board/board_view",method = RequestMethod.GET)
-	public String board_view(@RequestParam("bno")Integer bno, @ModelAttribute("pageVO")PageVO pageVO, Model model) throws Exception{
-		//첨부파일 가져오기
+	@RequestMapping(value="/home/board/board_view",method=RequestMethod.GET)
+	public String board_view(Model model,@RequestParam("bno")Integer bno,@ModelAttribute("pageVO")PageVO pageVO) throws Exception {
+		//첨부파일내용 가져오기
 		List<AttachVO> listAttachVO = boardService.readAttach(bno);
+		//첨부파일이 있다면 save_file_names, real_file_names 2개를 만듬
 		String[] save_file_names = new String[listAttachVO.size()];
 		String[] real_file_names = new String[listAttachVO.size()];
 		int index = 0;
-		for(AttachVO file:listAttachVO) {
+		for(AttachVO file:listAttachVO) {//세로데이터를 가로데이터로 변경처리
 			save_file_names[index] = file.getSave_file_name();
 			real_file_names[index] = file.getReal_file_name();
-			index++;
+			index = index + 1;
 		}
-		BoardVO boardVO = boardService.readBoard(bno);
+		BoardVO boardVO = boardService.readBoard(bno);//1개 레코드 입력됨.
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
-		//db테이블 데이터 가져오기
+		//dB테이블 데이터 가져오기
+		model.addAttribute("boardVO", boardVO);
 		model.addAttribute("checkImgArray", commonUtil.getCheckImgArray());
-		model.addAttribute("boardVO",boardVO);
-		return "home/board/board_view";
+		return "home/board/board_view";//.jsp생략
 	}
-	//게시물 등록 처리 POST 추가
-	@RequestMapping(value = "/home/board/board_insert",method = RequestMethod.POST)
-	public String board_insert(RedirectAttributes rdat, @RequestParam("file")MultipartFile[] files, BoardVO boardVO) throws Exception{
+	//게시물 등록 처리 호출 POST 추가
+	@RequestMapping(value="/home/board/board_insert",method=RequestMethod.POST)
+	public String board_insert(RedirectAttributes rdat, @RequestParam("file")MultipartFile[] files,BoardVO boardVO) throws Exception {
 		//첨부파일 처리
 		String[] save_file_names = new String[files.length];
 		String[] real_file_names = new String[files.length];
-		int index = 0;//위 String[] 배열의 인덱스 값
+		int index = 0;//위 String[]배열의 인덱스 값으로 사용할 변수선언
 		for(MultipartFile file:files) {
+			//첨부파일이 존재하면 실행조건
 			if(file.getOriginalFilename()!="") {
 				real_file_names[index] = file.getOriginalFilename();
 				save_file_names[index] = commonUtil.fileUpload(file);//UUID를 반환
 			}
-			index+=1;
+			index = index + 1;
 		}
 		//Attach테이블에 insert할 첨부파일 가상변수값을 입력
 		boardVO.setSave_file_names(save_file_names);
 		boardVO.setReal_file_names(real_file_names);
-		//타이틀, content 내용 시큐어코딩 처리
+		//타이틀,content 내용 시큐어코딩 처리(아래4줄)
 		String rawTitle = boardVO.getTitle();
 		String rawContent = boardVO.getContent();
 		boardVO.setTitle(commonUtil.unScript(rawTitle));
 		boardVO.setContent(commonUtil.unScript(rawContent));
 		//DB테이블 처리
 		boardService.insertBoard(boardVO);
-		rdat.addFlashAttribute("msg","게시물 등록");
+		rdat.addFlashAttribute("msg", "게시물 등록");//출력:게시물 등록 이(가) 성공~
 		return "redirect:/home/board/board_list";
 	}
 	//게시물 등록 폼 호출 GET 추가
-	@RequestMapping(value = "/home/board/board_insert_form",method = RequestMethod.GET)
-	public String board_insert_form() throws Exception{
+	@RequestMapping(value="/home/board/board_insert_form",method=RequestMethod.GET)
+	public String board_insert_form() throws Exception {
 		
-		return "/home/board/board_insert";
+		return "home/board/board_insert";//뷰단.jsp생략
 	}
-	
 	//게시물 리스트 페이지 호출 GET 추가
 	@RequestMapping(value="/home/board/board_list",method=RequestMethod.GET)
 	public String board_list(@ModelAttribute("pageVO") PageVO pageVO, Model model) throws Exception {
@@ -250,7 +258,7 @@ public class HomeController {
 		String rawPassword = memberVO.getUser_pw();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		memberVO.setUser_pw(passwordEncoder.encode(rawPassword));//암호화 실행.
-		//사용자레벨은 UI단에서 입력되지만, 보안을 위해 무시하고 강제입력.
+		//사용자레벨은 UI단에서 보내는 값 무시하고 강제로 입력(해킹위험때문에)
 		memberVO.setLevels("ROLE_USER");
 		memberService.insertMember(memberVO);
 		rdat.addFlashAttribute("msg", "회원가입");//회원가입 가(이) 성공했습니다. 출력
@@ -259,8 +267,8 @@ public class HomeController {
 	//회원가입폼 호출 Get방식
 	@RequestMapping(value="/join_form",method=RequestMethod.GET)
 	public String join_form() throws Exception {
-		
-		return "home/join";//.jsp생략
+		return "join.tiles";
+		//return "home/join";//.jsp생략
 	}
 	//마이페이지에서 회원탈퇴 POST방식 처리만.
 	@RequestMapping(value="/member/mypage_leave", method=RequestMethod.POST)
@@ -294,38 +302,41 @@ public class HomeController {
 		return "home/member/mypage";//.jsp생략
 	}
 	//사용자단 로그인 폼호출 GET, 로그인POST처리는 컨트롤러에서 하지않고 스프링시큐리티로 처리
+	//네아로 로그인때문에 LoginController클래스로 분리해서 사용합니다. 그래서 아래는 주석처리
 //	@RequestMapping(value="/login_form", method=RequestMethod.GET)
 //	public String login_form() throws Exception {
-//		
+//
 //		return "home/login";//.jsp생략
 //	}
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String homepage(Model model) throws Exception{ //콜백메스드,자동실행됨.
+	public String homepage(Model model) throws Exception { //콜백메스드,자동실행됨.
 //		String jspVar = "@서비스(DB)에서 처리한 결과";
 //		model.addAttribute("jspObject", jspVar);
-		logger.info("메인페이지");//System.out 대신 logger 객체를 사용
+//		logger.info("디버그 스프링로고사용: " + jspVar);//System.out 대신 logger 객체를 사용
 		//home.jsp파일로 자료를 전송(스프링)하는 기능= model인터페이스 객체(스프링이처리)에 내용만 채우면됨
 		PageVO pageVO = new PageVO();
-		pageVO.setPage(1);
-		pageVO.setQueryPerPageNum(3);//갤러리는3개 
+		pageVO.setPage(1);//필수값1
+		pageVO.setQueryPerPageNum(3);//겔러리3개
 		pageVO.setBoard_type("gallery");
-		//첨부파일 save_file_names 배열 변수 값 지정
+		//첨부파일 save_file_names 배열변수 값을 지정
 		List<BoardVO> latestGallery = boardService.selectBoard(pageVO);
-		for(BoardVO boardVO:latestGallery) {
+		
+		for(BoardVO boardVO:latestGallery) {//리스트형 객체를 1개씩 뽑아서 1개 레코드에 입력을 반복
 			List<AttachVO> listAttachVO = boardService.readAttach(boardVO.getBno());
-			if(listAttachVO.size()>0) {
+			if(listAttachVO.size() > 0) {
 				String[] save_file_names = new String[listAttachVO.size()];
 				save_file_names[0] = listAttachVO.get(0).getSave_file_name();
-				boardVO.setSave_file_names(save_file_names);	
+				boardVO.setSave_file_names(save_file_names);
 			}
 		}
-		model.addAttribute("latestGallery",latestGallery);	//갤러리 최근 게시물
 		
-		pageVO.setQueryPerPageNum(5);//공지사항은 5개
+		model.addAttribute("latestGallery", latestGallery);//겔러리 최근게시물
+		
+		pageVO.setQueryPerPageNum(5);//공지사항5개,보드타입 필요(세션으로 처리않됨)
 		pageVO.setBoard_type("notice");
-		model.addAttribute("latestNotice",boardService.selectBoard(pageVO));	//공지사항 최근 게시물
-		
-		return "home/index";//확장자가 생략 .jsp가 생략되어 있음.
+		model.addAttribute("latestNotice", boardService.selectBoard(pageVO));//공지사항 최근게시물
+		//return "home/index";//타일즈 적용 전
+		return "index.tiles";//타일즈 적용 후 tiles폴더안 index.jsp호출
 	}
 	
 }
